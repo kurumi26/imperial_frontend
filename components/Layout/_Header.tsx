@@ -1,0 +1,214 @@
+
+import React, { useEffect, useState, useRef } from "react";
+import Link from "next/link";
+import Menu from "./_Menu";
+import styles from "@/styles/_topbar.module.css";
+import { getWebsiteSettingsCached, resolveWebsiteAssetUrl, subscribeWebsiteSettingsUpdated } from "@/lib/websiteSettings";
+
+export default function LandingTopbar() {
+  const [scrolled, setScrolled] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const inputRef = useRef<HTMLInputElement | null>(null);
+  const [logoUrl, setLogoUrl] = useState<string | null>(null);
+  const [logoAlt, setLogoAlt] = useState<string>("Logo");
+
+  useEffect(() => {
+    let alive = true;
+
+    const refresh = async (opts?: { force?: boolean }) => {
+      try {
+        const s = await getWebsiteSettingsCached({ force: opts?.force === true });
+        if (!alive) return;
+
+        const url = resolveWebsiteAssetUrl((s as any)?.company_logo) ?? null;
+        setLogoUrl(url);
+        setLogoAlt((s as any)?.website_name || (s as any)?.company_name || "Logo");
+      } catch {
+        // ignore
+      }
+    };
+
+    refresh({ force: false });
+    const unsub = subscribeWebsiteSettingsUpdated(() => refresh({ force: true }));
+    return () => {
+      alive = false;
+      unsub();
+    };
+  }, []);
+
+  useEffect(() => {
+    // compute threshold: if there's a banner, stay transparent until user scrolls
+    // past the banner height. Otherwise use a small default threshold.
+    const bannerEl = document.querySelector('.page-banner') as HTMLElement | null;
+    const threshold = bannerEl ? Math.max(20, bannerEl.offsetHeight - 40) : 20;
+
+    const onScroll = () => {
+      setScrolled(window.scrollY > threshold);
+    };
+
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+    };
+  }, []);
+
+  useEffect(() => {
+    const onResize = () => {
+      if (window.innerWidth > 991) setMobileOpen(false);
+    };
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
+
+  useEffect(() => {
+    if (!mobileOpen) {
+      document.documentElement.style.overflow = "";
+      document.body.style.overflow = "";
+      return;
+    }
+
+    document.documentElement.style.overflow = "hidden";
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.documentElement.style.overflow = "";
+      document.body.style.overflow = "";
+    };
+  }, [mobileOpen]);
+
+  const closeMobileMenu = () => setMobileOpen(false);
+
+  return (
+    <div>
+      
+      <header className={`${styles['topbar-dark']} ${scrolled ? styles.scrolled : ''}`}>
+        <div className={styles['topbar-inner']} style={{minHeight: '100px' , borderBottom: '1px solid #ffffff24'}}>
+          <div className={`${styles['left']}`} style={{display: 'flex', alignItems: 'center', gap: 12}}>
+            <Link href="/" className={styles.brand}>
+              <span className={styles['logo-box']}>
+                {/* <img
+                  src={logoUrl || "/images/logo-light.png"}
+                  alt={logoAlt}
+                  className={styles['logo-img']}
+                /> */}
+                <h3 className="text-light fs-4 mb-0">Imperial<span className="text-danger fs-2">PVC</span></h3>
+              </span>
+
+            </Link>
+          </div>
+          <div className={styles.right}>
+            
+            <button
+              type="button"
+              className={styles["mobile-toggle"]}
+              aria-label={mobileOpen ? "Close menu" : "Open menu"}
+              aria-expanded={mobileOpen}
+              aria-controls="landing-topbar-nav"
+              onClick={() => setMobileOpen((v) => !v)}
+            >
+              <span className={styles["mobile-toggle-bar"]} />
+              <span className={styles["mobile-toggle-bar"]} />
+              <span className={styles["mobile-toggle-bar"]} />
+            </button>
+
+            {mobileOpen && (
+              <button
+                type="button"
+                className={styles.backdrop}
+                aria-label="Close menu"
+                onClick={closeMobileMenu}
+              />
+            )}
+
+            <nav
+              id="landing-topbar-nav"
+              className={`${styles["nav-wrap-base"]} ${mobileOpen ? styles["nav-wrap-base-open"] : ""}`}
+            >
+              <ul className={styles["nav-list"]}>
+                <Menu isMobile={mobileOpen} onNavigate={closeMobileMenu} />
+              </ul>
+              {/* Mobile search: shown inside the opened mobile nav */}
+              <div className={styles['search-mobile']}>
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    if (!searchQuery) return;
+                    try {
+                      window.location.href = `/public/search?q=${encodeURIComponent(searchQuery)}`;
+                    } catch (err) {
+                      console.log('search:', searchQuery);
+                    }
+                  }}
+                >
+                  <input
+                    ref={inputRef}
+                    className={styles['search-input']}
+                    aria-label="Search"
+                    placeholder="Search..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    onBlur={() => setSearchOpen(false)}
+                  />
+                  <button
+                    type="button"
+                    className={styles['search-icon']}
+                    aria-label="Open search"
+                    onClick={() => {
+                      setSearchOpen((v) => !v);
+                      setTimeout(() => inputRef.current?.focus(), 50);
+                    }}
+                  >
+                    <i className="fa fa-search" aria-hidden="true"></i>
+                  </button>
+                </form>
+              </div>
+            </nav>
+
+            <div className={styles['search-wrapper']} style={{paddingRight: '50px'}}>
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  if (!searchQuery) return;
+                  try {
+                    window.location.href = `/public/search?q=${encodeURIComponent(searchQuery)}`;
+                  } catch (err) {
+                    console.log('search:', searchQuery);
+                  }
+                }}
+              >
+                <input
+                  ref={inputRef}
+                  className={styles['search-input']}
+                  aria-label="Search"
+                  placeholder="Search..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onBlur={() => setSearchOpen(false)}
+                />
+                <button
+                  type="button"
+                  className={styles['search-icon']}
+                  aria-label="Open search"
+                  onClick={() => {
+                    setSearchOpen((v) => !v);
+                    setTimeout(() => inputRef.current?.focus(), 50);
+                  }}
+                >
+                  <i className={styles['search-icon'] + " fa fa-search"} aria-hidden="true"></i>
+                </button>
+              </form>
+            </div>
+
+            
+
+          </div>
+        </div>
+      </header>
+    </div>
+  );
+}
+

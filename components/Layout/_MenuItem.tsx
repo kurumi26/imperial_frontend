@@ -51,13 +51,14 @@ export default function MenuItem({
     >
       <div className="menu-row">
         {isInternal ? (
-          <Link href={href} className="menu-link" onClick={handleLinkClick}>
+          <Link href={href} className="menu-link" style={{ textDecoration: "none" }} onClick={handleLinkClick}>
             <span>{item.label.toUpperCase()}</span>
           </Link>
         ) : (
           <a
             href={href}
             className="menu-link"
+            style={{ textDecoration: "none" }}
             target="_blank"
             rel="noopener noreferrer"
             onClick={handleLinkClick}

@@ -1,5 +1,5 @@
 import LandingTopbar from "./_Topbar";
-import LandingFooter from "./_Footer";
+import GlobalFooter from "./GlobalFooter";
 import Banner from "./_Banner";
 import { PublicAlbum } from "@/services/publicPageService";
 import ToastHost from "@/components/UI/ToastHost";
@@ -48,7 +48,7 @@ export default function LandingPageLayout({
         <div className={contentWrapperClassName}>{children}</div>
       </main>
 
-      <LandingFooter />
+      <GlobalFooter />
 
       <ToastHost />
     </div>
