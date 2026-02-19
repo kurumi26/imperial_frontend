@@ -307,7 +307,7 @@ export default function Base({ pageData, news }: LandingPageLayoutProps) {
                                     <div className="image-responsive">
                                         <img src="/images/projects/proj7.jpg" alt="Project 1" className="img-fluid" />
                                     </div>
-                                    <h5 className="fw-4 text-center my-4">El Jardin Del Presidente</h5>
+                                    <h5 className="fw-4 text-center my-4">Greenbelt 1 & 2 Redevelopment</h5>
                                 </div>
                             </div>
                         </a>
@@ -319,7 +319,7 @@ export default function Base({ pageData, news }: LandingPageLayoutProps) {
                                     <div className="image-responsive">
                                         <img src="/images/projects/proj8.jpg" alt="Project 1" className="img-fluid" />
                                     </div>
-                                    <h5 className="fw-4 text-center my-4">RCBC Plaza</h5>
+                                    <h5 className="fw-4 text-center my-4">Heritage Park</h5>
                                 </div>
                             </div>
                         </a>
@@ -331,7 +331,7 @@ export default function Base({ pageData, news }: LandingPageLayoutProps) {
                                     <div className="image-responsive">
                                         <img src="/images/projects/proj9.jpg" alt="Project 1" className="img-fluid" />
                                     </div>
-                                    <h5 className="fw-4 text-center my-4">Robinson's Galleria Regency</h5>
+                                    <h5 className="fw-4 text-center my-4">Paseo Parkview</h5>
                                 </div>
                             </div>
                         </a>
@@ -343,7 +343,7 @@ export default function Base({ pageData, news }: LandingPageLayoutProps) {
                                     <div className="image-responsive">
                                         <img src="/images/projects/proj10.jpg" alt="Project 1" className="img-fluid " />
                                     </div>
-                                    <h5 className="fw-4 text-center my-4">Corinthian Hills</h5>
+                                    <h5 className="fw-4 text-center my-4">Manila - Japanese School</h5>
                                 </div>
                             </div>
                         </a>
