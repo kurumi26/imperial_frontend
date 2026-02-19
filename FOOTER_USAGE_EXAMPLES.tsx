@@ -6,6 +6,10 @@
  */
 
 import GlobalFooter from '@/components/Layout/GlobalFooter';
+import FacebookIcon from './components/icons/facebook';
+import LinkedinIcon from './components/icons/linkedin';
+import TwitterIcon from './components/icons/twitter';
+import InstagramIcon from './components/icons/instagram';
 
 // Example 1: Default Footer (recommended for most pages)
 export function DefaultFooterExample() {
@@ -45,10 +49,10 @@ export function CustomizedFooterExample() {
   ];
 
   const socialLinks = [
-    { icon: "f", url: "https://facebook.com/imperialpvc", label: "Facebook" },
-    { icon: "𝕏", url: "https://twitter.com/imperialpvc", label: "Twitter" },
-    { icon: "in", url: "https://linkedin.com/company/imperialpvc", label: "LinkedIn" },
-    { icon: "📷", url: "https://instagram.com/imperialpvc", label: "Instagram" },
+    { icon: "f", url: "https://facebook.com/imperialpvc", label: "Facebook", emblem: <FacebookIcon /> },
+    { icon: "𝕏", url: "https://twitter.com/imperialpvc", label: "Twitter", emblem: <TwitterIcon /> },
+    { icon: "in", url: "https://linkedin.com/company/imperialpvc", label: "LinkedIn", emblem: <LinkedinIcon /> },
+    { icon: "📷", url: "https://instagram.com/imperialpvc", label: "Instagram", emblem: <InstagramIcon /> },
   ];
 
   return (

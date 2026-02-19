@@ -4,7 +4,6 @@ import TestimonialSection from '@/components/Layout/TestimonialSection';
 import Banner from "@/components/Layout/_Banner";
 import { getPublicPageBySlug, PublicAlbum } from "@/services/publicPageService";
 import { getPublicArticles } from "@/services/articleService";
-import { notFound } from "next/navigation";
 import GlobalFooter from '@/components/Layout/GlobalFooter';
 
 // Page-level banner control. Change this value to control the banner title shown on this page.
@@ -409,7 +408,6 @@ export default function Base({ pageData, news }: LandingPageLayoutProps) {
         </div>
 
         <div className="w-100">
-            <img src="/images/roofing1.jpg" alt="" />
             <GlobalFooter />
         </div>
 
