@@ -1,9 +1,28 @@
-import { useEffect, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import styles from "@/styles/footer.module.css";
+
+import FacebookIcon from "@/components/icons/facebook";
+import InstagramIcon from "@/components/icons/instagram";
+import TwitterIcon from "@/components/icons/twitter";
+import YoutubeIcon from "@/components/icons/youtube";
+import LinkedinIcon from "@/components/icons/linkedin";
+
+interface FooterLink {
+  label: string;
+  href: string;
+  emblem?: ReactNode; // optional icon
+}
 
 interface FooterColumn {
   title: string;
-  links: { label: string; href: string }[];
+  links: FooterLink[];
+}
+
+interface SocialLink {
+  icon: string;
+  url: string;
+  label: string;
+  emblem: ReactNode;
 }
 
 interface GlobalFooterProps {
@@ -13,7 +32,7 @@ interface GlobalFooterProps {
   columns?: FooterColumn[];
   copyrightText?: string;
   companyName?: string;
-  socialLinks?: { icon: string; url: string; label: string }[];
+  socialLinks?: SocialLink[];
 }
 
 export default function GlobalFooter({
@@ -42,12 +61,11 @@ export default function GlobalFooter({
     {
       title: "Social Media",
       links: [
-        { label: "Facebook", href: "#" },
-        { label: "Twitter", href: "#" },
-        { label: "Youtube", href: "#" },
-        { label: "Instagram", href: "#" },
-        { label: "LinkedIn", href: "#" },
-        { label: "Pinterest", href: "#" },
+        { label: "Facebook", href: "#", emblem: <FacebookIcon /> },
+        { label: "Twitter", href: "#", emblem: <TwitterIcon /> },
+        { label: "Youtube", href: "#", emblem: <YoutubeIcon /> },
+        { label: "Instagram", href: "#", emblem: <InstagramIcon /> },
+        { label: "LinkedIn", href: "#", emblem: <LinkedinIcon /> },
       ],
     },
   ],
@@ -81,12 +99,12 @@ export default function GlobalFooter({
           {/* Remaining Columns */}
           {columns.map((column, index) => (
             <div key={index} className={styles.column}>
-              <h3 className={styles.columnTitle}>{column.title}</h3>
+              <h3 className={styles.columnTitle + ' ps-4'}>{column.title}</h3>
               <ul className={styles.linksList}>
                 {column.links.map((link, linkIndex) => (
                   <li key={linkIndex}>
                     <a href={link.href} className={styles.footerLink}>
-                      {link.label}
+                      <span className="pe-2">{link.emblem}</span> {link.label}
                     </a>
                   </li>
                 ))}
@@ -100,19 +118,27 @@ export default function GlobalFooter({
           <div className={styles.socialSection}>
             <h3 className={styles.columnTitle}>Follow Us</h3>
             <div className={styles.socialLinks}>
+
               {socialLinks.map((social, index) => (
-                <a
+                <div
                   key={index}
-                  href={social.url}
-                  aria-label={social.label}
-                  className={styles.socialLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  className="d-flex flex-row align-items-center"
                 >
-                  {social.icon}
-                </a>
+                  <span>{social.emblem}</span>
+                  <a
+                    href={social.url}
+                    aria-label={social.label}
+                    className={styles.socialLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {social.icon}
+                  </a>
+                </div>
               ))}
+              
             </div>
+
           </div>
         )}
       </div>
