@@ -1,0 +1,71 @@
+/* Custom CSS by Jeff */
+.heading-block {
+    position: relative
+}
+
+.heading-block::before {
+    content: attr(data-heading);
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    color: #e9ecef;
+    z-index: -1;
+    font-weight: bold;
+    font-size: 90px;
+    line-height: .3;
+}
+
+.text-orange {
+    color: #ff7b00;
+}
+
+.heading-block-start {
+    position: relative
+}
+
+.heading-block-start::before {
+    content: attr(data-heading);
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: #e9ecef;
+    z-index: -1;
+    font-weight: bold;
+    font-size: 90px;
+    line-height: .3;
+}
+
+.card.animate-hov {
+    transition: all 0.3s ease;
+}
+
+.card.animate-hov:hover {
+    transform: scale(1.05);
+    background-color: #f5f5f5;
+}
+
+.card.animate-hov:hover h2,
+.card.animate-hov:hover h3 {
+    color: #ff7b00;
+}
+
+.card.animate-hov .image-responsive {
+    max-height: 170px;
+    overflow-y: hidden;
+}
+
+img.proj-image {
+    transform: translate(0px, -75px);
+}
+
+.cutter-section {
+    margin-top: 7rem;
+    margin-bottom: 7rem;
+}
+
+.cutter-title {
+    margin-bottom: 4rem;
+}
