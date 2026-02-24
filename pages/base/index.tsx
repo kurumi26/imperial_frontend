@@ -117,14 +117,14 @@ export default function Base({ pageData, news }: LandingPageLayoutProps) {
 
     <div>
 
-        <Header />
+        {/* <Header />
         
         <Banner
             title={BANNER_TITLE || pageData?.title}
             album={pageData?.album}
-        />
+        /> */}
         
-        <div className="w-100">
+        <div className="w-100 base-content">
 
             <div className="container py-5 text-center cutter-section">
 
@@ -407,9 +407,9 @@ export default function Base({ pageData, news }: LandingPageLayoutProps) {
 
         </div>
 
-        <div className="w-100">
+        {/* <div className="w-100">
             <GlobalFooter />
-        </div>
+        </div> */}
 
     </div>
 

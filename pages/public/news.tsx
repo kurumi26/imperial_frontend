@@ -49,8 +49,8 @@ export async function getServerSideProps({ query }: any) {
     return {
       props: {
         pageData: pageRes.data,
-        articles: articlesRes.data.data ?? [],
-        categories: categoriesRes.data ?? [],
+        articles: Array.isArray(articlesRes.data?.data) ? articlesRes.data.data : Array.isArray(articlesRes.data) ? articlesRes.data : [],
+        categories: Array.isArray(categoriesRes.data) ? categoriesRes.data : [],
         archives: archiveRes.data ?? {},
       },
     };
