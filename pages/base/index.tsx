@@ -86,7 +86,7 @@ function Slider({ slides }: { slides: Slide[] }) {
                 .slide { gap: 20px; }
                 .slide-image img { width: 100%; height: 360px; object-fit: cover; border-radius: 8px; }
                 .slide-info { display: flex; flex-direction: column; justify-content: center; }
-                .nav-button { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.45); color: #fff; border: none; padding: 8px 12px; font-size: 20px; border-radius: 6px; cursor: pointer;  padding-top: 6px; }
+                .nav-button { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.45); color: #fff; border: none; padding: 8px 12px; font-size: 20px; border-radius: 6px; cursor: pointer;  padding-top: 4px; }
                 .nav-button.prev { left: 8px; }
                 .nav-button.next { right: 8px; }
                 .indicators { display:flex; justify-content:center; gap:8px; }
