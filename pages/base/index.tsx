@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from "react";
-import Header from "@/components/Layout/_Header";
 import TestimonialSection from '@/components/Layout/TestimonialSection';
-import Banner from "@/components/Layout/_Banner";
 import { getPublicPageBySlug, PublicAlbum } from "@/services/publicPageService";
 import { getPublicArticles } from "@/services/articleService";
-import GlobalFooter from '@/components/Layout/GlobalFooter';
+import LandingPageLayout from "@/components/Layout/GuestLayout";
 
-// Page-level banner control. Change this value to control the banner title shown on this page.
 export const BANNER_TITLE = "Imperial PVC";
 
 export async function getServerSideProps() {
@@ -407,11 +404,9 @@ export default function Base({ pageData, news }: LandingPageLayoutProps) {
 
         </div>
 
-        {/* <div className="w-100">
-            <GlobalFooter />
-        </div> */}
-
     </div>
 
   );
 }
+
+Base.Layout = LandingPageLayout;
