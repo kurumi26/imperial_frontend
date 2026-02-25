@@ -30,11 +30,11 @@ export default function LandingPageLayout({
     <div className="d-flex flex-column min-vh-100">
       <Head>
         {/* Public/front-end template styles only (kept out of admin pages) */}
-        {/* <link rel="stylesheet" href="/css/public-css.css" />* */}
-        {/*<link rel="stylesheet" href="/css/product.css" />* */}
-        {/*<link rel="stylesheet" href="/css/banner.css" />* */}
-        {/*<link rel="stylesheet" href="/css/navigation.css" />
-        <link rel="stylesheet" href="/css/public-overrides.css" />* */}
+        <link rel="stylesheet" href="/css/public-css.css" />
+        <link rel="stylesheet" href="/css/product.css" />
+        <link rel="stylesheet" href="/css/banner.css" />
+        <link rel="stylesheet" href="/css/navigation.css" />
+        <link rel="stylesheet" href="/css/public-overrides.css" />
         <link rel="stylesheet" href="/css/custom.css" />
       </Head>
 

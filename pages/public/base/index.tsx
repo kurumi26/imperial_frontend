@@ -177,7 +177,7 @@ export default function Base({ pageData, news }: LandingPageLayoutProps) {
                                 <img src="/images/products/prod4.png" className="border-bottom" alt="" style={{maxHeight: "150px", borderTopLeftRadius: "4px",  borderTopRightRadius: "4px"}} />
                                 <div className="py-4 px-3 text-start">
                                     <h3 className="fs-6 fw-bold">Imperial uPVC Corrugated</h3>
-                                    <p className="fs-6 fw-light text-secondary">Flexible electrical conduit system are produced under strict quality control..</p>
+                                    <p className="fs-6 fw-light text-secondary">Flexible electrical conduit system are produced under strict quality control and testings..</p>
                                     <a href="#" className="fw-bold text-orange text-decoration-none">Read More</a>
                                 </div>
                             </div>
@@ -220,10 +220,10 @@ export default function Base({ pageData, news }: LandingPageLayoutProps) {
                             <div className="heading-block-start text-center border-0 my-5" data-heading="A">
                                 <h2 className="fs-1 fw-bold text-start">About Us</h2>
                             </div>
-                            <p className="fs-5 fw-light text-secondary text-start" >
+                            <p className="fs-6 fw-light text-secondary text-start" >
                                 <strong>Imperial Rubber and Synthetic Products, Inc.</strong> was founded in 1962, producing PVC pipes, hoses and other items.
                             </p>
-                            <p className="fs-5 fw-light text-secondary text-start" >
+                            <p className="fs-6 fw-light text-secondary text-start" >
                                 Imperial PVC is a leading supplier of high-quality PVC products, committed to delivering durable and innovative solutions for modern construction needs. With a focus on quality, reliability, and customer satisfaction, we provide a wide range of PVC products designed to meet the demands of both residential and commercial projects. Our team of experts works closely with clients to ensure that our products not only meet but exceed industry standards, making us a trusted partner in the construction industry.
                             </p>
                             <button className="btn btn-danger mt-4">
