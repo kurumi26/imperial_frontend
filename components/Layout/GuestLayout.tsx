@@ -24,7 +24,7 @@ export default function LandingPageLayout({
 }: LandingPageLayoutProps) {
   const contentWrapperClassName = layout?.fullWidth
     ? "container-fluid px-0"
-    : "container";
+    : "";
 
   return (
     <div className="d-flex flex-column min-vh-100">
