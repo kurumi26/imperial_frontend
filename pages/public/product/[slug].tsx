@@ -492,7 +492,7 @@ export default function PublicProductDetail({ product, slugOrId }: Props) {
 									}}
 									style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
 								/>
-								{price ? (
+								{/* {price ? (
 									<div
 										style={{
 											position: "absolute",
@@ -507,7 +507,7 @@ export default function PublicProductDetail({ product, slugOrId }: Props) {
 									>
 										{price}
 									</div>
-								) : null}
+								) : null} */}
 							</div>
 						</div>
 
@@ -547,11 +547,11 @@ export default function PublicProductDetail({ product, slugOrId }: Props) {
 								<h3 className="txt33 p-b-10" style={{ margin: 0, marginBottom: 6 }}>{title}</h3>
 
 								<div className="txt32 flex-w p-b-20">
-									{price ? <span className="color0">{price}</span> : null}
-									{price && (category || clientProduct.serving_size) ? <span className="m-r-6 m-l-4">|</span> : null}
+									{/* {price ? <span className="color0">{price}</span> : null} */}
+									{/* {price && (category || clientProduct.serving_size) ? <span className="m-r-6 m-l-4">|</span> : null} */}
 									{category ? <span>{category}</span> : null}
-									{category && clientProduct.serving_size ? <span className="m-r-6 m-l-4">|</span> : null}
-									{clientProduct.serving_size ? <span>{clientProduct.serving_size}</span> : null}
+									{/* {category && clientProduct.serving_size ? <span className="m-r-6 m-l-4">|</span> : null} */}
+									{/* {clientProduct.serving_size ? <span>{clientProduct.serving_size}</span> : null} */}
 								</div>
 
 								<div className="flex-w" style={{ gap: 10, marginBottom: 22 }}>
@@ -583,7 +583,7 @@ export default function PublicProductDetail({ product, slugOrId }: Props) {
 
 								<hr style={{ opacity: 0.12, margin: "22px 0" }} />
 
-								<div className="bo-rad-10" style={{ border: "1px solid #eee", padding: 16 }}>
+								{/* <div className="bo-rad-10" style={{ border: "1px solid #eee", padding: 16 }}>
 									<div className="d-flex align-items-center justify-content-between" style={{ gap: 12 }}>
 										<span className="txt14" style={{ fontWeight: 600, margin: 0 }}>Quantity</span>
 										<div className="d-flex align-items-center" style={{ gap: 8 }}>
@@ -640,7 +640,11 @@ export default function PublicProductDetail({ product, slugOrId }: Props) {
 									<p className="txt14" style={{ color: "#888", marginTop: 12, marginBottom: 0, fontSize: 12 }}>
 										Secure checkout • Fast support • Easy returns
 									</p>
-								</div>
+								</div> */}
+								<h5 className="text-base font-semibold uppercase" style={{ margin: 0, marginBottom: 6 }}>Additional Information</h5>
+								<p className="txt14">
+									Imperial PVC is a leading supplier of high-quality PVC products, committed to delivering durable and innovative solutions for modern construction needs. With a focus on quality, reliability, and customer satisfaction, we provide a wide range of PVC products designed to meet the demands of both residential and commercial projects.
+								</p>
 							</div>
 						</div>
 					</div>

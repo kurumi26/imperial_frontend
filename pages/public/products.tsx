@@ -341,7 +341,7 @@ export default function ProductsPublicPage({ products, categories, pageData }: P
 	}, [activeCategory, searchedProducts, byCat]);
 
 	return (
-		<div className="container-fluid px-0">
+		<div className="container px-0">
 			<div className="row">
 				{/* SIDEBAR */}
 				<div className="col-md-4 col-lg-3">
@@ -477,13 +477,13 @@ export default function ProductsPublicPage({ products, categories, pageData }: P
 																	{p.name ?? p.title ?? p.slug}
 																</h4>
 
-																<div className="txt32 flex-w p-b-10">
+																{/* <div className="txt32 flex-w p-b-10">
 																	{p.price ? <span className="color0">${Number(p.price).toFixed(2)}</span> : null}
 																	{p.price && (p.serving_size || p.category_name || p.category?.name) ? (
 																		<span className="m-r-6 m-l-4">|</span>
 																	) : null}
 																	{p.serving_size ? <span>{p.serving_size}</span> : null}
-																</div>
+																</div> */}
 
 																<p
 																	className="txt14"
