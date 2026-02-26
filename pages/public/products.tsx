@@ -2,6 +2,7 @@ import LandingPageLayout from "@/components/Layout/GuestLayout";
 import { getPublicPageBySlug } from "@/services/publicPageService";
 import { axiosInstance } from "@/services/axios";
 import { useEffect, useMemo, useState } from "react";
+import SearchIcon from "@/components/icons/search";
 
 type Props = {
 	pageData: any;
@@ -12,126 +13,162 @@ type Props = {
 const USE_DUMMY_PRODUCTS = true;
 
 const DUMMY_PRODUCTS: any[] = [
-	{
-		id: 101,
-		slug: "calamari-rings",
-		name: "Calamari Rings",
-		price: 8.99,
-		serving_size: "1 pc",
-		description: "Lightly battered squid rings, crispy and tender.",
-		image_url: "/images/calamarirings.jpg",
-		category_id: 1,
-		category: { id: 1, name: "Appetizers" },
-	},
-	{
-		id: 102,
-		slug: "garlic-bread",
-		name: "Garlic Bread",
-		price: 7.49,
-		serving_size: "1 pc",
-		description: "Toasted bread with garlic butter and herbs.",
-		image_url: "/images/garlicbread.jpg",
-		category_id: 1,
-		category: { id: 1, name: "Appetizers" },
-	},
+	// {
+	// 	id: 101,
+	// 	slug: "calamari-rings",
+	// 	name: "Calamari Rings",
+	// 	price: 8.99,
+	// 	serving_size: "1 pc",
+	// 	description: "Lightly battered squid rings, crispy and tender.",
+	// 	image_url: "/images/calamarirings.jpg",
+	// 	category_id: 1,
+	// 	category: { id: 1, name: "Appetizers" },
+	// },
+	// {
+	// 	id: 102,
+	// 	slug: "garlic-bread",
+	// 	name: "Garlic Bread",
+	// 	price: 7.49,
+	// 	serving_size: "1 pc",
+	// 	description: "Toasted bread with garlic butter and herbs.",
+	// 	image_url: "/images/garlicbread.jpg",
+	// 	category_id: 1,
+	// 	category: { id: 1, name: "Appetizers" },
+	// },
 
-    {
-		id: 103,
-		slug: "cheesy-sticks",
-		name: "Cheesy Sticks",
-		price: 7.49,
-		serving_size: "1 pc",
-		description: "Golden-fried mozzarella sticks served with marinara sauce.",
-		image_url: "/images/cheesesticks.jpg",
-		category_id: 1,
-		category: { id: 1, name: "Appetizers" },
-	},
+    // {
+	// 	id: 103,
+	// 	slug: "cheesy-sticks",
+	// 	name: "Cheesy Sticks",
+	// 	price: 7.49,
+	// 	serving_size: "1 pc",
+	// 	description: "Golden-fried mozzarella sticks served with marinara sauce.",
+	// 	image_url: "/images/cheesesticks.jpg",
+	// 	category_id: 1,
+	// 	category: { id: 1, name: "Appetizers" },
+	// },
 
-    {
-		id: 104,
-		slug: "spring-rolls",
-		name: "Spring Rolls",
-		price: 2.04,
-		serving_size: "1 pc",
-		description: "Crispy rolls filled with seasoned vegetables, served with sweet chili sauce.",
-		image_url: "/images/springrolls.jpg",
-		category_id: 1,
-		category: { id: 1, name: "Appetizers" },
-	},
+    // {
+	// 	id: 104,
+	// 	slug: "spring-rolls",
+	// 	name: "Spring Rolls",
+	// 	price: 2.04,
+	// 	serving_size: "1 pc",
+	// 	description: "Crispy rolls filled with seasoned vegetables, served with sweet chili sauce.",
+	// 	image_url: "/images/springrolls.jpg",
+	// 	category_id: 1,
+	// 	category: { id: 1, name: "Appetizers" },
+	// },
+	// {
+	// 	id: 201,
+	// 	slug: "chicken-inasal",
+	// 	name: "Chicken Inasal",
+	// 	price: 10.5,
+	// 	serving_size: "1 bowl",
+	// 	description: "Grilled chicken marinated in inasal spices.",
+	// 	image_url: "/images/chickeninasal.jpg",
+	// 	category_id: 2,
+	// 	category: { id: 2, name: "Chicken Dishes" },
+	// },
+	// {
+	// 	id: 202,
+	// 	slug: "fried-chicken",
+	// 	name: "Fried Chicken",
+	// 	price: 3.32,
+	// 	serving_size: "1 bowl",
+	// 	description: "Crispy fried chicken, juicy inside.",
+	// 	image_url: "/images/friedchicken.jpg",
+	// 	category_id: 2,
+	// 	category: { id: 2, name: "Chicken Dishes" },
+	// },
+	// {
+	// 	id: 301,
+	// 	slug: "chicken-alfredo-pasta",
+	// 	name: "Chicken Alfredo Pasta",
+	// 	price: 3.95,
+	// 	serving_size: "1 plate",
+	// 	description: "Pasta in creamy alfredo sauce with grilled chicken.",
+	// 	image_url: "/images/chickenalfredo.jpg",
+	// 	category_id: 3,
+	// 	category: { id: 3, name: "Pasta & Noodles" },
+	// },
+	// {
+	// 	id: 302,
+	// 	slug: "carbonara-pasta",
+	// 	name: "Carbonara Pasta",
+	// 	price: 3.5,
+	// 	serving_size: "1 plate",
+	// 	description: "Classic Italian pasta dish made with eggs, cheese, pancetta, and pepper.",
+	// 	image_url: "/images/carbonara.jpg",
+	// 	category_id: 3,
+	// 	category: { id: 3, name: "Pasta & Noodles" },
+	// },
+    // {
+	// 	id: 303,
+	// 	slug: "spaghetti-bolognese",
+	// 	name: "Spaghetti Bolognese",
+	// 	price: 3.5,
+	// 	serving_size: "1 plate",
+	// 	description: "Classic Italian pasta dish made with eggs, cheese, pancetta, and pepper.",
+	// 	image_url: "/images/spaghetti.jpg",
+	// 	category_id: 3,
+	// 	category: { id: 3, name: "Pasta & Noodles" },
+	// },
+
+    // {
+	// 	id: 401,
+	// 	slug: "butter-garlic-shrimp",
+	// 	name: "Butter Garlic Shrimp",
+	// 	price: 3.5,
+	// 	serving_size: "1 plate",
+	// 	description: "Shrimp sautéed in a rich butter and garlic sauce.",
+	// 	image_url: "/images/butteredshrimp.jpg",
+	// 	category_id: 4,
+	// 	category: { id: 4, name: "Seafoods" },
+	// },
+
 	{
-		id: 201,
-		slug: "chicken-inasal",
-		name: "Chicken Inasal",
-		price: 10.5,
-		serving_size: "1 bowl",
-		description: "Grilled chicken marinated in inasal spices.",
-		image_url: "/images/chickeninasal.jpg",
-		category_id: 2,
-		category: { id: 2, name: "Chicken Dishes" },
-	},
-	{
-		id: 202,
-		slug: "fried-chicken",
-		name: "Fried Chicken",
-		price: 3.32,
-		serving_size: "1 bowl",
-		description: "Crispy fried chicken, juicy inside.",
-		image_url: "/images/friedchicken.jpg",
-		category_id: 2,
-		category: { id: 2, name: "Chicken Dishes" },
-	},
-	{
-		id: 301,
-		slug: "chicken-alfredo-pasta",
-		name: "Chicken Alfredo Pasta",
-		price: 3.95,
-		serving_size: "1 plate",
-		description: "Pasta in creamy alfredo sauce with grilled chicken.",
-		image_url: "/images/chickenalfredo.jpg",
-		category_id: 3,
-		category: { id: 3, name: "Pasta & Noodles" },
-	},
-	{
-		id: 302,
-		slug: "carbonara-pasta",
-		name: "Carbonara Pasta",
+		id: 501,
+		slug: "armstrong-pvc-pipe",
+		name: "Armstrong PVC Pipe",
 		price: 3.5,
 		serving_size: "1 plate",
-		description: "Classic Italian pasta dish made with eggs, cheese, pancetta, and pepper.",
-		image_url: "/images/carbonara.jpg",
-		category_id: 3,
-		category: { id: 3, name: "Pasta & Noodles" },
-	},
-    {
-		id: 303,
-		slug: "spaghetti-bolognese",
-		name: "Spaghetti Bolognese",
-		price: 3.5,
-		serving_size: "1 plate",
-		description: "Classic Italian pasta dish made with eggs, cheese, pancetta, and pepper.",
-		image_url: "/images/spaghetti.jpg",
-		category_id: 3,
-		category: { id: 3, name: "Pasta & Noodles" },
+		description: "High-quality PVC pipe for construction and plumbing projects.",
+		image_url: "/images/products/armstrong.jpg",
+		category_id: 1,
+		category: { id: 1, name: "PVC Pipes" },
 	},
 
-    {
-		id: 401,
-		slug: "butter-garlic-shrimp",
-		name: "Butter Garlic Shrimp",
+	{
+		id: 502,
+		slug: "bluebell-pvc-pipe",
+		name: "Bluebell PVC Pipe",
 		price: 3.5,
 		serving_size: "1 plate",
-		description: "Shrimp sautéed in a rich butter and garlic sauce.",
-		image_url: "/images/butteredshrimp.jpg",
-		category_id: 4,
-		category: { id: 4, name: "Seafoods" },
+		description: "High-quality PVC pipe for construction and plumbing projects.",
+		image_url: "/images/products/bluebell.jpg",
+		category_id: 1,
+		category: { id: 1, name: "PVC Pipes" },
+	},
+
+	{
+		id: 503,
+		slug: "orangeberg-pvc-pipe",
+		name: "Orangeberg PVC Pipe",
+		price: 3.5,
+		serving_size: "1 plate",
+		description: "High-quality PVC pipe for construction and plumbing projects.",
+		image_url: "/images/products/orangeberg.jpg",
+		category_id: 1,
+		category: { id: 1, name: "PVC Pipes" },
 	},
 ];
 
 const DUMMY_CATEGORIES: any[] = [
-	{ id: 1, name: "Appetizers" },
-	{ id: 2, name: "Chicken Dishes" },
-	{ id: 3, name: "Pasta & Noodles" },
-    { id: 4, name: "Seafoods" }
+	{ id: 1, name: "PVC Pipes" },
+	{ id: 2, name: "PVC Hoses" },
+	{ id: 3, name: "PVC Roofing" },
+    { id: 4, name: "PVC Accessories" }
 ];
 
 function groupByCategory(products: any[]) {
@@ -364,7 +401,9 @@ export default function ProductsPublicPage({ products, categories, pageData }: P
 								onClick={() => {
 									// Search is applied live as the user types.
 								}}
-							/>
+							>
+								<SearchIcon />
+							</button>
 						</div>
 
 						<div className="categories">
@@ -519,13 +558,13 @@ export default function ProductsPublicPage({ products, categories, pageData }: P
 																	<h4 className="p-b-10" style={{ marginTop: 8 }}>
 																		{p.name ?? p.title ?? p.slug}
 																	</h4>
-																	<div className="txt32 flex-w p-b-10">
+																	{/* <div className="txt32 flex-w p-b-10">
 																		{p.price ? <span className="color0">${Number(p.price).toFixed(2)}</span> : null}
 																		{p.price && (p.serving_size || p.category_name || p.category?.name) ? (
 																			<span className="m-r-6 m-l-4">|</span>
 																		) : null}
 																		{p.serving_size ? <span>{p.serving_size}</span> : null}
-																	</div>
+																	</div> */}
 																	<p
 																		className="txt14"
 																		style={{
