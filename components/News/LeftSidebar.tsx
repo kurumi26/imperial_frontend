@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
 import { useState } from "react";
+import SearchIcon from "../icons/search";
 
 type Props = {
   categories: any[];
@@ -49,8 +50,9 @@ export default function LeftSidebar({ categories, archive }: Props) {
         />
         <button
           className="btn-search-sidebar2 flex-c-m ti-search trans-0-4"
-          onClick={() => pushQuery({ search })}
-        />
+          onClick={() => pushQuery({ search })}>
+            <SearchIcon />
+        </button>
       </div>
 
       {/* CATEGORIES */}

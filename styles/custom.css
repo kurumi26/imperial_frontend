@@ -38,22 +38,22 @@
     line-height: .3;
 }
 
-.card.animate-hov {
+.animate-hov {
     transition: all 0.3s ease;
     padding: 0px;
 }
 
-.card.animate-hov:hover {
+.animate-hov:hover {
     transform: scale(1.05);
     background-color: #f5f5f5;
 }
 
-.card.animate-hov:hover h2,
-.card.animate-hov:hover h3 {
+.animate-hov:hover h2,
+.animate-hov:hover h3 {
     color: #ff7b00;
 }
 
-.card.animate-hov .image-responsive {
+.animate-hov .image-responsive {
     max-height: 170px;
     overflow-y: hidden;
 }
@@ -69,4 +69,8 @@ img.proj-image {
 
 .cutter-title {
     margin-bottom: 4rem;
+}
+
+.projects-gallery img.animate-hov {
+    max-width: 600px;
 }

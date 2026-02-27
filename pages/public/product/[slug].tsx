@@ -677,9 +677,16 @@ export default function PublicProductDetail({ product, slugOrId }: Props) {
 										Secure checkout • Fast support • Easy returns
 									</p>
 								</div> */}
-								<h5 className="text-base font-semibold uppercase" style={{ margin: 0, marginBottom: 6 }}>Additional Information</h5>
+								<h5 className="text-base font-semibold uppercase" style={{ margin: 0, marginBottom: 6 }}>Technical Specifications</h5>
 								<p className="txt14">
 									Imperial PVC is a leading supplier of high-quality PVC products, committed to delivering durable and innovative solutions for modern construction needs. With a focus on quality, reliability, and customer satisfaction, we provide a wide range of PVC products designed to meet the demands of both residential and commercial projects.
+								</p>
+
+								<hr style={{ opacity: 0.12, margin: "22px 0" }} />
+
+								<h5 className="text-base font-semibold uppercase" style={{ margin: 0, marginBottom: 6 }}>Other Details</h5>
+								<p className="txt14">
+									We provide a wide range of PVC products designed to meet the demands of both residential and commercial projects.
 								</p>
 							</div>
 						</div>

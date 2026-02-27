@@ -6,7 +6,7 @@ type Props = {
 
 export default function NewsList({ articles }: Props) {
   return (
-    <div className="p-t-80 p-b-124 bo5-r h-full p-r-50 p-r-0-md bo-none-md">
+    <div className="p-t-80 p-b-124 h-full p-r-50 p-r-0-md bo-none-md">
       {articles.length === 0 ? (
         <div className="txt32 text-center p-t-50">
           No news available.
