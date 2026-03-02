@@ -37,7 +37,7 @@ export default function Accreditations() {
                                 </small>
                             </div>
                         </div>
-                        <hr style={{ opacity: 0.12, margin: "22px 0" }} />
+                        <hr style={{ opacity: 0.22, margin: "22px 0" }} />
                         <div className="d-flex flex-column flex-md-row align-items-center gap-4 my-5">
                             <div className="d-flex flex-column text-start pe-3">
                                 <h3>Bluebell PVC Quality Certification</h3>
