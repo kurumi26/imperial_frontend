@@ -211,7 +211,7 @@ export default function Base({ pageData, news }: LandingPageLayoutProps) {
 
             <div className="w-100 border-top border-bottom mx-auto cutter-section">
                     
-                <div className="d-flex flex-column flex-md-row" style={{maxHeight: "600px", overflowY: "hidden"}}>
+                <div className="d-flex flex-column flex-md-row about-us-base-section" style={{maxHeight: "600px", overflowY: "hidden"}}>
                     <div className="col-12 col-md-6">
                         <img src="/images/highlights/work1.jpg" alt="About Us" style={{maxWidth: "stretch", minHeight: "600px"}} />
                     </div>
