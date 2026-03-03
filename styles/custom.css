@@ -78,3 +78,25 @@ img.proj-image {
 .products-container-lines .card.rounded-2.shadow-sm.animate-hov {
     min-height: 422px;
 }
+
+@media only screen and (max-width: 720px) {
+    .base-content .fs-5 {
+        font-size: .9rem !important;
+    } 
+
+    .base-content h2 {
+        font-size: 1.5rem !important;
+    }
+
+    .base-content .fs-6 {
+        font-size: .8rem !important;
+    }
+
+    .base-content .products-container-lines .card.rounded-2.shadow-sm.animate-hov {
+        min-height: 385px;
+    }
+
+    .base-content .about-us-base-section {
+        max-height: unset !important;
+    }
+}
