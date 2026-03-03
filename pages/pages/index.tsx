@@ -364,7 +364,17 @@ export default function ManagePages() {
       // Client-side sort fallback (some APIs ignore sort_by/sort_order).
       rows = sortRowsClientSide(rows, useSortBy, useSortOrder);
 
-      setPages(rows);
+      // === custom filter: exclude the "home" page from the list ===
+      // some APIs may return a row with title/label "home" which we don't
+      // want the administrator to see or edit in the table.  perform the
+      // filtering here so that all downstream logic (selection, pagination,
+      // etc.) ignores it.
+      const filteredRows = rows.filter((r) => {
+        const title = (r.title ?? r.label ?? "").toString().trim().toLowerCase();
+        return title !== "home";
+      });
+
+      setPages(filteredRows);
       setSelectedIds([]);
       setSelectAll(false);
       setCurrentPage(res.data.meta.current_page);
