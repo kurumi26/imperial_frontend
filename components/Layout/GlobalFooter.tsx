@@ -38,7 +38,7 @@ interface GlobalFooterProps {
 export default function GlobalFooter({
   logo = "/images/ip.png",
   companyDescription = "Premium PVC piping and solutions for industrial and residential applications.",
-  companyAddress = "L24, B75 Commonwealth Ave, Quezon City, Metro Manila, Philippines 8000",
+  companyAddress = "645 Paso de Blas Street, Valenzuela City, Metro Manila, Philippines",
   columns = [
     {
       title: "Company",

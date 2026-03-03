@@ -64,7 +64,7 @@ function Slider({ slides }: { slides: Slide[] }) {
                     <h3 className="fs-3 fw-bold">{slides[index].title}</h3>
                     <p className="fs-6 text-secondary">{slides[index].desc}</p>
                     <div>
-                        <button className="btn btn-danger mt-4 w-20">Learn More</button>
+                        <a href="/public/news" className="btn btn-danger mt-4 w-20">Learn More</a>
                     </div>
                 </div>
             </div>
@@ -145,7 +145,7 @@ export default function Base({ pageData, news }: LandingPageLayoutProps) {
                                 <div className="py-4 px-3 text-start">
                                     <h3 className="fs-6 fw-bold">Armstrong uPVC Electrical Conduit</h3>
                                     <p className="fs-6 fw-light text-secondary">Electrical conduit system are that produced under strict and high quality control..</p>
-                                    <a href="#" className="fw-bold text-orange text-decoration-none">Read More</a>
+                                    <a href="/public/products" className="fw-bold text-orange text-decoration-none">Read More</a>
                                 </div>
                             </div>
                         </div>
@@ -156,7 +156,7 @@ export default function Base({ pageData, news }: LandingPageLayoutProps) {
                                 <div className="py-4 px-3 text-start">
                                     <h3 className="fs-6 fw-bold">Bluebell uPVC Pressure Pipes</h3>
                                     <p className="fs-6 fw-light text-secondary">Are produced under conditions of extreme care and attention to detail with high precision..</p>
-                                    <a href="#" className="fw-bold text-orange text-decoration-none">Read More</a>
+                                    <a href="/public/products" className="fw-bold text-orange text-decoration-none">Read More</a>
                                 </div>
                             </div>
                         </div>
@@ -167,7 +167,7 @@ export default function Base({ pageData, news }: LandingPageLayoutProps) {
                                 <div className="py-4 px-3 text-start">
                                     <h3 className="fs-6 fw-bold">Orangeberg uPVC Sanitary Pipe Systems</h3>
                                     <p className="fs-6 fw-light text-secondary">For sanitary applications, drainage and vent piping systems with high quality standards..</p>
-                                    <a href="#" className="fw-bold text-orange text-decoration-none">Read More</a>
+                                    <a href="/public/products" className="fw-bold text-orange text-decoration-none">Read More</a>
                                 </div>
                             </div>
                         </div>
@@ -178,7 +178,7 @@ export default function Base({ pageData, news }: LandingPageLayoutProps) {
                                 <div className="py-4 px-3 text-start">
                                     <h3 className="fs-6 fw-bold">Imperial uPVC Corrugated</h3>
                                     <p className="fs-6 fw-light text-secondary">Flexible electrical conduit system are produced under strict quality control and testings..</p>
-                                    <a href="#" className="fw-bold text-orange text-decoration-none">Read More</a>
+                                    <a href="/public/products" className="fw-bold text-orange text-decoration-none">Read More</a>
                                 </div>
                             </div>
                         </div>
@@ -189,7 +189,7 @@ export default function Base({ pageData, news }: LandingPageLayoutProps) {
                                 <div className="py-4 px-3 text-start">
                                     <h3 className="fs-6 fw-bold">Imperial Designers Vynil Tiles</h3>
                                     <p className="fs-6 fw-light text-secondary">Are now created to give the appearance of numerous wide range natural materials..</p>
-                                    <a href="#" className="fw-bold text-orange text-decoration-none">Read More</a>
+                                    <a href="/public/products" className="fw-bold text-orange text-decoration-none">Read More</a>
                                 </div>
                             </div>
                         </div>
@@ -200,7 +200,7 @@ export default function Base({ pageData, news }: LandingPageLayoutProps) {
                                 <div className="py-4 px-3 text-start">
                                     <h3 className="fs-6 fw-bold">Imperial Telecomm Conduit</h3>
                                     <p className="fs-6 fw-light text-secondary">Are manufactured in accordance with international standards and specifications..</p>
-                                    <a href="#" className="fw-bold text-orange text-decoration-none">Read More</a>
+                                    <a href="/public/products" className="fw-bold text-orange text-decoration-none">Read More</a>
                                 </div>
                             </div>
                         </div>
@@ -226,9 +226,9 @@ export default function Base({ pageData, news }: LandingPageLayoutProps) {
                             <p className="fs-6 fw-light text-secondary text-start" >
                                 Imperial PVC is a leading supplier of high-quality PVC products, committed to delivering durable and innovative solutions for modern construction needs. With a focus on quality, reliability, and customer satisfaction, we provide a wide range of PVC products designed to meet the demands of both residential and commercial projects. Our team of experts works closely with clients to ensure that our products not only meet but exceed industry standards, making us a trusted partner in the construction industry.
                             </p>
-                            <button className="btn btn-danger mt-4">
+                            <a href="/public/about" className="btn btn-danger mt-4">
                                 Read More
-                            </button>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -246,7 +246,7 @@ export default function Base({ pageData, news }: LandingPageLayoutProps) {
 
                 <div className="d-flex flex-column flex-md-row gap-4 justify-content-center">
                     <div className="col-6 col-md-3 mx-auto">
-                        <a href="#" className="text-decoration-none">
+                        <a href="/public/project" className="text-decoration-none">
                             <div className="card shadow animate-hov">
                                 <div className="card-body p-0">
                                     <div className="image-responsive">
@@ -258,7 +258,7 @@ export default function Base({ pageData, news }: LandingPageLayoutProps) {
                         </a>
                     </div>
                     <div className="col-6 col-md-3 mx-auto">
-                        <a href="#" className="text-decoration-none">
+                        <a href="/public/project" className="text-decoration-none">
                             <div className="card shadow animate-hov">
                                 <div className="card-body p-0">
                                     <div className="image-responsive">
@@ -270,7 +270,7 @@ export default function Base({ pageData, news }: LandingPageLayoutProps) {
                         </a>
                     </div>
                     <div className="col-6 col-md-3 mx-auto">
-                        <a href="#" className="text-decoration-none">
+                        <a href="/public/project" className="text-decoration-none">
                             <div className="card shadow animate-hov">
                                 <div className="card-body p-0">
                                     <div className="image-responsive">
@@ -282,7 +282,7 @@ export default function Base({ pageData, news }: LandingPageLayoutProps) {
                         </a>
                     </div>
                     <div className="col-6 col-md-3 mx-auto">
-                        <a href="#" className="text-decoration-none">
+                        <a href="/public/project" className="text-decoration-none">
                             <div className="card shadow animate-hov">
                                 <div className="card-body p-0">
                                     <div className="image-responsive">
@@ -297,7 +297,7 @@ export default function Base({ pageData, news }: LandingPageLayoutProps) {
 
                 <div className="d-flex flex-column flex-md-row gap-4 justify-content-center mt-5">
                     <div className="col-6 col-md-3 mx-auto">
-                        <a href="#" className="text-decoration-none">
+                        <a href="/public/project" className="text-decoration-none">
                             <div className="card shadow animate-hov">
                                 <div className="card-body p-0">
                                     <div className="image-responsive">
@@ -309,7 +309,7 @@ export default function Base({ pageData, news }: LandingPageLayoutProps) {
                         </a>
                     </div>
                     <div className="col-6 col-md-3 mx-auto">
-                        <a href="#" className="text-decoration-none">
+                        <a href="/public/project" className="text-decoration-none">
                             <div className="card shadow animate-hov">
                                 <div className="card-body p-0">
                                     <div className="image-responsive">
@@ -321,7 +321,7 @@ export default function Base({ pageData, news }: LandingPageLayoutProps) {
                         </a>
                     </div>
                     <div className="col-6 col-md-3 mx-auto">
-                        <a href="#" className="text-decoration-none">
+                        <a href="/public/project" className="text-decoration-none">
                             <div className="card shadow animate-hov">
                                 <div className="card-body p-0">
                                     <div className="image-responsive">
@@ -333,7 +333,7 @@ export default function Base({ pageData, news }: LandingPageLayoutProps) {
                         </a>
                     </div>
                     <div className="col-6 col-md-3 mx-auto">
-                        <a href="#" className="text-decoration-none">
+                        <a href="/public/project" className="text-decoration-none">
                             <div className="card shadow animate-hov">
                                 <div className="card-body p-0">
                                     <div className="image-responsive">
@@ -395,7 +395,7 @@ export default function Base({ pageData, news }: LandingPageLayoutProps) {
             </div>
 
             <div className="w-100 my-5 py-5 cutter-section" style={{background: "linear-gradient(90deg, #FF0000, #FF4500, #FFA500);"}}>
-                <h5 className="text-white text-center fs-2">We offer the best PVC solutions in the market. See our <b><a href="#" className="text-white fw-800">Product List</a></b></h5>
+                <h5 className="text-white text-center fs-2">We offer the best PVC solutions in the market. See our <b><a href="/public/products" className="text-white fw-bold fs-3">Product List</a></b></h5>
             </div>
 
             <div className="w-100 testimonial-section cutter-section">
