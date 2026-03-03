@@ -88,7 +88,7 @@ export default function LandingTopbar() {
       <header className={`${styles['topbar-dark']} ${scrolled ? styles.scrolled : ''}`}>
         <div className={styles['topbar-inner']} style={{minHeight: '100px' , borderBottom: '1px solid #ffffff24'}}>
           <div className={`${styles['left']}`} style={{display: 'flex', alignItems: 'center', gap: 12}}>
-            <Link href="/" className={styles.brand}>
+            <Link href="/public/base" className={styles.brand}>
               <span className={styles['logo-box']}>
                 {/* <img
                   src={logoUrl || "/images/logo-light.png"}

@@ -136,9 +136,9 @@ export default function Base({ pageData, news }: LandingPageLayoutProps) {
                     </p>
                 </div>
 
-                <div className="w-100">
-                    <div className="d-flex flex-column flex-md-row gap-4 justify-content-center">
-                        <div className="col-6 col-md-2 mx-auto">
+                <div className="w-100 products-container-lines">
+                    <div className="d-flex flex-column flex-md-row flex-md-wrap flex-lg-nowrap gap-4 justify-content-center">
+                        <div className="col-6 col-md-4 col-lg-2 mx-auto">
                             <div className="card rounded-2 shadow-sm animate-hov">
                                 {/* <img src="/images/highlights/prod1.png" alt="" style={{maxHeight: "300px", minHeight: "300px"}} /> */}
                                 <img src="/images/products/prod1.png" className="border-bottom" alt="" style={{maxHeight: "150px", borderTopLeftRadius: "4px",  borderTopRightRadius: "4px"}} />
@@ -149,7 +149,7 @@ export default function Base({ pageData, news }: LandingPageLayoutProps) {
                                 </div>
                             </div>
                         </div>
-                        <div className="col-6 col-md-2 mx-auto">
+                        <div className="col-6 col-md-4 col-lg-2 mx-auto">
                             <div className="card rounded-2 shadow-sm animate-hov">
                                 {/* <img src="/images/highlights/roofing1.jpg" alt="" style={{maxHeight: "300px", minHeight: "300px"}} /> */}
                                 <img src="/images/products/prod2.png" alt="" style={{maxHeight: "150px", borderTopLeftRadius: "4px",  borderTopRightRadius: "4px"}} />
@@ -160,7 +160,7 @@ export default function Base({ pageData, news }: LandingPageLayoutProps) {
                                 </div>
                             </div>
                         </div>
-                        <div className="col-6 col-md-2 mx-auto">
+                        <div className="col-6 col-md-4 col-lg-2 mx-auto">
                             <div className="card rounded-2 shadow-sm animate-hov">
                                 {/* <img src="/images/highlights/roofing1.jpg" alt="" style={{maxHeight: "300px", minHeight: "300px"}} /> */}
                                 <img src="/images/products/prod3.png" alt="" style={{maxHeight: "150px", borderTopLeftRadius: "4px",  borderTopRightRadius: "4px"}} />
@@ -171,7 +171,7 @@ export default function Base({ pageData, news }: LandingPageLayoutProps) {
                                 </div>
                             </div>
                         </div>
-                        <div className="col-6 col-md-2 mx-auto">
+                        <div className="col-6 col-md-4 col-lg-2 mx-auto">
                             <div className="card rounded-2 shadow-sm animate-hov">
                                 {/* <img src="/images/highlights/roofing2.jpg" alt="" style={{maxHeight: "300px", minHeight: "300px"}} /> */}
                                 <img src="/images/products/prod4.png" className="border-bottom" alt="" style={{maxHeight: "150px", borderTopLeftRadius: "4px",  borderTopRightRadius: "4px"}} />
@@ -182,7 +182,7 @@ export default function Base({ pageData, news }: LandingPageLayoutProps) {
                                 </div>
                             </div>
                         </div>
-                        <div className="col-6 col-md-2 mx-auto">
+                        <div className="col-6 col-md-4 col-lg-2 mx-auto">
                             <div className="card rounded-2 shadow-sm animate-hov">
                                 {/* <img src="/images/highlights/roofing3.jpg" alt="" style={{maxHeight: "300px", minHeight: "300px"}} /> */}
                                 <img src="/images/products/prod5.png" className="border-bottom" alt="" style={{maxHeight: "150px", borderTopLeftRadius: "4px",  borderTopRightRadius: "4px"}} />
@@ -193,7 +193,7 @@ export default function Base({ pageData, news }: LandingPageLayoutProps) {
                                 </div>
                             </div>
                         </div>
-                        <div className="col-6 col-md-2 mx-auto">
+                        <div className="col-6 col-md-4 col-lg-2 mx-auto">
                             <div className="card rounded-2 shadow-sm animate-hov">
                                 {/* <img src="/images/highlights/roofing3.jpg" alt="" style={{maxHeight: "300px", minHeight: "300px"}} /> */}
                                 <img src="/images/products/prod6.png" alt="" style={{maxHeight: "150px", borderTopLeftRadius: "4px",  borderTopRightRadius: "4px"}} />
