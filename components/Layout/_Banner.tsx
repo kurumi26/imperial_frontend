@@ -13,7 +13,22 @@ export default function Banner({
   subtitle,
   album,
 }: BannerProps) {
-  if (album?.type === "main_banner") {
+  if (!album) {
+    return (
+      <section
+        className="text-white bg-black"
+      >
+        <div
+          className="container"
+          style={{
+            minHeight: 100,
+          }}
+        />
+      </section>
+    );
+  }
+
+  if (album.type === "main_banner") {
     return <MainBanner album={album} />;
   }
 
