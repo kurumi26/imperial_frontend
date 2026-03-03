@@ -106,6 +106,7 @@ export default function Technicals() {
                                 </div>
                                 
                             </div>
+
                             <div className="col-12 col-md-6 d-flex justify-content-center align-items-start">
                                 <table className="border-0" style={{borderCollapse: "collapse"}}>
                                     <tbody>
@@ -142,6 +143,7 @@ export default function Technicals() {
                                     </tbody>     
                                 </table>
                             </div>
+
                         </div>
 
                         <hr style={{ opacity: .22, margin: "22px 0" }} />
@@ -195,7 +197,7 @@ export default function Technicals() {
                             </div>
 
                             <div className="col-12 d-flex justify-content-center align-items-start">
-                                <table className="table table-striped table-hover table-bordered" style={{borderTop: "4px solid red"}}>
+                                <table className="table table-striped table-hover table-bordered shadow" style={{borderTop: "4px solid red"}}>
                                     <thead>
                                         <tr>
                                             <th colSpan={2}>Property</th>
@@ -461,7 +463,7 @@ export default function Technicals() {
                             </div>
 
                             <div className="col-12 d-flex justify-content-center align-items-start">
-                                <table className="table table-striped table-hover table-bordered" style={{borderTop: "4px solid red"}}>
+                                <table className="table table-striped table-hover table-bordered shadow" style={{borderTop: "4px solid red"}}>
                                     <thead>
                                         <tr>
                                             <th colSpan={4}>Table 1 – Maximum Levels of Toxic Substances</th>
@@ -550,7 +552,7 @@ export default function Technicals() {
                             </div>
 
                             <div className="col-12 d-flex justify-content-center align-items-start">
-                                <table className="table table-striped table-hover table-bordered" style={{borderTop: "4px solid red"}}>
+                                <table className="table table-striped table-hover table-bordered shadow" style={{borderTop: "4px solid red"}}>
                                     <thead>
                                         <tr>
                                             <th colSpan={5} className="text-end"><small className="fw-light float-right">Unit: Mpa</small></th>
@@ -653,7 +655,7 @@ export default function Technicals() {
                                         </p>
                                     </div>
                                     <div className="card-footer">
-                                        <h6 className="text-center">Click <a href="#">here</a> to see the table.</h6>
+                                        <h6 className="text-center">Click <a href="/public/info" className="text-danger">here</a> to see the table.</h6>
                                     </div>
                                 </div>
                             </div>

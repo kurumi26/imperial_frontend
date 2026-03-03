@@ -60,22 +60,22 @@ export default function ContactUsPage() {
           <div className="col-md-4 col-lg-3">
             <div className="sidebar2 p-b-40">
 
-              <h4 className="p-b-20">Our Office</h4>
+              <h4 className="p-b-20">Our Main Office</h4>
 
               <p className="txt14 p-b-10">
-                3rd Floor, ABC Building<br />
-                J.P. Laurel Avenue, Bajada<br />
-                Davao City, Philippines
+                645 Paso de Blas Street<br />
+                Valenzuela City, Philippines
               </p>
 
               <p className="txt14 p-b-10">
-                📞 (+63) 82 295-1234<br />
-                ✉ info@yourcompany.com
-              </p>
-
-              <p className="txt14">
-                🕘 Mon – Fri<br />
-                8:00 AM – 5:00 PM
+                <small>Telephone:</small><br />
+                📞 +63 (2) 365-1155<br />
+                📞 +63 (2) 365-4549<br /><br />
+                <small>Fax:</small><br />
+                📠 +63 (2) 365-1122<br />
+                📠 +63 (2) 983-2271<br /><br />
+                <small>Email:</small><br />
+                ✉ inquiry@imperialpvc.com
               </p>
 
             </div>
@@ -86,13 +86,12 @@ export default function ContactUsPage() {
 
             {/* MAP */}
             <div className="blo4 bo-rad-10 of-hidden m-b-40">
-              <iframe
-                src="https://www.google.com/maps?q=Davao%20City%2C%20Philippines&t=&z=13&ie=UTF8&iwloc=&output=embed"
-                width="100%"
-                height="300"
-                style={{ border: 0 }}
-                loading="lazy"
-              />
+              <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3180.679829237603!2d120.99551370002625!3d14.711242306152204!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3397b15d90bad309%3A0x9bcea0c7ab90315b!2s645%20Paso%20de%20Blas%20Rd%2C%20Valenzuela%2C%201442%20Metro%20Manila!5e1!3m2!1sen!2sph!4v1772501653659!5m2!1sen!2sph" 
+              width="100%" 
+              height="450" 
+              style={{border: 0}} 
+              loading="lazy">
+              </iframe>
             </div>
 
             {/* FORM */}
@@ -107,19 +106,18 @@ export default function ContactUsPage() {
                 <div className="row p-b-25">
                   <div className="col-md-6">
                     <label className="txt14 p-b-5 dis-block">Inquiry Type *</label>
-                    <div className="size30 bo2 bo-rad-10">
+                    <div className="size30 bo2 bo-rad-10 rounded">
                       <select
-                        className="sizefull txt14 p-l-20 p-r-20"
+                        className="sizefull txt14 p-l-20 p-r-20 rounded"
                         name="inquiry_type"
                         value={form.inquiry_type}
                         onChange={handleChange}
                         required
                       >
-                        <option value="">Select inquiry type</option>
+                        <option value="" disabled>Select inquiry type</option>
                         <option>General Inquiry</option>
                         <option>Customer Support</option>
                         <option>Business Partnership</option>
-                        <option>Careers</option>
                       </select>
                     </div>
                   </div>
@@ -129,9 +127,9 @@ export default function ContactUsPage() {
                 <div className="row p-b-25">
                   <div className="col-md-6">
                     <label className="txt14 p-b-5 dis-block">First Name *</label>
-                    <div className="size30 bo2 bo-rad-10">
+                    <div className="size30 bo2 bo-rad-10 rounded">
                       <input
-                        className="sizefull txt14 p-l-20 p-r-20"
+                        className="sizefull txt14 p-l-20 p-r-20 rounded"
                         name="first_name"
                         value={form.first_name}
                         onChange={handleChange}
@@ -142,9 +140,9 @@ export default function ContactUsPage() {
 
                   <div className="col-md-6">
                     <label className="txt14 p-b-5 dis-block">Last Name *</label>
-                    <div className="size30 bo2 bo-rad-10">
+                    <div className="size30 bo2 bo-rad-10 rounded">
                       <input
-                        className="sizefull txt14 p-l-20 p-r-20"
+                        className="sizefull txt14 p-l-20 p-r-20 rounded"
                         name="last_name"
                         value={form.last_name}
                         onChange={handleChange}
@@ -158,10 +156,10 @@ export default function ContactUsPage() {
                 <div className="row p-b-25">
                   <div className="col-md-6">
                     <label className="txt14 p-b-5 dis-block">Email *</label>
-                    <div className="size30 bo2 bo-rad-10">
+                    <div className="size30 bo2 bo-rad-10 rounded">
                       <input
                         type="email"
-                        className="sizefull txt14 p-l-20 p-r-20"
+                        className="sizefull txt14 p-l-20 p-r-20 rounded"
                         name="email"
                         value={form.email}
                         onChange={handleChange}
@@ -172,9 +170,9 @@ export default function ContactUsPage() {
 
                   <div className="col-md-6">
                     <label className="txt14 p-b-5 dis-block">Contact Number *</label>
-                    <div className="size30 bo2 bo-rad-10">
+                    <div className="size30 bo2 bo-rad-10 rounded">
                       <input
-                        className="sizefull txt14 p-l-20 p-r-20"
+                        className="sizefull txt14 p-l-20 p-r-20 rounded"
                         name="contact_number"
                         value={form.contact_number}
                         onChange={handleChange}
@@ -187,9 +185,9 @@ export default function ContactUsPage() {
                 {/* MESSAGE */}
                 <div className="p-b-30">
                   <label className="txt14 p-b-5 dis-block">Message *</label>
-                  <div className="bo2 bo-rad-10">
+                  <div className="rounded">
                     <textarea
-                      className="sizefull txt14 p-l-20 p-r-20 p-t-15"
+                      className="sizefull txt14 p-l-20 p-r-20 p-t-15 rounded"
                       rows={6}
                       name="message"
                       value={form.message}
