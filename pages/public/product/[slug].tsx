@@ -13,169 +13,18 @@ type Props = {
 	};
 };
 
-export const USE_DUMMY_PRODUCTS = true;
+// Product detail page now strictly uses live data from the API.
+// example object shape for reference:
+// const exampleProduct = {
+//   id: 501,
+//   slug: "armstrong-pvc-pipe",
+//   name: "Armstrong PVC Pipe",
+//   price: 3.5,
+//   description: "...",
+//   image_url: "/images/...",
+//   category_id: 1,
+// };
 
-export const DUMMY_PRODUCTS: any[] = [
-	// {
-	// 	id: 101,
-	// 	slug: "calamari-rings",
-	// 	name: "Calamari Rings",
-	// 	price: 8.99,
-	// 	serving_size: "1 pc",
-	// 	description: "Lightly battered squid rings, crispy and tender.",
-	// 	image_url: "/images/calamarirings.jpg",
-	// 	category_id: 1,
-	// 	category: { id: 1, name: "Appetizers" },
-	// },
-	// {
-	// 	id: 102,
-	// 	slug: "garlic-bread",
-	// 	name: "Garlic Bread",
-	// 	price: 7.49,
-	// 	serving_size: "1 pc",
-	// 	description: "Toasted bread with garlic butter and herbs.",
-	// 	image_url: "/images/garlicbread.jpg",
-	// 	category_id: 1,
-	// 	category: { id: 1, name: "Appetizers" },
-	// },
-	// {
-	// 	id: 103,
-	// 	slug: "cheesy-sticks",
-	// 	name: "Cheesy Sticks",
-	// 	price: 7.49,
-	// 	serving_size: "1 pc",
-	// 	description: "Golden-fried mozzarella sticks served with marinara sauce.",
-	// 	image_url: "/images/cheesesticks.jpg",
-	// 	category_id: 1,
-	// 	category: { id: 1, name: "Appetizers" },
-	// },
-	// {
-	// 	id: 104,
-	// 	slug: "spring-rolls",
-	// 	name: "Spring Rolls",
-	// 	price: 2.04,
-	// 	serving_size: "1 pc",
-	// 	description: "Crispy rolls filled with seasoned vegetables, served with sweet chili sauce.",
-	// 	image_url: "/images/springrolls.jpg",
-	// 	category_id: 1,
-	// 	category: { id: 1, name: "Appetizers" },
-	// },
-	// {
-	// 	id: 201,
-	// 	slug: "chicken-inasal",
-	// 	name: "Chicken Inasal",
-	// 	price: 10.5,
-	// 	serving_size: "1 bowl",
-	// 	description: "Grilled chicken marinated in inasal spices.",
-	// 	image_url: "/images/chickeninasal.jpg",
-	// 	category_id: 2,
-	// 	category: { id: 2, name: "Chicken Dishes" },
-	// },
-	// {
-	// 	id: 202,
-	// 	slug: "fried-chicken",
-	// 	name: "Fried Chicken",
-	// 	price: 3.32,
-	// 	serving_size: "1 bowl",
-	// 	description: "Crispy fried chicken, juicy inside.",
-	// 	image_url: "/images/friedchicken.jpg",
-	// 	category_id: 2,
-	// 	category: { id: 2, name: "Chicken Dishes" },
-	// },
-	// {
-	// 	id: 301,
-	// 	slug: "chicken-alfredo-pasta",
-	// 	name: "Chicken Alfredo Pasta",
-	// 	price: 3.95,
-	// 	serving_size: "1 plate",
-	// 	description: "Pasta in creamy alfredo sauce with grilled chicken.",
-	// 	image_url: "/images/chickenalfredo.jpg",
-	// 	category_id: 3,
-	// 	category: { id: 3, name: "Pasta & Noodles" },
-	// },
-	// {
-	// 	id: 302,
-	// 	slug: "carbonara-pasta",
-	// 	name: "Carbonara Pasta",
-	// 	price: 3.5,
-	// 	serving_size: "1 plate",
-	// 	description: "Classic Italian pasta dish made with eggs, cheese, pancetta, and pepper.",
-	// 	image_url: "/images/carbonara.jpg",
-	// 	category_id: 3,
-	// 	category: { id: 3, name: "Pasta & Noodles" },
-	// },
-	// {
-	// 	id: 303,
-	// 	slug: "spaghetti-bolognese",
-	// 	name: "Spaghetti Bolognese",
-	// 	price: 3.5,
-	// 	serving_size: "1 plate",
-	// 	description: "Classic Italian pasta dish made with eggs, cheese, pancetta, and pepper.",
-	// 	image_url: "/images/spaghetti.jpg",
-	// 	category_id: 3,
-	// 	category: { id: 3, name: "Pasta & Noodles" },
-	// },
-	// {
-	// 	id: 401,
-	// 	slug: "butter-garlic-shrimp",
-	// 	name: "Butter Garlic Shrimp",
-	// 	price: 3.5,
-	// 	serving_size: "1 plate",
-	// 	description: "Shrimp saut in a rich butter and garlic sauce.",
-	// 	image_url: "/images/butteredshrimp.jpg",
-	// 	category_id: 4,
-	// 	category: { id: 4, name: "Seafoods" },
-	// },
-
-	{
-		id: 501,
-		slug: "armstrong-pvc-pipe",
-		name: "Armstrong PVC Pipe",
-		price: 3.5,
-		serving_size: "1 plate",
-		description: "High-quality PVC pipe for construction and plumbing projects.",
-		image_url: "/images/products/armstrong.jpg",
-		category_id: 1,
-		category: { id: 1, name: "PVC Pipes" },
-	},
-
-	{
-		id: 502,
-		slug: "bluebell-pvc-pipe",
-		name: "Bluebell PVC Pipe",
-		price: 3.5,
-		serving_size: "1 plate",
-		description: "High-quality PVC pipe for construction and plumbing projects.",
-		image_url: "/images/products/bluebell.jpg",
-		category_id: 1,
-		category: { id: 1, name: "PVC Pipes" },
-	},
-
-	{
-		id: 503,
-		slug: "orangeberg-pvc-pipe",
-		name: "Orangeberg PVC Pipe",
-		price: 3.5,
-		serving_size: "1 plate",
-		description: "High-quality PVC pipe for construction and plumbing projects.",
-		image_url: "/images/products/orangeberg.jpg",
-		category_id: 1,
-		category: { id: 1, name: "PVC Pipes" },
-	},
-];
-
-export const DUMMY_CATEGORIES: any[] = [
-	{ id: 1, name: "PVC Pipes" },
-	{ id: 2, name: "PVC Hoses" },
-	{ id: 3, name: "PVC Roofing" },
-    { id: 4, name: "PVC Accessories" }
-];
-
-export function getDummyProduct(slugOrId: string): any | null {
-	const needle = String(slugOrId || "");
-	if (!needle) return null;
-	return DUMMY_PRODUCTS.find((p) => String(p?.id) === needle || String(p?.slug) === needle) ?? null;
-}
 
 type CartItem = {
 	key: string;
@@ -313,12 +162,6 @@ function resolveImageUrl(src: any): string | undefined {
 	if (s.startsWith("/uploads/")) return `${base}${s}`;
 	if (s.startsWith("uploads/")) return `${base}/${s}`;
 
-	// If it's a plain filename (common API payload), prefer local /images in dummy mode
-	// so refresh/SSR doesn't try to fetch it from the API storage.
-	if (USE_DUMMY_PRODUCTS && !s.includes("/") && /\.(png|jpe?g|webp|gif|svg)$/i.test(s)) {
-		if (/\.webp$/i.test(s)) return `/images/${s.replace(/\.webp$/i, ".jpg")}`;
-		return `/images/${s}`;
-	}
 
 	// Any other root-relative URL is assumed to be a local/public path.
 	if (s.startsWith("/")) return s;
@@ -366,13 +209,48 @@ async function fetchProductBySlugOrId(slugOrId: string): Promise<any | null> {
 }
 
 export default function PublicProductDetail({ product, slugOrId }: Props) {
-	const initial = USE_DUMMY_PRODUCTS ? (getDummyProduct(slugOrId) ?? product ?? null) : (product ?? null);
-	const [clientProduct, setClientProduct] = useState<any | null>(initial);
-	const [loading, setLoading] = useState<boolean>(!initial);
+	// start with whatever was fetched during SSR (may be null)
+	const [clientProduct, setClientProduct] = useState<any | null>(product ?? null);
+	// consider it loading if SSR didn’t supply a product
+	const [loading, setLoading] = useState<boolean>(!product);
 	const [didTryFetch, setDidTryFetch] = useState<boolean>(false);
 	const [qty, setQty] = useState<number>(1);
 	const [activeImage, setActiveImage] = useState<string>("");
 	const FALLBACK_IMAGE = "/images/logo.png";
+
+	// compute image/gallery early so hooks are always called
+	const imageUrl = useMemo(
+		() => resolveImageUrl(clientProduct?.image_url ?? clientProduct?.image ?? "") ?? "",
+		[clientProduct],
+	);
+
+	const gallery = useMemo(() => {
+		if (!clientProduct) return [];
+		const raw =
+			clientProduct.images ??
+			clientProduct.gallery ??
+			clientProduct.media ??
+			clientProduct.photos ??
+			[];
+		const fromArray = Array.isArray(raw)
+			? raw
+				.map((x: any) => {
+					if (typeof x === "string") return x;
+					return x?.url ?? x?.src ?? x?.path ?? x?.image_url ?? x?.image ?? "";
+				})
+				.filter(Boolean)
+			: [];
+		const all = [imageUrl, ...fromArray]
+			.map((x) => resolveImageUrl(x) ?? "")
+			.filter(Boolean);
+		return Array.from(new Set(all));
+	}, [clientProduct, imageUrl]);
+
+	const selectedImage = activeImage || gallery[0] || imageUrl || FALLBACK_IMAGE;
+	const [displayImage, setDisplayImage] = useState<string>(selectedImage);
+	useEffect(() => {
+		setDisplayImage(selectedImage);
+	}, [selectedImage]);
 
 	const title = useMemo(() => {
 		const p = clientProduct;
@@ -380,16 +258,16 @@ export default function PublicProductDetail({ product, slugOrId }: Props) {
 	}, [clientProduct]);
 
 	useEffect(() => {
-		const next = USE_DUMMY_PRODUCTS ? (getDummyProduct(slugOrId) ?? product ?? null) : (product ?? null);
-		setClientProduct(next);
-		setLoading(!next);
+		// whenever slug or server product changes, reset local state
+		setClientProduct(product ?? null);
+		setLoading(!product);
 		setDidTryFetch(false);
 		setQty(1);
 		setActiveImage("");
 	}, [product, slugOrId]);
 
 	useEffect(() => {
-		if (USE_DUMMY_PRODUCTS) return;
+		// if we already have the product from SSR, no need to fetch again
 		if (clientProduct) return;
 		if (!slugOrId) return;
 
@@ -438,33 +316,6 @@ export default function PublicProductDetail({ product, slugOrId }: Props) {
 		);
 	}
 
-	const imageUrl = resolveImageUrl(clientProduct.image_url ?? clientProduct.image ?? "") ?? "";
-	const gallery = (() => {
-		const raw =
-			clientProduct?.images ??
-			clientProduct?.gallery ??
-			clientProduct?.media ??
-			clientProduct?.photos ??
-			[];
-		const fromArray = Array.isArray(raw)
-			? raw
-				.map((x: any) => {
-					if (typeof x === "string") return x;
-					return x?.url ?? x?.src ?? x?.path ?? x?.image_url ?? x?.image ?? "";
-				})
-				.filter(Boolean)
-			: [];
-		const all = [imageUrl, ...fromArray]
-			.map((x) => resolveImageUrl(x) ?? "")
-			.filter(Boolean);
-		return Array.from(new Set(all));
-	})();
-	const selectedImage = activeImage || gallery[0] || imageUrl || FALLBACK_IMAGE;
-	const [displayImage, setDisplayImage] = useState<string>(selectedImage);
-
-	useEffect(() => {
-		setDisplayImage(selectedImage);
-	}, [selectedImage]);
 	const price = formatPrice(clientProduct.price);
 	const priceNumber = (() => {
 		const v = clientProduct.price;
@@ -617,7 +468,7 @@ export default function PublicProductDetail({ product, slugOrId }: Props) {
 									<p className="txt14">No description.</p>
 								)}
 
-								<hr style={{ opacity: 0.12, margin: "22px 0" }} />
+								{/* <hr style={{ opacity: 0.12, margin: "22px 0" }} /> */}
 
 								{/* <div className="bo-rad-10" style={{ border: "1px solid #eee", padding: 16 }}>
 									<div className="d-flex align-items-center justify-content-between" style={{ gap: 12 }}>
@@ -677,7 +528,7 @@ export default function PublicProductDetail({ product, slugOrId }: Props) {
 										Secure checkout • Fast support • Easy returns
 									</p>
 								</div> */}
-								<h5 className="text-base font-semibold uppercase" style={{ margin: 0, marginBottom: 6 }}>Technical Specifications</h5>
+								{/* <h5 className="text-base font-semibold uppercase" style={{ margin: 0, marginBottom: 6 }}>Technical Specifications</h5>
 								<p className="txt14">
 									Imperial PVC is a leading supplier of high-quality PVC products, committed to delivering durable and innovative solutions for modern construction needs. With a focus on quality, reliability, and customer satisfaction, we provide a wide range of PVC products designed to meet the demands of both residential and commercial projects.
 								</p>
@@ -687,7 +538,7 @@ export default function PublicProductDetail({ product, slugOrId }: Props) {
 								<h5 className="text-base font-semibold uppercase" style={{ margin: 0, marginBottom: 6 }}>Other Details</h5>
 								<p className="txt14">
 									We provide a wide range of PVC products designed to meet the demands of both residential and commercial projects.
-								</p>
+								</p> */}
 							</div>
 						</div>
 					</div>
@@ -700,25 +551,6 @@ export default function PublicProductDetail({ product, slugOrId }: Props) {
 export async function getServerSideProps(context: any) {
 	const slugOrId = String(context?.params?.slug ?? "");
 	if (!slugOrId) return { notFound: true };
-
-	if (USE_DUMMY_PRODUCTS) {
-		let productsPageData: any = null;
-		try {
-			const pageRes = await getPublicPageBySlug("products");
-			productsPageData = pageRes.data;
-		} catch {
-			productsPageData = null;
-		}
-
-		return {
-			props: {
-				product: getDummyProduct(slugOrId),
-				slugOrId,
-				pageData: productsPageData ?? { title: "Products", album: null },
-				layout: { fullWidth: true },
-			},
-		};
-	}
 
 	try {
 		// Match the Products page banner (title + album)

@@ -209,7 +209,7 @@ export default function Sidebar({ isOpen, isMobile, onClose, width }: SidebarPro
         CMS
       </div>
 
-      <nav className="cms-sidebar__nav nav nav-pills flex-column mb-auto">
+      <nav className="cms-sidebar__nav nav nav-pills flex-column flex-nowrap mb-auto">
         {menuItems.map((item: any, index) => (
           <div key={index}>
 

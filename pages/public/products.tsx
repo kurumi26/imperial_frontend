@@ -10,7 +10,6 @@ type Props = {
 	categories: any[];
 };
 
-const USE_DUMMY_PRODUCTS = true;
 
 const DUMMY_PRODUCTS: any[] = [
 	// {
@@ -127,41 +126,41 @@ const DUMMY_PRODUCTS: any[] = [
 	// 	category: { id: 4, name: "Seafoods" },
 	// },
 
-	{
-		id: 501,
-		slug: "armstrong-pvc-pipe",
-		name: "Armstrong PVC Pipe",
-		price: 3.5,
-		serving_size: "1 plate",
-		description: "High-quality PVC pipe for construction and plumbing projects.",
-		image_url: "/images/products/armstrong.jpg",
-		category_id: 1,
-		category: { id: 1, name: "PVC Pipes" },
-	},
+	// {
+	// 	id: 501,
+	// 	slug: "armstrong-pvc-pipe",
+	// 	name: "Armstrong PVC Pipe",
+	// 	price: 3.5,
+	// 	serving_size: "1 plate",
+	// 	description: "High-quality PVC pipe for construction and plumbing projects.",
+	// 	image_url: "/images/products/armstrong.jpg",
+	// 	category_id: 1,
+	// 	category: { id: 1, name: "PVC Pipes" },
+	// },
 
-	{
-		id: 502,
-		slug: "bluebell-pvc-pipe",
-		name: "Bluebell PVC Pipe",
-		price: 3.5,
-		serving_size: "1 plate",
-		description: "High-quality PVC pipe for construction and plumbing projects.",
-		image_url: "/images/products/bluebell.jpg",
-		category_id: 1,
-		category: { id: 1, name: "PVC Pipes" },
-	},
+	// {
+	// 	id: 502,
+	// 	slug: "bluebell-pvc-pipe",
+	// 	name: "Bluebell PVC Pipe",
+	// 	price: 3.5,
+	// 	serving_size: "1 plate",
+	// 	description: "High-quality PVC pipe for construction and plumbing projects.",
+	// 	image_url: "/images/products/bluebell.jpg",
+	// 	category_id: 1,
+	// 	category: { id: 1, name: "PVC Pipes" },
+	// },
 
-	{
-		id: 503,
-		slug: "orangeberg-pvc-pipe",
-		name: "Orangeberg PVC Pipe",
-		price: 3.5,
-		serving_size: "1 plate",
-		description: "High-quality PVC pipe for construction and plumbing projects.",
-		image_url: "/images/products/orangeberg.jpg",
-		category_id: 1,
-		category: { id: 1, name: "PVC Pipes" },
-	},
+	// {
+	// 	id: 503,
+	// 	slug: "orangeberg-pvc-pipe",
+	// 	name: "Orangeberg PVC Pipe",
+	// 	price: 3.5,
+	// 	serving_size: "1 plate",
+	// 	description: "High-quality PVC pipe for construction and plumbing projects.",
+	// 	image_url: "/images/products/orangeberg.jpg",
+	// 	category_id: 1,
+	// 	category: { id: 1, name: "PVC Pipes" },
+	// },
 ];
 
 const DUMMY_CATEGORIES: any[] = [
@@ -294,7 +293,6 @@ export default function ProductsPublicPage({ products, categories, pageData }: P
 	}, [products, categories]);
 
 	useEffect(() => {
-		if (USE_DUMMY_PRODUCTS) return;
 		// If SSR couldn't fetch (often due to auth token only available in localStorage), try in the browser.
 		if ((products && products.length) || (categories && categories.length)) return;
 
@@ -346,8 +344,9 @@ export default function ProductsPublicPage({ products, categories, pageData }: P
 		};
 	}, [products, categories]);
 
-	const effectiveProducts = (USE_DUMMY_PRODUCTS ? DUMMY_PRODUCTS : clientProducts) || [];
-	const effectiveCategories = (USE_DUMMY_PRODUCTS ? DUMMY_CATEGORIES : clientCategories) || [];
+	// always use the client state, which is seeded with props during SSR
+	const effectiveProducts = clientProducts || [];
+	const effectiveCategories = clientCategories || [];
 
 	const searchedProducts = useMemo(() => {
 		const q = search.trim().toLowerCase();
@@ -600,26 +599,9 @@ export default function ProductsPublicPage({ products, categories, pageData }: P
 }
 
 export async function getServerSideProps() {
-	if (USE_DUMMY_PRODUCTS) {
-		let pageData: any = null;
-		try {
-			const pageRes = await getPublicPageBySlug("products");
-			pageData = pageRes.data;
-		} catch {
-			pageData = null;
-		}
-
-		return {
-			props: {
-				pageData,
-				products: DUMMY_PRODUCTS,
-				categories: DUMMY_CATEGORIES,
-			},
-		};
-	}
-
+	// fetch configuration for the products page (optional)
+	// the endpoints and extraction logic mirror the client-side effect above
 	try {
-		// Attempt to fetch a public page config (optional)
 		const pageRes = await getPublicPageBySlug("products");
 
 		// Fetch products from common public endpoints
