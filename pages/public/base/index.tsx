@@ -2,21 +2,90 @@ import React, { useEffect, useState } from "react";
 import TestimonialSection from '@/components/Layout/TestimonialSection';
 import { getPublicPageBySlug, PublicAlbum } from "@/services/publicPageService";
 import { getPublicArticles } from "@/services/articleService";
+import { getProducts } from "@/services/productService";
 import LandingPageLayout from "@/components/Layout/GuestLayout";
 
 export const BANNER_TITLE = "Imperial PVC";
 
 export async function getServerSideProps() {
     try {
+        // fetch page config and latest news concurrently
         const [pageRes, articlesRes] = await Promise.all([
             getPublicPageBySlug("home"),
             getPublicArticles({ per_page: 3 }),
         ]);
 
+        // fetch latest products (limit 4)
+        let products: any[] = [];
+        try {
+            // attempt simple call first; avoid order_by/sort in case backend doesn't support
+            const prodRes = await getProducts({ per_page: 4 });
+            const data = prodRes?.data ?? prodRes;
+            if (Array.isArray(data)) {
+                products = data;
+            } else {
+                products = data?.data ?? data?.items ?? data?.rows ?? [];
+            }
+        } catch (e) {
+            // ignore; leave products empty for now
+        }
+        // if we didn't get any results, try a manual fallback similar to products page logic
+        if (!products.length) {
+            try {
+                const eps = ["/public-products", "/public/products", "/products", "/api/products"];
+                const { axiosInstance } = await import("@/services/axios");
+                const extractArray = (payload: any) => {
+                    if (!payload) return [];
+                    let data: any = payload?.data ?? payload;
+                    if (data && typeof data === "object" && !Array.isArray(data) && "data" in data) {
+                        data = (data as any).data;
+                        if (data && typeof data === "object" && !Array.isArray(data) && "data" in data) {
+                            data = (data as any).data;
+                        }
+                    }
+                    if (Array.isArray(data)) return data;
+                    const candidates = [
+                        (data as any)?.items,
+                        (data as any)?.rows,
+                        (data as any)?.results,
+                        (data as any)?.result,
+                        (data as any)?.products,
+                        (data as any)?.categories,
+                        (data as any)?.product_categories,
+                        (data as any)?.productCategories,
+                        (data as any)?.productCategory,
+                    ];
+                    for (const c of candidates) {
+                        if (Array.isArray(c)) return c;
+                        if (c && typeof c === "object" && Array.isArray((c as any).data)) return (c as any).data;
+                    }
+                    return [];
+                };
+
+                for (const ep of eps) {
+                    try {
+                        const resp = await axiosInstance.get(ep, { params: { per_page: 4 }, headers: { "X-No-Loading": true } });
+                        const arr = extractArray(resp.data);
+                        if (arr && arr.length) {
+                            products = arr.slice(0, 4);
+                            break;
+                        }
+                    } catch {
+                        // try next endpoint
+                    }
+                }
+            } catch {
+                // still empty
+            }
+        }
+
+        // debug - inspect what we fetched; logs on server
+        console.log("[SSR] landing page products count", products.length);
         return {
             props: {
                 pageData: pageRes.data,
                 news: articlesRes.data?.data ?? [],
+                products,
             },
         };
     } catch (error) {
@@ -34,7 +103,8 @@ interface LandingPageLayoutProps {
   layout?: {
     fullWidth?: boolean;
   };
-    news?: any[];
+  news?: any[];
+  products?: any[]; // latest products to showcase
 }
 
 type Slide = {
@@ -99,7 +169,65 @@ function Slider({ slides }: { slides: Slide[] }) {
     );
 }
 
-export default function Base({ pageData, news }: LandingPageLayoutProps) {
+export default function Base({ pageData, news, products = [] }: LandingPageLayoutProps) {
+        const [clientProducts, setClientProducts] = useState<any[]>(products);
+
+        // if SSR didn't supply any, try fetching on the client similar to the public products page
+        useEffect(() => {
+            if (clientProducts && clientProducts.length) return;
+            let cancelled = false;
+            const extractArray = (payload: any): any[] => {
+                if (!payload) return [];
+                let data: any = payload?.data ?? payload;
+                if (data && typeof data === "object" && !Array.isArray(data) && "data" in data) {
+                    data = (data as any).data;
+                    if (data && typeof data === "object" && !Array.isArray(data) && "data" in data) {
+                        data = (data as any).data;
+                    }
+                }
+                if (Array.isArray(data)) return data;
+                const candidates = [
+                    (data as any)?.items,
+                    (data as any)?.rows,
+                    (data as any)?.results,
+                    (data as any)?.result,
+                    (data as any)?.products,
+                    (data as any)?.categories,
+                    (data as any)?.product_categories,
+                    (data as any)?.productCategories,
+                    (data as any)?.productCategory,
+                ];
+                for (const c of candidates) {
+                    if (Array.isArray(c)) return c;
+                    if (c && typeof c === "object" && Array.isArray((c as any).data)) return (c as any).data;
+                }
+                return [];
+            };
+
+            const fetchClient = async () => {
+                try {
+                    const { axiosInstance } = await import("@/services/axios");
+                    const eps = ["/public-products", "/public/products", "/products", "/api/products"];
+                    for (const ep of eps) {
+                        try {
+                            const resp = await axiosInstance.get(ep, { params: { per_page: 4 }, headers: { "X-No-Loading": true } });
+                            const arr = extractArray(resp.data);
+                            if (arr && arr.length) {
+                                if (!cancelled) setClientProducts(arr.slice(0, 4));
+                                break;
+                            }
+                        } catch {
+                            // continue
+                        }
+                    }
+                } catch {
+                    // ignore
+                }
+            };
+            fetchClient();
+            return () => { cancelled = true; };
+        }, [clientProducts]);
+
         const descriptors = ["Modern", "Real Estate", "Business"];
         const [descIndex, setDescIndex] = useState(0);
 
@@ -138,73 +266,31 @@ export default function Base({ pageData, news }: LandingPageLayoutProps) {
 
                 <div className="w-100 products-container-lines">
                     <div className="d-flex flex-column flex-md-row flex-md-wrap flex-lg-nowrap gap-4 justify-content-center">
-                        <div className="col-6 col-md-4 col-lg-2 mx-auto">
-                            <div className="card rounded-2 shadow-sm animate-hov">
-                                {/* <img src="/images/highlights/prod1.png" alt="" style={{maxHeight: "300px", minHeight: "300px"}} /> */}
-                                <img src="/images/products/prod1.png" className="border-bottom" alt="" style={{maxHeight: "150px", borderTopLeftRadius: "4px",  borderTopRightRadius: "4px"}} />
-                                <div className="py-4 px-3 text-start">
-                                    <h3 className="fs-6 fw-bold">Armstrong uPVC Electrical Conduit</h3>
-                                    <p className="fs-6 fw-light text-secondary">Electrical conduit system are that produced under strict and high quality control..</p>
-                                    <a href="/public/products" className="fw-bold text-orange text-decoration-none">Read More</a>
+                        {clientProducts.map((p) => {
+                            const img = p.image_url || p.image || "/images/logo.png";
+                            const href = `/public/product/${p.slug ?? p.id}`;
+                            return (
+                                <div key={p.id ?? p.slug} className="col-6 col-md-3 mx-auto">
+                                    <div className="card rounded-2 shadow-sm animate-hov">
+                                        <img src={img} className="border-bottom" alt={p.name || p.title || "Product"} style={{ minHeight: "150px", maxHeight: "150px", borderTopLeftRadius: "4px", borderTopRightRadius: "4px", objectFit: "cover", width: "100%" }} />
+                                        <div className="py-4 px-3 text-start">
+                                            <h3 className="fs-6 fw-bold" style={{ display: "-webkit-box", WebkitLineClamp: 1, WebkitBoxOrient: "vertical", overflow: "hidden" }}>
+                                                {p.name || p.title || p.slug}
+                                            </h3>
+                                            <p className="fs-6 fw-light text-secondary" style={{ display: "-webkit-box", WebkitLineClamp: 1, WebkitBoxOrient: "vertical", overflow: "hidden" }}>
+                                                {(p.description ?? p.teaser ?? p.summary ?? "").toString()}
+                                            </p>
+                                            <a href={href} className="fw-bold text-orange text-decoration-none">Read More</a>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div className="col-6 col-md-4 col-lg-2 mx-auto">
-                            <div className="card rounded-2 shadow-sm animate-hov">
-                                {/* <img src="/images/highlights/roofing1.jpg" alt="" style={{maxHeight: "300px", minHeight: "300px"}} /> */}
-                                <img src="/images/products/prod2.png" alt="" style={{maxHeight: "150px", borderTopLeftRadius: "4px",  borderTopRightRadius: "4px"}} />
-                                <div className="py-4 px-3 text-start">
-                                    <h3 className="fs-6 fw-bold">Bluebell uPVC Pressure Pipes</h3>
-                                    <p className="fs-6 fw-light text-secondary">Are produced under conditions of extreme care and attention to detail with high precision..</p>
-                                    <a href="/public/products" className="fw-bold text-orange text-decoration-none">Read More</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-6 col-md-4 col-lg-2 mx-auto">
-                            <div className="card rounded-2 shadow-sm animate-hov">
-                                {/* <img src="/images/highlights/roofing1.jpg" alt="" style={{maxHeight: "300px", minHeight: "300px"}} /> */}
-                                <img src="/images/products/prod3.png" alt="" style={{maxHeight: "150px", borderTopLeftRadius: "4px",  borderTopRightRadius: "4px"}} />
-                                <div className="py-4 px-3 text-start">
-                                    <h3 className="fs-6 fw-bold">Orangeberg uPVC Sanitary Pipe Systems</h3>
-                                    <p className="fs-6 fw-light text-secondary">For sanitary applications, drainage and vent piping systems with high quality standards..</p>
-                                    <a href="/public/products" className="fw-bold text-orange text-decoration-none">Read More</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-6 col-md-4 col-lg-2 mx-auto">
-                            <div className="card rounded-2 shadow-sm animate-hov">
-                                {/* <img src="/images/highlights/roofing2.jpg" alt="" style={{maxHeight: "300px", minHeight: "300px"}} /> */}
-                                <img src="/images/products/prod4.png" className="border-bottom" alt="" style={{maxHeight: "150px", borderTopLeftRadius: "4px",  borderTopRightRadius: "4px"}} />
-                                <div className="py-4 px-3 text-start">
-                                    <h3 className="fs-6 fw-bold">Imperial uPVC Corrugated</h3>
-                                    <p className="fs-6 fw-light text-secondary">Flexible electrical conduit system are produced under strict quality control and testings..</p>
-                                    <a href="/public/products" className="fw-bold text-orange text-decoration-none">Read More</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-6 col-md-4 col-lg-2 mx-auto">
-                            <div className="card rounded-2 shadow-sm animate-hov">
-                                {/* <img src="/images/highlights/roofing3.jpg" alt="" style={{maxHeight: "300px", minHeight: "300px"}} /> */}
-                                <img src="/images/products/prod5.png" className="border-bottom" alt="" style={{maxHeight: "150px", borderTopLeftRadius: "4px",  borderTopRightRadius: "4px"}} />
-                                <div className="py-4 px-3 text-start">
-                                    <h3 className="fs-6 fw-bold">Imperial Designers Vinyl Tiles</h3>
-                                    <p className="fs-6 fw-light text-secondary">Are now created to give the appearance of numerous wide range natural materials..</p>
-                                    <a href="/public/products" className="fw-bold text-orange text-decoration-none">Read More</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-6 col-md-4 col-lg-2 mx-auto">
-                            <div className="card rounded-2 shadow-sm animate-hov">
-                                {/* <img src="/images/highlights/roofing3.jpg" alt="" style={{maxHeight: "300px", minHeight: "300px"}} /> */}
-                                <img src="/images/products/prod6.png" alt="" style={{maxHeight: "150px", borderTopLeftRadius: "4px",  borderTopRightRadius: "4px"}} />
-                                <div className="py-4 px-3 text-start">
-                                    <h3 className="fs-6 fw-bold">Imperial Telecomm Conduit</h3>
-                                    <p className="fs-6 fw-light text-secondary">Are manufactured in accordance with international standards and specifications..</p>
-                                    <a href="/public/products" className="fw-bold text-orange text-decoration-none">Read More</a>
-                                </div>
-                            </div>
-                        </div>
+                            );
+                        })}
+                        {clientProducts.length === 0 && (
+                            <p className="txt14">No featured products available.</p>
+                        )}
                     </div>
+                    <a href="/public/products" className="btn btn-danger text-white fw-light fs-6 mt-5">See More..</a>
                 </div>
                 
             </div>

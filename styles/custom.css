@@ -76,7 +76,7 @@ img.proj-image {
 }
 
 .products-container-lines .card.rounded-2.shadow-sm.animate-hov {
-    min-height: 422px;
+    min-height: 305px;
 }
 
 @media only screen and (max-width: 720px) {
