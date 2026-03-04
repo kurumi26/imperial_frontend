@@ -272,7 +272,7 @@ export default function Base({ pageData, news, products = [] }: LandingPageLayou
                             return (
                                 <div key={p.id ?? p.slug} className="col-6 col-md-3 mx-auto">
                                     <div className="card rounded-2 shadow-sm animate-hov">
-                                        <img src={img} className="border-bottom" alt={p.name || p.title || "Product"} style={{ minHeight: "150px", maxHeight: "150px", borderTopLeftRadius: "4px", borderTopRightRadius: "4px", objectFit: "cover", width: "100%" }} />
+                                        <img src={`${process.env.NEXT_PUBLIC_API_URL}/storage/${img}`} className="border-bottom" alt={p.name || p.title || "Product"} style={{ minHeight: "150px", maxHeight: "150px", borderTopLeftRadius: "4px", borderTopRightRadius: "4px", objectFit: "cover", width: "100%" }} />
                                         <div className="py-4 px-3 text-start">
                                             <h3 className="fs-6 fw-bold" style={{ display: "-webkit-box", WebkitLineClamp: 1, WebkitBoxOrient: "vertical", overflow: "hidden" }}>
                                                 {p.name || p.title || p.slug}
