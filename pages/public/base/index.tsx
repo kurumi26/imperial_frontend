@@ -187,7 +187,7 @@ export default function Base({ pageData, news }: LandingPageLayoutProps) {
                                 {/* <img src="/images/highlights/roofing3.jpg" alt="" style={{maxHeight: "300px", minHeight: "300px"}} /> */}
                                 <img src="/images/products/prod5.png" className="border-bottom" alt="" style={{maxHeight: "150px", borderTopLeftRadius: "4px",  borderTopRightRadius: "4px"}} />
                                 <div className="py-4 px-3 text-start">
-                                    <h3 className="fs-6 fw-bold">Imperial Designers Vynil Tiles</h3>
+                                    <h3 className="fs-6 fw-bold">Imperial Designers Vinyl Tiles</h3>
                                     <p className="fs-6 fw-light text-secondary">Are now created to give the appearance of numerous wide range natural materials..</p>
                                     <a href="/public/products" className="fw-bold text-orange text-decoration-none">Read More</a>
                                 </div>

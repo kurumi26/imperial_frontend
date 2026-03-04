@@ -59,7 +59,7 @@ export default function MenuItem({
             href={href}
             className="menu-link"
             style={{ textDecoration: "none" }}
-            target="_blank"
+            // target="_blank"
             rel="noopener noreferrer"
             onClick={handleLinkClick}
           >
