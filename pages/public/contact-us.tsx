@@ -1,9 +1,13 @@
 import LandingPageLayout from "@/components/Layout/GuestLayout";
-import { getPublicPageBySlug } from "@/services/publicPageService";
+import { getPublicPageBySlug, PublicPage } from "@/services/publicPageService";
 import { sendContactMessage } from "@/services/publicPageService";
 import { useState } from "react";
 
-export default function ContactUsPage() {
+interface PublicPageViewProps {
+  pageData: PublicPage;
+}
+
+export default function ContactUsPage({ pageData }: PublicPageViewProps) {
   const [form, setForm] = useState({
     inquiry_type: "",
     first_name: "",
@@ -57,29 +61,10 @@ export default function ContactUsPage() {
         <div className="row">
 
           {/* LEFT – CONTACT INFO */}
-          <div className="col-md-4 col-lg-3">
-            <div className="sidebar2 p-b-40">
-
-              <h4 className="p-b-20">Our Main Office</h4>
-
-              <p className="txt14 p-b-10">
-                645 Paso de Blas Street<br />
-                Valenzuela City, Philippines
-              </p>
-
-              <p className="txt14 p-b-10">
-                <small>Telephone:</small><br />
-                📞 +63 (2) 365-1155<br />
-                📞 +63 (2) 365-4549<br /><br />
-                <small>Fax:</small><br />
-                📠 +63 (2) 365-1122<br />
-                📠 +63 (2) 983-2271<br /><br />
-                <small>Email:</small><br />
-                ✉ inquiry@imperialpvc.com
-              </p>
-
-            </div>
-          </div>
+          <div
+            className="col-md-4 col-lg-3 contact-us-page-container"
+            dangerouslySetInnerHTML={{ __html: pageData.content }}
+          />
 
           {/* RIGHT – FORM + MAP */}
           <div className="col-md-8 col-lg-9">

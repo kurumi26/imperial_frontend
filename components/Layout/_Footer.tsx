@@ -12,7 +12,5 @@ export default function LandingFooter() {
 
   if (!html) return null;
 
-  return (
-    <div dangerouslySetInnerHTML={{ __html: html }} />
-  );
+  return <div dangerouslySetInnerHTML={{ __html: html }} />;
 }

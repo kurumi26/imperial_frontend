@@ -371,7 +371,7 @@ export default function ManagePages() {
       // etc.) ignores it.
       const filteredRows = rows.filter((r) => {
         const title = (r.title ?? r.label ?? "").toString().trim().toLowerCase();
-        return title !== "home";
+        return title !== "";
       });
 
       setPages(filteredRows);
