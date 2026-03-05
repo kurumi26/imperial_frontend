@@ -5,6 +5,7 @@ import { PublicAlbum } from "@/services/publicPageService";
 import ToastHost from "@/components/UI/ToastHost";
 import Head from "next/head";
 import Header from "@/components/Layout/_Header";
+import _Footer from "./_Footer";
 
 interface LandingPageLayoutProps {
   children: React.ReactNode;
@@ -49,7 +50,8 @@ export default function LandingPageLayout({
         <div className={contentWrapperClassName}>{children}</div>
       </main>
 
-      <GlobalFooter />
+      {/* <GlobalFooter /> */}
+      <_Footer />
 
       <ToastHost />
     </div>
