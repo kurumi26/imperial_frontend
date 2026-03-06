@@ -60,15 +60,15 @@ export default function TestimonialSection() {
   const next = () =>
     setIndex((i) => (i + 1) % testimonials.length);
 
-  if (!testimonials.length) return null;
+  if (!testimonials.length) return "No testimonials for now.";
 
   return (
     <section className="testimonial-root container py-4">
-      <div className="heading-block text-center border-0" data-heading="W">
-        <h2 className="fs-1 fw-bold">What Our Clients Say</h2>
+      <div className="heading-block text-center border-0 pb-5" data-heading="W">
+        <h2 className="fs-1 fw-bold pb-5">What Our Clients Say</h2>
       </div>
 
-      <div className="testimonial-slider d-flex align-items-center">
+      <div className="testimonial-slider d-flex align-items-center mt-4">
         <button aria-label="Previous testimonial" onClick={prev} className="nav-btn">‹</button>
 
         <div className="testimonial-card mx-3">
@@ -82,7 +82,7 @@ export default function TestimonialSection() {
             </div>
 
             <div className="col-12 col-md-9 mt-3 mt-md-0 text-center py-5">
-              <p className="text-muted fs-5">“{testimonials[index].text}”</p>
+              <p className="text-muted fs-6"><i>“{testimonials[index].text}”</i></p>
               <p className="mb-0 fw-bold">{testimonials[index].name}</p>
               <small className="text-secondary">
                 <i>{testimonials[index].company}</i>
