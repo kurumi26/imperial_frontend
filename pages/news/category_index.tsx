@@ -10,7 +10,7 @@ import {
   NewsCategoryRow,
 } from "@/services/articleService";
 
-function ManageNews() {
+function ManageNewsCategories() {
   const router = useRouter();
 
   const [categories, setCategories] = useState<NewsCategoryRow[]>([]);
@@ -196,5 +196,5 @@ function ManageNews() {
   );
 }
 
-ManageNews.Layout = AdminLayout;
-export default ManageNews;
+ManageNewsCategories.Layout = AdminLayout;
+export default ManageNewsCategories;

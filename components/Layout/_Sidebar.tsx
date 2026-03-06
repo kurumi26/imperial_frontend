@@ -103,6 +103,14 @@ export default function Sidebar({ isOpen, isMobile, onClose, width }: SidebarPro
       ]
     },
     {
+      label: <MenuLabel icon="fa-solid fa-newspaper" text="Testimonials" />,
+      href: "/testimonials",
+      children: [
+        { label: "Manage Testimonials", href: "/testimonials" },
+        { label: "Create Testimonail", href: "/testimonials/create" },
+      ]
+    },
+    {
       label: <MenuLabel icon="fa-solid fa-gear" text="Settings" />,
       href: "/settings",
       children: [
