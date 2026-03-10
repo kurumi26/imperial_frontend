@@ -90,12 +90,12 @@ export default function LandingTopbar() {
           <div className={`${styles['left']}`} style={{display: 'flex', alignItems: 'center', gap: 12}}>
             <Link href="/public/base" className={styles.brand}>
               <span className={styles['logo-box']}>
-                {/* <img
+                <img
                   src={logoUrl || "/images/logo-light.png"}
                   alt={logoAlt}
                   className={styles['logo-img']}
-                /> */}
-                <h3 className="text-light fs-4 mb-0">Imperial<span className="text-danger fs-2">PVC</span></h3>
+                />
+                {/* <h3 className="text-light fs-4 mb-0">Imperial<span className="text-danger fs-2">PVC</span></h3> */}
               </span>
 
             </Link>

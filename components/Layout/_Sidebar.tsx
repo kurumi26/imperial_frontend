@@ -79,8 +79,8 @@ export default function Sidebar({ isOpen, isMobile, onClose, width }: SidebarPro
       href: "/banners",
       children: [
         { label: "Manage Home Banner", href: "/banners/home" },
-        { label: "Manage Subpage Banners", href: "/banners" },
-        { label: "Create an Album", href: "/banners/create"}
+        // { label: "Manage Subpage Banners", href: "/banners" },
+        // { label: "Create an Album", href: "/banners/create"}
       ]
     },
     { label: <MenuLabel icon="fa-solid fa-folder-open" text="Files" />, href: "/files" },

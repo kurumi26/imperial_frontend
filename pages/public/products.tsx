@@ -406,7 +406,7 @@ export default function ProductsPublicPage({ products, categories, pageData }: P
 						</div>
 
 						<div className="categories">
-							<h4 className="txt33 bo5-b p-b-35 p-t-58">Categories</h4>
+							<h4 className="txt33 bo5-b p-b-35 p-t-58">Brands</h4>
 
 							<ul>
 								<li className="flex-sb-m bo5-b p-t-8 p-b-8">
@@ -415,7 +415,7 @@ export default function ProductsPublicPage({ products, categories, pageData }: P
 										style={{ cursor: "pointer", textDecoration: "none" }}
 										onClick={() => setActiveCategory("*")}
 									>
-										All Products
+										All Brands
 									</a>
 									<span className="txt29">({searchedProducts.length})</span>
 								</li>
