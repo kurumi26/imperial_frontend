@@ -97,7 +97,7 @@ export default function CreatePage() {
             />
           </div>
 
-          <div className="mb-3">
+          <div className="mb-3 d-none">
             <label className="form-label">Album (optional)</label>
             <select
               className="form-select"
