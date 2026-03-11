@@ -19,6 +19,8 @@ export default function NewsPage({ articles, categories, archives }: Props) {
         {/* SIDEBAR */}
         <div className="col-md-4 col-lg-3">
           <div className="sidebar2 p-t-80 p-b-80 p-l-20 p-l-0-md p-t-0-md p-r-10-md p-r-20">
+            <small className="text-secondary">Imperial PVC</small>
+            <h3 className="mb-5"><strong>NEWS</strong></h3>
             <LeftSidebar categories={categories} archive={archives} />
           </div>
         </div>
