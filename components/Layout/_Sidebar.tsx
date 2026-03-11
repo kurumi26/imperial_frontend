@@ -142,7 +142,7 @@ export default function Sidebar({ isOpen, isMobile, onClose, width }: SidebarPro
       children: [
         { label: "Manage Products", href: "/products" },
         { label: "Create Product", href: "/products/create" },
-        { label: "Create Category", href: "/products/category_create" }
+        { label: "Create Brand", href: "/products/category_create" }
       ]
     }
   ];

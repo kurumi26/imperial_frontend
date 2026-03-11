@@ -204,7 +204,7 @@ export default function ManageProducts() {
           <h3>Manage Products</h3>
           <div>
             <Link href="/products/create" className="btn btn-primary me-2">Create Product</Link>
-            <Link href="/products/category_create" className="btn btn-outline-secondary me-2">Create Category</Link>
+            <Link href="/products/category_create" className="btn btn-outline-secondary me-2">Create Brand</Link>
             <button
               type="button"
               className="btn btn-outline-secondary"
