@@ -91,7 +91,7 @@ export default function LandingTopbar() {
             <Link href="/public/base" className={styles.brand}>
               <span className={styles['logo-box']}>
                 <img
-                  src={logoUrl || "/images/logo-light.png"}
+                  src={logoUrl || "/images/imperialpvc.jpg"}
                   alt={logoAlt}
                   className={styles['logo-img']}
                 />
