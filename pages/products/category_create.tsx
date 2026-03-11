@@ -215,7 +215,7 @@ export default function CreateProductCategory() {
 
       if (matches) {
         setOrderDirty(false);
-        toast.success("Category order saved");
+        toast.success("Brand order saved");
         return true;
       }
 
@@ -224,7 +224,7 @@ export default function CreateProductCategory() {
       writeLocalOrder(expectedIds);
       setOrderDirty(false);
       toast.warning(
-        "Order was not retained after reload. Saved locally in this browser; backend may not persist/sort category positions yet."
+        "Order was not retained after reload. Saved locally in this browser; backend may not persist/sort brand positions yet."
       );
       return false;
     };
@@ -301,8 +301,8 @@ export default function CreateProductCategory() {
       // Verification reload can still help, but avoid forcing dirty=false if API doesn't reflect order.
       return await verifyAndToast();
     } catch (e: any) {
-      console.error("Save category order error", e);
-      toast.error(e?.response?.data?.message || e?.message || "Failed to save category order");
+      console.error("Save brand order error", e);
+      toast.error(e?.response?.data?.message || e?.message || "Failed to save brand order");
       await loadCategories({ resetDirty: true });
       return false;
     } finally {
@@ -343,7 +343,7 @@ export default function CreateProductCategory() {
   };
 
   const handleSubmit = async () => {
-    if (!name) return toast.error("Please provide category name");
+    if (!name) return toast.error("Please provide brand name");
 
     const endpoints = ["/product-categories", "/create-product-category"];
     let created: any = null;
@@ -360,37 +360,37 @@ export default function CreateProductCategory() {
       }
 
       if (!created) {
-        toast.error("Failed to create category: no endpoint succeeded");
+        toast.error("Failed to create brand: no endpoint succeeded");
         return;
       }
 
-      toast.success("Category created");
+      toast.success("Brand created");
       router.push("/products");
     } catch (e: any) {
-      console.error("Create category error", e);
-      toast.error(e?.response?.data?.message || e?.message || "Failed to create category");
+      console.error("Create brand error", e);
+      toast.error(e?.response?.data?.message || e?.message || "Failed to create brand");
     }
   };
 
   return (
     <div className="container">
-      <h3 className="mb-4">Create Product Category</h3>
+      <h3 className="mb-4">Create Product Brand</h3>
 
       <div className="card">
         <div className="card-body">
           <div className="mb-3">
-            <label className="form-label">Category Name</label>
+            <label className="form-label">Brand Name</label>
             <input className="form-control" value={name} onChange={(e) => setName(e.target.value)} />
           </div>
 
           <div>
-            <button className="btn btn-primary" onClick={handleSubmit}>Save Category</button>
+            <button className="btn btn-primary" onClick={handleSubmit}>Save Brand</button>
           </div>
         </div>
       </div>
       <div className="mt-4">
         <div className="d-flex align-items-center justify-content-between gap-2 mb-2">
-          <h5 className="mb-0">Existing Categories</h5>
+          <h5 className="mb-0">Existing Brands</h5>
           <div className="d-flex align-items-center gap-2">
             <button
               className="btn btn-sm btn-outline-secondary"
@@ -463,7 +463,7 @@ export default function CreateProductCategory() {
 
                               if (!ok) {
                                 const status = lastErr?.response?.status;
-                                const message = lastErr?.response?.data?.message || lastErr?.message || 'Failed to update category';
+                                const message = lastErr?.response?.data?.message || lastErr?.message || 'Failed to update brand';
                                 toast.error(
                                   status === 405
                                     ? 'Update failed: backend does not support updating product categories.'
@@ -471,12 +471,12 @@ export default function CreateProductCategory() {
                                 );
                                 return;
                               }
-                              toast.success('Category updated');
+                              toast.success('Brand updated');
                               setEditingId(null); setEditingName('');
                               await loadCategories();
                             } catch (err: any) {
-                              console.error('Update category error', err);
-                              toast.error(err?.response?.data?.message || err?.message || 'Failed to update category');
+                              console.error('Update brand error', err);
+                              toast.error(err?.response?.data?.message || err?.message || 'Failed to update brand');
                             }
                           }}>Save</button>
                           <button className="btn btn-sm btn-secondary" onClick={() => { setEditingId(null); setEditingName(''); }}>Cancel</button>
@@ -517,8 +517,8 @@ export default function CreateProductCategory() {
 
       <ConfirmModal
         show={!!showDeleteConfirmId}
-        title="Delete category"
-        message={<span>Are you sure you want to delete this category? This action cannot be undone.</span>}
+        title="Delete brand"
+        message={<span>Are you sure you want to delete this brand? This action cannot be undone.</span>}
         confirmLabel="Delete"
         cancelLabel="Cancel"
         danger
@@ -553,7 +553,7 @@ export default function CreateProductCategory() {
 
             if (!ok) {
               const status = lastErr?.response?.status;
-              const message = lastErr?.response?.data?.message || lastErr?.message || 'Failed to delete category';
+              const message = lastErr?.response?.data?.message || lastErr?.message || 'Failed to delete brand';
               const validationNameRequired =
                 typeof message === "string" && message.toLowerCase().includes("name") && message.toLowerCase().includes("required");
               // Many backends in this project expose only GET/POST for /product-categories (no /:id route)
@@ -567,12 +567,12 @@ export default function CreateProductCategory() {
               setShowDeleteConfirmId(null);
               return;
             }
-            toast.success('Category deleted');
+            toast.success('Brand deleted');
             setShowDeleteConfirmId(null);
             await loadCategories();
           } catch (e: any) {
-            console.error('Delete category error', e);
-            toast.error(e?.response?.data?.message || e?.message || 'Failed to delete category');
+            console.error('Delete brand error', e);
+            toast.error(e?.response?.data?.message || e?.message || 'Failed to delete brand');
             setShowDeleteConfirmId(null);
           }
         }}

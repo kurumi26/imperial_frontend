@@ -175,19 +175,19 @@ export default function CreateProduct() {
           </div>
 
           <div className="mb-3">
-            <label className="form-label">Category</label>
+            <label className="form-label">Brand</label>
             <select className="form-select" value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)}>
-              <option value="">-- Select category --</option>
+              <option value="">-- Select Brand --</option>
               {categories.map((c) => (
                 <option key={String(c.id)} value={String(c.id)}>{c.name}</option>
               ))}
             </select>
-            <small className="form-text text-muted">Or enter a new category below</small>
+            <small className="form-text text-muted">Or enter a new brand below</small>
           </div>
 
           <div className="mb-3">
-            <label className="form-label">New Category (optional)</label>
-            <input className="form-control" value={newCategory} onChange={(e) => setNewCategory(e.target.value)} placeholder="Enter category name" />
+            <label className="form-label">New Brand (optional)</label>
+            <input className="form-control" value={newCategory} onChange={(e) => setNewCategory(e.target.value)} placeholder="Enter brand name" />
           </div>
 
           <div className="mb-3">
