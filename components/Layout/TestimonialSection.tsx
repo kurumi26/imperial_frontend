@@ -15,6 +15,7 @@ export default function TestimonialSection() {
   /* =========================
      Fetch Testimonials
   ========================= */
+  /*
   useEffect(() => {
     const fetchTestimonials = async () => {
       try {
@@ -40,7 +41,7 @@ export default function TestimonialSection() {
 
     fetchTestimonials();
   }, []);
-
+  */
   /* =========================
      Auto Slider
   ========================= */

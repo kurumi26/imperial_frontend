@@ -10,13 +10,14 @@ export const BANNER_TITLE = "Imperial PVC";
 export async function getServerSideProps() {
     try {
         // fetch page config and latest news concurrently
-        const [pageRes, articlesRes] = await Promise.all([
+        const [pageRes/*, articlesRes*/] = await Promise.all([
             getPublicPageBySlug("home"),
-            getPublicArticles({ per_page: 3 }),
+           // getPublicArticles({ per_page: 3 }),
         ]);
 
         // fetch latest products (limit 4)
         let products: any[] = [];
+        /*
         try {
             // attempt simple call first; avoid order_by/sort in case backend doesn't support
             const prodRes = await getProducts({ per_page: 4 });
@@ -29,6 +30,7 @@ export async function getServerSideProps() {
         } catch (e) {
             // ignore; leave products empty for now
         }
+        */
         // if we didn't get any results, try a manual fallback similar to products page logic
         if (!products.length) {
             try {
@@ -84,7 +86,7 @@ export async function getServerSideProps() {
         return {
             props: {
                 pageData: pageRes.data,
-                news: articlesRes.data?.data ?? [],
+                //news: articlesRes.data?.data ?? [],
                 products,
             },
         };
