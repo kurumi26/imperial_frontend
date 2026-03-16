@@ -50,8 +50,8 @@ export default function LandingPageLayout({
         <div className={contentWrapperClassName}>{children}</div>
       </main>
 
-      {/* <GlobalFooter /> */}
-      <_Footer />
+      <GlobalFooter />
+      {/* <_Footer /> */}
 
       <ToastHost />
     </div>

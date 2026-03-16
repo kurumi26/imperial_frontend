@@ -2,15 +2,17 @@ import React, { useEffect, useState } from "react";
 import Header from "@/components/Layout/_Header";
 import HeaderBar from "@/components/Layout/HeaderBar";
 import GlobalFooter from '@/components/Layout/GlobalFooter';
+import LandingPageLayout from "@/components/Layout/GuestLayout";
+import { getPublicPageBySlug, PublicPage } from "@/services/publicPageService";
+
+interface PublicPageViewProps {
+  pageData: PublicPage;
+}
 
 export default function AboutUs() {
-
     return (
         
         <div>
-            <Header />
-            <HeaderBar />
-
             <div className="d-flex text-center flex-column align-items-center cutter-section">
                 <div className="container">
 
@@ -157,11 +159,18 @@ export default function AboutUs() {
                     </div>
                 </div>
             </div>
-
-            <div className="w-100">
-                <GlobalFooter />
-            </div>
         </div>
 
     );
 }
+
+export async function getServerSideProps() {
+  try {
+    const res = await getPublicPageBySlug("about-us");
+    return { props: { pageData: res.data } };
+  } catch {
+    return { notFound: true };
+  }
+}
+
+AboutUs.Layout = LandingPageLayout;
