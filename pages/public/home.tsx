@@ -32,6 +32,7 @@ export async function getServerSideProps() {
         }
         */
         // if we didn't get any results, try a manual fallback similar to products page logic
+        /*
         if (!products.length) {
             try {
                 const eps = ["/public-products", "/public/products", "/products", "/api/products"];
@@ -80,6 +81,7 @@ export async function getServerSideProps() {
                 // still empty
             }
         }
+        */
 
         // debug - inspect what we fetched; logs on server
         console.log("[SSR] landing page products count", products.length);

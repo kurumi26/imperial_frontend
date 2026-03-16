@@ -22,7 +22,8 @@ export default function LandingTopbar() {
         const s = await getWebsiteSettingsCached({ force: opts?.force === true });
         if (!alive) return;
 
-        const url = resolveWebsiteAssetUrl((s as any)?.company_logo) ?? null;
+        //const url = resolveWebsiteAssetUrl((s as any)?.company_logo) ?? null;
+        const url = (s as any)?.company_logo ? `${process.env.NEXT_PUBLIC_API_URL}/storage/logos/${(s as any).company_logo}`: null;
         setLogoUrl(url);
         setLogoAlt((s as any)?.website_name || (s as any)?.company_name || "Logo");
       } catch {

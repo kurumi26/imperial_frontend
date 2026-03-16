@@ -25,7 +25,7 @@ export function storeWebsiteSettings(settings: WebsiteSettings | null) {
   if (typeof window === "undefined") return;
   try {
     if (!settings) window.localStorage.removeItem(WEBSITE_SETTINGS_STORAGE_KEY);
-    else window.localStorage.setItem(WEBSITE_SETTINGS_STORAGE_KEY, JSON.stringify(settings));
+    //else window.localStorage.setItem(WEBSITE_SETTINGS_STORAGE_KEY, JSON.stringify(settings));
   } catch {
     // ignore storage errors
   }
