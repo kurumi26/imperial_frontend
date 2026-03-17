@@ -266,7 +266,7 @@ export default function Home({ pageData, news, products = [] }: LandingPageLayou
                         const slides: Slide[] = articles.length > 0
                             ? articles.map((a: any) => ({
                                 image: a.thumbnail_url
-                                    ? `${process.env.NEXT_PUBLIC_API_URL}/storage/${a.thumbnail_url}`
+                                    ? a.thumbnail_url
                                     : (a.image_url ?? '/images/highlights/diamond_pvc.jpg'),
                                 title: a.name || a.title || '',
                                 desc: a.teaser || a.excerpt || '',
