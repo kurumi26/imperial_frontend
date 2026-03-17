@@ -13,7 +13,7 @@ export default function NewsItem({ article }: any) {
           <img
             src={
               article.thumbnail_url
-                ? `${process.env.NEXT_PUBLIC_API_URL}/storage/${article.thumbnail_url}`
+                ? article.thumbnail_url
                 : article.image_url
             }
             alt={article.name}

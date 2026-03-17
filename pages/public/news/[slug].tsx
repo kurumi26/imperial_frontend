@@ -38,8 +38,8 @@ export default function NewsDetailPage({ article }: Props) {
                 <img
                 src={
                     article.thumbnail_url
-                    ? `${process.env.NEXT_PUBLIC_API_URL}/storage/${article.thumbnail_url}`
-                    : `${process.env.NEXT_PUBLIC_API_URL}/storage/${article.image_url}`
+                    ? `${article.thumbnail_url}`
+                    : `${article.image_url}`
                 }
                 alt={article.name}
                 className="img-fluid rounded"
@@ -72,7 +72,8 @@ export async function getServerSideProps({ params }: any) {
         article: res.data,
       },
     };
-  } catch {
+  } catch (error) {
+    console.error("NewsDetailPage error:", error); // <-- add this
     return { notFound: true };
   }
 }

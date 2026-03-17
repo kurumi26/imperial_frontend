@@ -10,9 +10,9 @@ export const BANNER_TITLE = "Imperial PVC";
 export async function getServerSideProps() {
     try {
         // fetch page config and latest news concurrently
-        const [pageRes/*, articlesRes*/] = await Promise.all([
+        const [pageRes, articlesRes] = await Promise.all([
             getPublicPageBySlug("home"),
-           // getPublicArticles({ per_page: 3 }),
+            getPublicArticles({ per_page: 3 }),
         ]);
 
         // fetch latest products (limit 4)
@@ -31,64 +31,13 @@ export async function getServerSideProps() {
             // ignore; leave products empty for now
         }
         */
-        // if we didn't get any results, try a manual fallback similar to products page logic
-        /*
-        if (!products.length) {
-            try {
-                const eps = ["/public-products", "/public/products", "/products", "/api/products"];
-                const { axiosInstance } = await import("@/services/axios");
-                const extractArray = (payload: any) => {
-                    if (!payload) return [];
-                    let data: any = payload?.data ?? payload;
-                    if (data && typeof data === "object" && !Array.isArray(data) && "data" in data) {
-                        data = (data as any).data;
-                        if (data && typeof data === "object" && !Array.isArray(data) && "data" in data) {
-                            data = (data as any).data;
-                        }
-                    }
-                    if (Array.isArray(data)) return data;
-                    const candidates = [
-                        (data as any)?.items,
-                        (data as any)?.rows,
-                        (data as any)?.results,
-                        (data as any)?.result,
-                        (data as any)?.products,
-                        (data as any)?.categories,
-                        (data as any)?.product_categories,
-                        (data as any)?.productCategories,
-                        (data as any)?.productCategory,
-                    ];
-                    for (const c of candidates) {
-                        if (Array.isArray(c)) return c;
-                        if (c && typeof c === "object" && Array.isArray((c as any).data)) return (c as any).data;
-                    }
-                    return [];
-                };
-
-                for (const ep of eps) {
-                    try {
-                        const resp = await axiosInstance.get(ep, { params: { per_page: 4 }, headers: { "X-No-Loading": true } });
-                        const arr = extractArray(resp.data);
-                        if (arr && arr.length) {
-                            products = arr.slice(0, 4);
-                            break;
-                        }
-                    } catch {
-                        // try next endpoint
-                    }
-                }
-            } catch {
-                // still empty
-            }
-        }
-        */
-
+        
         // debug - inspect what we fetched; logs on server
         console.log("[SSR] landing page products count", products.length);
         return {
             props: {
                 pageData: pageRes.data,
-                //news: articlesRes.data?.data ?? [],
+                news: articlesRes.data?.data ?? [],
                 products,
             },
         };
@@ -208,7 +157,7 @@ export default function Home({ pageData, news, products = [] }: LandingPageLayou
             const fetchClient = async () => {
                 try {
                     const { axiosInstance } = await import("@/services/axios");
-                    const eps = ["/public-products", "/public/products", "/products", "/api/products"];
+                    const eps = ["/public-products"];
                     for (const ep of eps) {
                         try {
                             const resp = await axiosInstance.get(ep, { params: { per_page: 4 }, headers: { "X-No-Loading": true } });
@@ -273,7 +222,7 @@ export default function Home({ pageData, news, products = [] }: LandingPageLayou
                             return (
                                 <div key={p.id ?? p.slug} className="col-6 col-md-3 mx-auto">
                                     <div className="card rounded-2 shadow-sm animate-hov">
-                                        <img src={`${process.env.NEXT_PUBLIC_API_URL}/storage/${img}`} className="border-bottom" alt={p.name || p.title || "Product"} style={{ minHeight: "150px", maxHeight: "150px", borderTopLeftRadius: "4px", borderTopRightRadius: "4px", objectFit: "cover", width: "100%" }} />
+                                        <img src={`${img}`} className="border-bottom" alt={p.name || p.title || "Product"} style={{ minHeight: "150px", maxHeight: "150px", borderTopLeftRadius: "4px", borderTopRightRadius: "4px", objectFit: "cover", width: "100%" }} />
                                         <div className="py-4 px-3 text-start">
                                             <h3 className="fs-6 fw-bold" style={{ display: "-webkit-box", WebkitLineClamp: 1, WebkitBoxOrient: "vertical", overflow: "hidden" }}>
                                                 {p.name || p.title || p.slug}

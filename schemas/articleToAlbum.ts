@@ -14,7 +14,7 @@ export const articleToAlbum = (article: any): PublicAlbum | null => {
         title: article.name,
         description: article.teaser,
         alt: article.name,
-        image_url: `${process.env.NEXT_PUBLIC_API_URL}/storage/${article.image_url}`,
+        image_url: article.image_url,
         order: 1,
       },
     ],
