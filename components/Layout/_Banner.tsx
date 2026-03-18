@@ -13,7 +13,7 @@ export default function Banner({
   subtitle,
   album,
 }: BannerProps) {
-  if (!album || title == "News" || title == "Products") {
+  if (!album || title == "News" || title == "Products" || album?.type === "single") {
     return (
       <section
         className="text-white bg-black"
@@ -31,7 +31,7 @@ export default function Banner({
   if (album.type === "main_banner") {
     return <MainBanner album={album} />;
   }
-  console.log(title);
+  console.log(album);
   return (
     <PageBanner
       title={title}
