@@ -36,6 +36,12 @@ export interface PublicPage {
   title: string;
   slug: string;
   content: string;
+  styles?: string;
+  json?: string;
+  label?: string;
+  image_url?: string;
+  page_type?: string;
+  template?: string | null;
   album?: PublicAlbum | null;
   meta?: {
     title?: string;
