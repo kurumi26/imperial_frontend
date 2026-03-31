@@ -1,4 +1,11 @@
 /* Custom CSS by Jeff */
+
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=Noto+Serif:ital,wght@0,100..900;1,100..900&family=Tenor+Sans&display=swap" rel="stylesheet');
+
+body {
+  font-family: 'Tenor Sans', 'Fredoka', 'Noto Serif', sans-serif !important;
+}
+
 .heading-block {
     position: relative
 }
