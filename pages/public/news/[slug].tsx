@@ -9,6 +9,23 @@ type Props = {
 };
 
 export default function NewsDetailPage({ article }: Props) {
+  // Parse the grapesjs json to extract css and js if needed
+  let gjsCSS = "";
+  let gjsJS = "";
+
+  try {
+    if (article.json) {
+      const parsed = typeof article.json === "string" ? JSON.parse(article.json) : article.json;
+      gjsCSS = parsed["gjs-css"] || "";
+      gjsJS = parsed["gjs-js"] || "";
+    }
+  } catch (e) {
+    console.warn("Failed to parse article.json", e);
+  }
+
+  // Merge styles: prefer article.styles, fallback to parsed gjs-css
+  const finalCSS = article.styles || gjsCSS || "";
+
   return (
     <>
       <Head>
@@ -17,6 +34,12 @@ export default function NewsDetailPage({ article }: Props) {
           name="description"
           content={article.meta_description || article.teaser}
         />
+        {/* Inject GrapesJS styles in <head> */}
+        {finalCSS && (
+          <style
+            dangerouslySetInnerHTML={{ __html: finalCSS }}
+          />
+        )}
       </Head>
 
       <div className="container">
@@ -28,32 +51,37 @@ export default function NewsDetailPage({ article }: Props) {
         {/* META */}
         <div className="text-muted small mb-4">
           Posted on {article.date}
-          {article.user?.name && <> &nbsp;|&nbsp; By {article.user.name}</>}
+          {article.user?.firstname && (
+            <> &nbsp;|&nbsp; By {article.user.firstname} {article.user.lastname}</>
+          )}
           {article.category?.name && <> &nbsp;|&nbsp; {article.category.name}</>}
         </div>
 
         {/* FEATURED IMAGE */}
         {(article.thumbnail_url || article.image_url) && (
-            <div className="mb-5 text-center">
-                <img
-                src={
-                    article.thumbnail_url
-                    ? `${article.thumbnail_url}`
-                    : `${article.image_url}`
-                }
-                alt={article.name}
-                className="img-fluid rounded"
-                style={{ maxWidth: "500px" }}
-                />
-            </div>
+          <div className="mb-5 text-center">
+            <img
+              src={article.thumbnail_url || article.image_url}
+              alt={article.name}
+              className="img-fluid rounded"
+              style={{ maxWidth: "500px" }}
+            />
+          </div>
         )}
 
-
-        {/* CONTENT */}
+        {/* GRAPESJS CONTENT with styles scoped via wrapper */}
         <div
+          id="gjs-content-wrapper"
           className="article-content"
           dangerouslySetInnerHTML={{ __html: article.contents }}
         />
+
+        {/* Inject GrapesJS JS at bottom if present */}
+        {gjsJS && (
+          <script
+            dangerouslySetInnerHTML={{ __html: gjsJS }}
+          />
+        )}
       </div>
     </>
   );
@@ -73,7 +101,7 @@ export async function getServerSideProps({ params }: any) {
       },
     };
   } catch (error) {
-    console.error("NewsDetailPage error:", error); // <-- add this
+    console.error("NewsDetailPage error:", error);
     return { notFound: true };
   }
 }
