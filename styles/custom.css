@@ -157,10 +157,10 @@ img.proj-image {
 }
 
 .gjs-content-wrapper h1,
-.gjs-content-wrapper .h2,
-.gjs-content-wrapper .h3, 
-.gjs-content-wrapper .h4, 
-.gjs-content-wrapper .h5, 
-.gjs-content-wrapper .h6 {
+.gjs-content-wrapper h2,
+.gjs-content-wrapper h3, 
+.gjs-content-wrapper h4, 
+.gjs-content-wrapper h5, 
+.gjs-content-wrapper h6 {
     font-weight: 600;
 }
