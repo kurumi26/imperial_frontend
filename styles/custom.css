@@ -129,3 +129,29 @@ img.proj-image {
     background-color: white;
     color: #444;
 }
+
+.button.button-3d {
+  display: inline-block;
+  background-color: #1e3a5f;
+  color: #ffffff;
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 13px 36px;
+  border: none;
+  border-radius: 2px;
+  cursor: pointer;
+  position: relative;
+  box-shadow:
+    0 4px 0 #0d2240,
+    0 5px 4px rgba(0, 0, 0, 0.3);
+  transition: background-color 0.3s ease, opacity 0.3s ease;
+  text-decoration: none;
+}
+
+.button.button-3d:hover {
+  background-color: #254d7a;
+  opacity: 0.9;
+}
