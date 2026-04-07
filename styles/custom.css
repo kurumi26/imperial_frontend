@@ -107,3 +107,24 @@ img.proj-image {
         max-height: unset !important;
     }
 }
+
+/* grapejs css hack */
+.button.button-border {
+    border: none;
+    text-decoration: none;
+}
+
+.button.button-border > div {
+    border: 2px solid white;
+    border-radius: 5px;
+    color: white;
+    transition: all .2s ease-in-out;
+    padding: 8px 14px;
+    font-weight: 600;
+    max-width: fit-content;
+    transform: translate(0px, 18px);
+}
+.button.button-border:hover > div{
+    background-color: white;
+    color: #444;
+}
