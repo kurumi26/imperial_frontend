@@ -110,7 +110,7 @@ img.proj-image {
 
 /* grapejs css hack */
 .button.button-border {
-    border: none;
+    border: none !important;
     text-decoration: none;
 }
 
@@ -123,6 +123,7 @@ img.proj-image {
     font-weight: 600;
     max-width: fit-content;
     transform: translate(0px, 18px);
+    cursor: pointer;
 }
 .button.button-border:hover > div{
     background-color: white;
