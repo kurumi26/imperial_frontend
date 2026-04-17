@@ -104,31 +104,28 @@ export default function LandingTopbar() {
               onSubmit={(e) => {
                 e.preventDefault();
                 if (!searchQuery) return;
+                // Navigate to a search results page if available
                 try {
                   window.location.href = `/public/search?q=${encodeURIComponent(searchQuery)}`;
-                } catch {
+                } catch (err) {
+                  // fallback
                   console.log('search:', searchQuery);
                 }
               }}
             >
-              {searchOpen && (
-                <input
-                  ref={inputRef}
-                  className={styles['search-input']}
-                  aria-label="Search"
-                  placeholder="Search..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  onBlur={() => {
-                    // Small delay so form submit still works on click
-                    setTimeout(() => setSearchOpen(false), 150);
-                  }}
-                />
-              )}
+              <input
+                ref={inputRef}
+                className={styles['search-input']}
+                aria-label="Search"
+                placeholder="Search..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                onBlur={() => setSearchOpen(false)}
+              />
               <button
                 type="button"
                 className={styles['search-icon']}
-                aria-label="Toggle search"
+                aria-label="Open search"
                 onClick={() => {
                   setSearchOpen((v) => !v);
                   setTimeout(() => inputRef.current?.focus(), 50);
