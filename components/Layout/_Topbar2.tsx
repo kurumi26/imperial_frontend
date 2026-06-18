@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import ConfirmModal from "@/components/UI/ConfirmModal";
 import { getCurrentUserCached, initialsForUser, resolveAvatarUrl, subscribeCurrentUserUpdated } from "@/lib/currentUser";
 import { getWebsiteSettingsCached, resolveCompanyLogoUrl, subscribeWebsiteSettingsUpdated } from "@/lib/websiteSettings";
+import BrandLogo from "@/components/UI/BrandLogo";
 import type { User } from "@/services/accountService";
 
 type TopbarProps = {
@@ -88,12 +89,17 @@ export default function Topbar({ onToggleSidebar, sidebarToggleRef }: TopbarProp
         <div className="container-fluid w-100 flex-grow-1 d-flex justify-content-between align-items-center gap-2">
         <div className="d-flex align-items-center" style={{ minWidth: 0 }}>
           {logoUrl ? (
-            <img
+            <BrandLogo
               src={logoUrl}
               alt="Logo"
               style={{ height: 34, width: "auto", objectFit: "contain", display: "block" }}
             />
-          ) : null}
+          ) : (
+            <BrandLogo
+              alt="Logo"
+              style={{ height: 34, width: "auto", objectFit: "contain", display: "block" }}
+            />
+          )}
         </div>
 
         <div className="d-flex align-items-center gap-2">

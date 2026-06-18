@@ -4,6 +4,7 @@ import Link from "next/link";
 import Menu from "./_Menu";
 import styles from "@/styles/_topbar.module.css";
 import { getWebsiteSettingsCached, resolveCompanyLogoUrl, subscribeWebsiteSettingsUpdated } from "@/lib/websiteSettings";
+import BrandLogo from "@/components/UI/BrandLogo";
 
 export default function LandingTopbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -88,8 +89,8 @@ export default function LandingTopbar() {
         <div className="left">
           <Link href="/" className={styles.brand}>
             <span className={styles['logo-box']}>
-              <img
-                src={logoUrl || "/images/imperialpvc.svg"}
+              <BrandLogo
+                src={logoUrl}
                 alt={logoAlt}
                 className={styles['logo-img']}
               />

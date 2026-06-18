@@ -4,6 +4,7 @@ import { websiteService } from "@/services/websiteService";
 import { getUsers } from "@/services/userService";
 import { getPages } from "@/services/pageService";
 import { getArticles } from "@/services/articleService";
+import { resolveCompanyLogoUrl, resolveFaviconUrl } from "@/lib/mediaAssets";
 
 type WebsiteSummaryStats = {
   pages?: number;
@@ -259,9 +260,8 @@ export default function WebsiteSummary({ stats, loading = false }: WebsiteSummar
 
   const isBusy = loading || settingsLoading;
 
-  const apiBase = (process.env.NEXT_PUBLIC_API_URL || "").replace(/\/$/, "");
-  const logoUrl = settings?.company_logo ? `${apiBase}/storage/${settings.company_logo}` : null;
-  const faviconUrl = settings?.website_favicon ? `${apiBase}/storage/${settings.website_favicon}` : null;
+  const logoUrl = settings?.company_logo ? resolveCompanyLogoUrl(settings.company_logo) ?? null : null;
+  const faviconUrl = settings?.website_favicon ? resolveFaviconUrl(settings.website_favicon) ?? null : null;
 
   const checklist = useMemo(() => {
     const items = [

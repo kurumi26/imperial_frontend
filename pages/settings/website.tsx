@@ -5,6 +5,9 @@ import { websiteService } from "@/services/websiteService";
 import { toast } from "@/lib/toast";
 import TinyEditor from "@/components/UI/Editor";
 import { notifyWebsiteSettingsUpdated, storeWebsiteSettings } from "@/lib/websiteSettings";
+import { resolveCompanyLogoUrl, resolveFaviconUrl } from "@/lib/mediaAssets";
+import FileManagerImagePicker from "@/components/UI/FileManagerImagePicker";
+import BrandLogo from "@/components/UI/BrandLogo";
 
 type TabKey = "website" | "contact" | "social" | "privacy";
 
@@ -17,14 +20,12 @@ function WebsiteSettingsPage() {
   const [companyName, setCompanyName] = useState("");
   const [websiteName, setWebsiteName] = useState("");
   const [copyright, setCopyright] = useState("");
-  const [logoName, setLogoName] = useState("");
-  const [faviconName, setFaviconName] = useState("");
   const [analytics, setAnalytics] = useState("");
   const [googleMap, setGoogleMap] = useState("");
   const [recaptcha, setRecaptcha] = useState("");
 
-  const [logoFile, setLogoFile] = useState<File | null>(null);
-  const [faviconFile, setFaviconFile] = useState<File | null>(null);
+  const [logoPath, setLogoPath] = useState("");
+  const [faviconPath, setFaviconPath] = useState("");
 
   const [logoPreview, setLogoPreview] = useState<string | null>(null);
   const [faviconPreview, setFaviconPreview] = useState<string | null>(null);
@@ -51,24 +52,15 @@ function WebsiteSettingsPage() {
     { name: "", media_account: "" },
   ]);
 
-  const handleLogoChange = (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files?.[0]) {
-      const file = e.target.files[0];
-      setLogoFile(file);
-      setLogoName(file.name);
-      setLogoPreview(URL.createObjectURL(file));
-    }
+  const handleLogoSelect = (url: string) => {
+    setLogoPath(url);
+    setLogoPreview(resolveCompanyLogoUrl(url) ?? url);
   };
 
-  const handleFaviconChange = (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files?.[0]) {
-      const file = e.target.files[0];
-      setFaviconFile(file);
-      setFaviconName(file.name);
-      setFaviconPreview(URL.createObjectURL(file));
-    }
+  const handleFaviconSelect = (url: string) => {
+    setFaviconPath(url);
+    setFaviconPreview(resolveFaviconUrl(url) ?? url);
   };
-
 
   /* =======================
      Handlers
@@ -104,17 +96,13 @@ function WebsiteSettingsPage() {
       setPrivacyContent(s.data_privacy_content);
 
       if (s.company_logo) {
-        setLogoPreview(
-          `${process.env.NEXT_PUBLIC_API_URL}/storage/${s.company_logo}`
-        );
-        setLogoName(s.company_logo);
+        setLogoPath(s.company_logo);
+        setLogoPreview(resolveCompanyLogoUrl(s.company_logo) ?? null);
       }
 
       if (s.website_favicon) {
-        setFaviconPreview(
-          `${process.env.NEXT_PUBLIC_API_URL}/storage/${s.website_favicon}`
-        );
-        setFaviconName(s.website_favicon);
+        setFaviconPath(s.website_favicon);
+        setFaviconPreview(resolveFaviconUrl(s.website_favicon) ?? null);
       }
 
     };
@@ -140,6 +128,16 @@ function WebsiteSettingsPage() {
     };
   }, [logoPreview, faviconPreview]);
 
+  const clearLogo = () => {
+    setLogoPath("");
+    setLogoPreview(null);
+  };
+
+  const clearFavicon = () => {
+    setFaviconPath("");
+    setFaviconPreview(null);
+  };
+
 
   const saveWebsite = async () => {
     try {
@@ -152,8 +150,8 @@ function WebsiteSettingsPage() {
       fd.append("google_map", googleMap);
       fd.append("google_recaptcha_sitekey", recaptcha);
 
-      if (logoFile) fd.append("company_logo", logoFile);
-      if (faviconFile) fd.append("website_favicon", faviconFile);
+      fd.append("company_logo", logoPath);
+      fd.append("website_favicon", faviconPath);
 
       await websiteService.updateWebsite(fd);
 
@@ -321,74 +319,82 @@ function WebsiteSettingsPage() {
               <div className="mb-3">
                 <label className="form-label">Logo</label>
 
-                {logoPreview && (
-                  <div className="mb-2">
-                    <img
-                      src={logoPreview}
-                      alt="Website Logo"
-                      style={{
-                        maxHeight: 100,
-                        maxWidth: "100%",
-                        border: "1px solid #e1e5ee",
-                        padding: 6,
-                        borderRadius: 4,
-                      }}
-                    />
-                  </div>
-                )}
-
-                <div className="input-group">
-                  <input className="form-control" value={logoName} readOnly />
-                  <label className="input-group-text">
-                    Browse
-                    <input
-                      type="file"
-                      hidden
-                      accept=".png,.jpg,.jpeg,.svg"
-                      onChange={handleLogoChange}
-                    />
-                  </label>
+                <div className="mb-2">
+                  <BrandLogo
+                    src={logoPreview}
+                    alt="Website Logo"
+                    style={{
+                      maxHeight: 100,
+                      maxWidth: "100%",
+                      border: "1px solid #e1e5ee",
+                      padding: 6,
+                      borderRadius: 4,
+                      objectFit: "contain",
+                    }}
+                  />
                 </div>
 
-                <small className="text-muted">
-                  PNG, JPG, SVG • Max 1MB
+                <div className="input-group mb-2">
+                  <input
+                    className="form-control"
+                    value={logoPath}
+                    readOnly
+                    placeholder="Select a logo from Files"
+                  />
+                </div>
+
+                <div className="d-flex gap-2 flex-wrap">
+                  <FileManagerImagePicker label="Choose from Files" onSelect={handleLogoSelect} />
+                  {logoPath ? (
+                    <button type="button" className="btn btn-outline-danger btn-sm" onClick={clearLogo}>
+                      Remove Logo
+                    </button>
+                  ) : null}
+                </div>
+
+                <small className="text-muted d-block mt-2">
+                  Pick the logo directly from Manage Files. PNG, JPG, or SVG recommended.
                 </small>
               </div>
 
               <div className="mb-3">
                 <label className="form-label">Favicon</label>
 
-                {faviconPreview && (
-                  <div className="mb-2">
-                    <img
-                      src={faviconPreview}
-                      alt="Website Favicon"
-                      style={{
-                        height: 48,
-                        width: 48,
-                        border: "1px solid #e1e5ee",
-                        padding: 6,
-                        borderRadius: 4,
-                      }}
-                    />
-                  </div>
-                )}
-
-                <div className="input-group">
-                  <input className="form-control" value={faviconName} readOnly />
-                  <label className="input-group-text">
-                    Browse
-                    <input
-                      type="file"
-                      hidden
-                      accept=".ico,.png"
-                      onChange={handleFaviconChange}
-                    />
-                  </label>
+                <div className="mb-2">
+                  <BrandLogo
+                    src={faviconPreview}
+                    alt="Website Favicon"
+                    style={{
+                      height: 48,
+                      width: 48,
+                      border: "1px solid #e1e5ee",
+                      padding: 6,
+                      borderRadius: 4,
+                      objectFit: "contain",
+                    }}
+                  />
                 </div>
 
-                <small className="text-muted">
-                  128×128 ICO • Max 100KB
+                <div className="input-group mb-2">
+                  <input
+                    className="form-control"
+                    value={faviconPath}
+                    readOnly
+                    placeholder="Select a favicon from Files"
+                  />
+                </div>
+
+                <div className="d-flex gap-2 flex-wrap">
+                  <FileManagerImagePicker label="Choose from Files" onSelect={handleFaviconSelect} />
+                  {faviconPath ? (
+                    <button type="button" className="btn btn-outline-danger btn-sm" onClick={clearFavicon}>
+                      Remove Icon
+                    </button>
+                  ) : null}
+                </div>
+
+                <small className="text-muted d-block mt-2">
+                  Pick the favicon directly from Manage Files. ICO or PNG, 128×128 recommended.
                 </small>
               </div>
 
