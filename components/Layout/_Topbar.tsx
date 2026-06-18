@@ -3,7 +3,7 @@ import React, { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import Menu from "./_Menu";
 import styles from "@/styles/_topbar.module.css";
-import { getWebsiteSettingsCached, resolveWebsiteAssetUrl, subscribeWebsiteSettingsUpdated } from "@/lib/websiteSettings";
+import { getWebsiteSettingsCached, resolveCompanyLogoUrl, subscribeWebsiteSettingsUpdated } from "@/lib/websiteSettings";
 
 export default function LandingTopbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -22,7 +22,7 @@ export default function LandingTopbar() {
         const s = await getWebsiteSettingsCached({ force: opts?.force === true });
         if (!alive) return;
 
-        const url = resolveWebsiteAssetUrl((s as any)?.company_logo) ?? null;
+        const url = resolveCompanyLogoUrl((s as any)?.company_logo) ?? null;
         setLogoUrl(url);
         setLogoAlt((s as any)?.website_name || (s as any)?.company_name || "Logo");
       } catch {
@@ -89,7 +89,7 @@ export default function LandingTopbar() {
           <Link href="/" className={styles.brand}>
             <span className={styles['logo-box']}>
               <img
-                src={logoUrl || "/images/logo-light.png"}
+                src={logoUrl || "/images/imperialpvc.svg"}
                 alt={logoAlt}
                 className={styles['logo-img']}
               />

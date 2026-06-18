@@ -99,3 +99,25 @@ export function resolveWebsiteAssetUrl(path?: string | null): string | undefined
 
   return `${base}/storage/${s.replace(/^\.\/?/, "")}`;
 }
+
+/** Resolve company logo paths from settings (supports legacy bare filenames and logos/ paths). */
+export function resolveCompanyLogoUrl(path?: string | null): string | undefined {
+  const s = (path ?? "").toString().trim();
+  if (!s) return undefined;
+
+  if (s.startsWith("data:")) return s;
+  if (s.startsWith("http://") || s.startsWith("https://")) return s;
+
+  const base = (process.env.NEXT_PUBLIC_API_URL || "").replace(/\/$/, "");
+  if (!base) return undefined;
+
+  let rel = s.replace(/^\.\/?/, "");
+  if (rel.startsWith("/storage/")) rel = rel.slice("/storage/".length);
+  if (rel.startsWith("storage/")) rel = rel.slice("storage/".length);
+
+  if (!rel.includes("/")) {
+    rel = `logos/${rel}`;
+  }
+
+  return `${base}/storage/${rel}`;
+}
