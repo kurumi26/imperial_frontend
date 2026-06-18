@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import ConfirmModal from "@/components/UI/ConfirmModal";
 import { getCurrentUserCached, initialsForUser, resolveAvatarUrl, subscribeCurrentUserUpdated } from "@/lib/currentUser";
-import { getWebsiteSettingsCached, resolveWebsiteAssetUrl, subscribeWebsiteSettingsUpdated } from "@/lib/websiteSettings";
+import { getWebsiteSettingsCached, resolveCompanyLogoUrl, subscribeWebsiteSettingsUpdated } from "@/lib/websiteSettings";
 import type { User } from "@/services/accountService";
 
 type TopbarProps = {
@@ -37,7 +37,7 @@ export default function Topbar({ onToggleSidebar, sidebarToggleRef }: TopbarProp
   const refreshLogo = React.useCallback(async (opts?: { force?: boolean }) => {
     try {
       const s = await getWebsiteSettingsCached({ force: opts?.force === true });
-      setLogoUrl(resolveWebsiteAssetUrl((s as any)?.company_logo));
+      setLogoUrl(resolveCompanyLogoUrl((s as any)?.company_logo));
     } catch {
       // ignore
     }

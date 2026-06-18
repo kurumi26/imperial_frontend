@@ -3,7 +3,7 @@ import React, { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import Menu from "./_Menu";
 import styles from "@/styles/_topbar.module.css";
-import { getWebsiteSettingsCached, resolveWebsiteAssetUrl, subscribeWebsiteSettingsUpdated } from "@/lib/websiteSettings";
+import { getWebsiteSettingsCached, resolveCompanyLogoUrl, subscribeWebsiteSettingsUpdated } from "@/lib/websiteSettings";
 
 export default function LandingTopbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -22,8 +22,7 @@ export default function LandingTopbar() {
         const s = await getWebsiteSettingsCached({ force: opts?.force === true });
         if (!alive) return;
 
-        //const url = resolveWebsiteAssetUrl((s as any)?.company_logo) ?? null;
-        const url = (s as any)?.company_logo ? `${process.env.NEXT_PUBLIC_API_URL}/storage/logos/${(s as any).company_logo}`: null;
+        const url = resolveCompanyLogoUrl((s as any)?.company_logo) ?? null;
         setLogoUrl(url);
         setLogoAlt((s as any)?.website_name || (s as any)?.company_name || "Logo");
       } catch {
@@ -87,12 +86,12 @@ export default function LandingTopbar() {
     <div>
       
       <header className={`${styles['topbar-dark']} ${scrolled ? styles.scrolled : ''}`}>
-        <div className={styles['topbar-inner']} style={{minHeight: '100px' , borderBottom: '1px solid #ffffff24'}}>
-          <div className={`${styles['left']}`} style={{display: 'flex', alignItems: 'center', gap: 12}}>
+        <div className={styles['topbar-inner']}>
+          <div className={styles.left}>
             <Link href="/public/home" className={styles.brand}>
               <span className={styles['logo-box']}>
                 <img
-                  src={logoUrl || "/images/imperialpvc.jpg"}
+                  src={logoUrl || "/images/imperialpvc.svg"}
                   alt={logoAlt}
                   className={styles['logo-img']}
                 />
@@ -127,7 +126,7 @@ export default function LandingTopbar() {
 
             <nav
               id="landing-topbar-nav"
-              className={`${styles["nav-wrap-base"]} ${mobileOpen ? styles["nav-wrap-base-open"] : ""}`}
+              className={`${styles["nav-wrap"]} ${mobileOpen ? styles["nav-wrap-open"] : ""}`}
             >
               <ul className={styles["nav-list"]}>
                 <Menu isMobile={mobileOpen} onNavigate={closeMobileMenu} />

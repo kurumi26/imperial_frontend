@@ -42,6 +42,7 @@
 @keyframes fadeIn { from { opacity: 0; transform: translateY(-6px) } to { opacity:1; transform: translateY(0) } }
  
 .topbar-inner{display:flex;align-items:center;justify-content:space-between;gap:16px}
+.left{display:flex;align-items:center;gap:12px;flex-shrink:0}
 .brand { display: flex; align-items: center; gap:12px; text-decoration: none; color: inherit; margin-right: 12px }
 .logo-box{height:72px;border-radius:12px;background:transparent;display:inline-flex;align-items:center;justify-content:center;padding:6px;margin-left:12px;overflow:visible}
 .logo-img{width:140px;height:80px;object-fit:contain;display:block;border-radius:6px}
@@ -216,7 +217,8 @@
 }
  
 .topbar-dark{padding:0}
-.topbar-inner{height:88px; position:relative; width:100%; padding-left:24px; padding-right:24px}
+.topbar-inner{height:88px; min-height:88px; position:relative; width:100%; padding-left:24px; padding-right:24px; border-bottom:1px solid rgba(255,255,255,0.14)}
+.topbar-dark.scrolled .topbar-inner{border-bottom:0}
  
 .right .icon {
   background: transparent; border: none; color: #cfe7ff; font-size: 16px; cursor: pointer;
@@ -234,8 +236,10 @@
   .brand-text{display:none}
   .brand{margin-right:4px}
   .logo-box{height:72px;padding:4px;margin-left:4px}
-  .topbar-inner{padding:0 8px; height:72px}
-  .mobile-toggle { display: inline-flex; }
+  .topbar-inner{padding:0 12px; height:72px; min-height:72px; border-bottom:1px solid rgba(255,255,255,0.14)}
+  .topbar-dark.scrolled .topbar-inner{border-bottom:0}
+  .mobile-toggle { display: inline-flex; margin-left: auto; }
+  .right { flex: 1; justify-content: flex-end; }
  
   /* Hide the desktop nav on mobile; show via .nav-wrap-open */
   .nav-wrap{display:none}
