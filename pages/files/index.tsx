@@ -16,7 +16,7 @@ export default function FileManagerPage() {
         }}
       >
         <iframe
-          src={`${process.env.NEXT_PUBLIC_API_URL}/admin/file-manager-ui`}
+          src={`${process.env.NEXT_PUBLIC_API_URL}/laravel-filemanager?type=Images`}
           style={{
             width: "100%",
             height: "100%",
