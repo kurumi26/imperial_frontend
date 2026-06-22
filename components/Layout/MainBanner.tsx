@@ -42,7 +42,7 @@ export default function MainBanner({ album }: MainBannerProps) {
   if (!banners.length) return null;
 
   const banner = banners[current];
-  const scriptText = banner.description?.trim() || "Welcome to";
+  const scriptText = banner.description?.trim() || "";
 
   const overrideById = (banner as any)?.id ? fontOverrides[`id:${(banner as any).id}`] : undefined;
   const overrideByOrder = typeof (banner as any)?.order !== "undefined" ? fontOverrides[`order:${(banner as any).order}`] : undefined;

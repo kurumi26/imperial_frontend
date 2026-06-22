@@ -1,16 +1,32 @@
 import { useEffect, useState } from "react";
-import { getFooter } from "@/services/publicPageService";
+import { getPublicPageBySlug } from "@/services/publicPageService";
+import { resolvePageContent, resolvePageStyles } from "@/lib/cmsPageContent";
 
-export default function LandingFooter() {
+export default function CmsFooter() {
   const [html, setHtml] = useState("");
+  const [css, setCss] = useState("");
 
   useEffect(() => {
-    getFooter().then((res) => {
-      setHtml(res.data.data.contents);
-    });
+    getPublicPageBySlug("footer")
+      .then((res) => {
+        const pageData = res.data;
+        if (!pageData) return;
+
+        setHtml(resolvePageContent(pageData));
+        setCss(resolvePageStyles(pageData));
+      })
+      .catch(() => {
+        setHtml("");
+        setCss("");
+      });
   }, []);
 
   if (!html) return null;
 
-  return <div dangerouslySetInnerHTML={{ __html: html }} />;
+  return (
+    <>
+      {css ? <style id="cms-footer-styles" dangerouslySetInnerHTML={{ __html: css }} /> : null}
+      <div className="cms-footer-content" dangerouslySetInnerHTML={{ __html: html }} />
+    </>
+  );
 }

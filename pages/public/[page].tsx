@@ -1,58 +1,10 @@
 import LandingPageLayout from "@/components/Layout/GuestLayout";
 import { getPublicPageBySlug, PublicPage } from "@/services/publicPageService";
+import { resolvePageContent, resolvePageStyles } from "@/lib/cmsPageContent";
 import Head from "next/head";
 
 interface PublicPageViewProps {
   pageData: PublicPage;
-}
-
-/**
- * Safely extract the CSS string from pageData.
- * Priority: pageData.styles → gjs-css inside pageData.json → ""
- */
-function resolvePageStyles(pageData: PublicPage): string {
-  // 1. Direct styles field (already extracted by backend)
-  if (pageData.styles && typeof pageData.styles === "string" && pageData.styles.trim()) {
-    return pageData.styles.trim();
-  }
-
-  // 2. Fallback: parse gjs-css from the raw json field
-  if (pageData.json && typeof pageData.json === "string") {
-    try {
-      const parsed = JSON.parse(pageData.json);
-      if (parsed["gjs-css"] && typeof parsed["gjs-css"] === "string") {
-        return parsed["gjs-css"].trim();
-      }
-    } catch {
-      // ignore parse errors
-    }
-  }
-
-  return "";
-}
-
-/**
- * Safely resolve HTML content.
- * Priority: pageData.content → gjs-html inside pageData.json → ""
- */
-function resolvePageContent(pageData: PublicPage): string {
-  if (pageData.content && typeof pageData.content === "string" && pageData.content.trim()) {
-    return pageData.content.trim();
-  }
-
-  // Fallback: extract from GrapesJS json
-  if (pageData.json && typeof pageData.json === "string") {
-    try {
-      const parsed = JSON.parse(pageData.json);
-      if (parsed["gjs-html"] && typeof parsed["gjs-html"] === "string") {
-        return parsed["gjs-html"].trim();
-      }
-    } catch {
-      // ignore
-    }
-  }
-
-  return "";
 }
 
 export default function PublicPageView({ pageData }: PublicPageViewProps) {
@@ -109,7 +61,10 @@ export async function getServerSideProps(context: any) {
     return {
       props: {
         pageData,
-        layout: { fullWidth: true },
+        layout: {
+          fullWidth: true,
+          hideFooter: page === "footer",
+        },
       },
     };
   } catch {

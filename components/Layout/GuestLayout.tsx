@@ -1,11 +1,10 @@
 import LandingTopbar from "./_Topbar";
-import GlobalFooter from "./GlobalFooter";
+import CmsFooter from "./_Footer";
 import Banner from "./_Banner";
 import { PublicAlbum } from "@/services/publicPageService";
 import ToastHost from "@/components/UI/ToastHost";
 import Head from "next/head";
 import Header from "@/components/Layout/_Header";
-import _Footer from "./_Footer";
 
 interface LandingPageLayoutProps {
   children: React.ReactNode;
@@ -15,6 +14,7 @@ interface LandingPageLayoutProps {
   };
   layout?: {
     fullWidth?: boolean;
+    hideFooter?: boolean;
   };
 }
 
@@ -50,8 +50,7 @@ export default function LandingPageLayout({
         <div className={contentWrapperClassName}>{children}</div>
       </main>
 
-      <GlobalFooter />
-      {/* <_Footer /> */}
+      {!layout?.hideFooter && <CmsFooter />}
 
       <ToastHost />
     </div>
