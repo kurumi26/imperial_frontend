@@ -75,7 +75,10 @@ export const getActiveMenu = () => {
 export interface PublicFooter {
   id: number;
   slug: string;
+  content?: string;
   contents: string;
+  styles?: string;
+  json?: string;
 }
 
 export const getFooter = () => {
