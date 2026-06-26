@@ -1,10 +1,16 @@
-import React, { useEffect, useState } from "react";
-import TestimonialSection from '@/components/Layout/TestimonialSection';
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import Head from "next/head";
 import { getPublicPageBySlug, PublicAlbum, PublicPage } from "@/services/publicPageService";
 import { getPublicArticles } from "@/services/articleService";
-import { getProducts } from "@/services/productService";
 import LandingPageLayout from "@/components/Layout/GuestLayout";
-
+import CmsHtmlBlock from "@/components/Layout/CmsHtmlBlock";
+import { resolvePageContent, resolvePageStyles } from "@/lib/cmsPageContent";
+import {
+    parseCmsTestimonialsHtml,
+    sanitizeCmsHtml,
+    extractEmbeddedStyles,
+    extractEmbeddedScripts,
+} from "@/lib/parseCmsTestimonials";
 export const BANNER_TITLE = "Imperial PVC";
 
 export async function getServerSideProps() {
@@ -35,14 +41,27 @@ export async function getServerSideProps() {
         console.log("[SSR] pageData keys:", Object.keys(pageRes.data ?? {}));
         console.log("[SSR] content preview:", String(pageRes.data?.content ?? "").slice(0, 200));
 
+        const pageData = pageRes.data ?? null;
+        const rawContent = resolvePageContent(pageData ?? { content: "", json: undefined });
+        const { htmlWithoutStyles, styles: embeddedStyles } = extractEmbeddedStyles(
+            sanitizeCmsHtml(rawContent)
+        );
+        const { htmlWithoutScripts } = extractEmbeddedScripts(htmlWithoutStyles);
+        const cmsSections = parseCmsTestimonialsHtml(htmlWithoutScripts);
+        const hasTestimonialsSection = Boolean(cmsSections.sectionHtml);
+        const basePageStyles = resolvePageStyles(pageData ?? { styles: undefined, json: undefined });
+        const pageStyles = [basePageStyles, embeddedStyles].filter(Boolean).join("\n");
+
         return {
             props: {
-                pageData: pageRes.data ?? null,
+                pageData,
                 news: articlesRes.data?.data ?? [],
                 products,
+                middleCmsHtml: hasTestimonialsSection ? cmsSections.beforeHtml : htmlWithoutScripts,
+                testimonialsHtml: cmsSections.sectionHtml,
+                pageStyles,
             },
-        };
-    } catch (error) {
+        };    } catch (error) {
         console.error("Error fetching page data:", error);
         return { notFound: true };
     }
@@ -53,7 +72,9 @@ interface LandingPageLayoutProps {
   pageData?: PublicPage;
   news?: any[];
   products?: any[];
-  layout?: {
+  middleCmsHtml?: string;
+  testimonialsHtml?: string;
+  pageStyles?: string;  layout?: {
     fullWidth?: boolean;
   };
 }
@@ -120,45 +141,207 @@ function Slider({ slides }: { slides: Slide[] }) {
     );
 }
 
-/**
- * Safely resolves pageData.content to a clean HTML string.
- * Handles: string HTML, JSON-encoded string, plain object (TipTap/Slate JSON), null/undefined.
- */
-function resolvePageContent(content: any): string {
-    if (!content) return "";
+/** Initializes the GrapesJS testimonials carousel (3 cards per slide on desktop). */
+function initHomeTestimonialsCarousel(root: HTMLElement): () => void {
+    const GAP = 24;
 
-    // Already a plain HTML string
-    if (typeof content === "string") {
-        const trimmed = content.trim();
-        if (!trimmed) return "";
+    const getNodes = () => {
+        const track = root.querySelector("#tsTrack") as HTMLElement | null;
+        const viewport = root.querySelector("#tsViewport") as HTMLElement | null;
+        const dotsWrap = root.querySelector("#tsDots") as HTMLElement | null;
+        const slots = track
+            ? (Array.from(track.querySelectorAll(".ts-slot")) as HTMLElement[])
+            : [];
 
-        // Try to parse in case it's a JSON-encoded string (e.g. '"<p>hello</p>"')
-        try {
-            const parsed = JSON.parse(trimmed);
-            if (typeof parsed === "string") return parsed;
-            // It parsed into an object — fall through to object handling below
-            return JSON.stringify(parsed); // last resort
-        } catch {
-            // Not JSON — treat as raw HTML string
-            return trimmed;
+        return { track, viewport, dotsWrap, slots };
+    };
+
+    let slide = 0;
+    let ipv = 3;
+    let timer: ReturnType<typeof setInterval> | null = null;
+    let running = false;
+    let rafId = 0;
+
+    const getIPV = () => (window.innerWidth >= 768 ? 3 : 1);
+
+    const getCardW = (viewport: HTMLElement) => {
+        const vw = viewport.clientWidth;
+        if (vw <= 0) return 0;
+        return (vw - GAP * (ipv - 1)) / ipv;
+    };
+
+    const render = () => {
+        const { track, viewport, dotsWrap, slots } = getNodes();
+        if (!track || !viewport || !dotsWrap || !slots.length) return;
+
+        const cardW = getCardW(viewport);
+        if (cardW <= 0) return;
+
+        slots.forEach((slot) => {
+            slot.style.width = `${cardW}px`;
+        });
+
+        const step = ipv * (cardW + GAP);
+        track.style.transform = `translateX(-${slide * step}px)`;
+
+        dotsWrap.querySelectorAll(".ts-dot").forEach((dot, index) => {
+            dot.classList.toggle("active", index === slide);
+        });
+    };
+
+    const buildDots = () => {
+        const { dotsWrap, slots } = getNodes();
+        if (!dotsWrap || !slots.length) return;
+
+        const groups = Math.ceil(slots.length / ipv);
+        dotsWrap.innerHTML = "";
+
+        for (let i = 0; i < groups; i += 1) {
+            const dot = document.createElement("button");
+            dot.type = "button";
+            dot.className = `ts-dot${i === slide ? " active" : ""}`;
+            dot.setAttribute("aria-label", `Slide ${i + 1}`);
+            dot.dataset.slideIndex = String(i);
+            dotsWrap.appendChild(dot);
         }
+    };
+
+    const goNext = () => {
+        const { slots } = getNodes();
+        if (!slots.length) return;
+
+        const groups = Math.ceil(slots.length / ipv);
+        if (groups <= 1) return;
+
+        slide = (slide + 1) % groups;
+        render();
+    };
+
+    const goPrev = () => {
+        const { slots } = getNodes();
+        if (!slots.length) return;
+
+        const groups = Math.ceil(slots.length / ipv);
+        if (groups <= 1) return;
+
+        slide = (slide - 1 + groups) % groups;
+        render();
+    };
+
+    const stopTimer = () => {
+        running = false;
+        if (timer) {
+            clearInterval(timer);
+            timer = null;
+        }
+    };
+
+    const startTimer = () => {
+        const { slots } = getNodes();
+        if (!slots.length) return;
+
+        const groups = Math.ceil(slots.length / ipv);
+        if (groups <= 1) return;
+
+        if (running) return;
+        running = true;
+        timer = setInterval(goNext, 4500);
+    };
+
+    const resetTimer = () => {
+        stopTimer();
+        startTimer();
+    };
+
+    const boot = () => {
+        const { viewport, slots } = getNodes();
+        if (!viewport || !slots.length) return;
+
+        if (viewport.clientWidth <= 0) {
+            rafId = window.requestAnimationFrame(boot);
+            return;
+        }
+
+        ipv = getIPV();
+        slide = 0;
+        buildDots();
+        render();
+        startTimer();
+    };
+
+    const onClick = (event: MouseEvent) => {
+        const target = event.target as HTMLElement | null;
+        if (!target) return;
+
+        if (target.closest("#tsPrev, .ts-arrow-prev")) {
+            event.preventDefault();
+            goPrev();
+            resetTimer();
+            return;
+        }
+
+        if (target.closest("#tsNext, .ts-arrow-next")) {
+            event.preventDefault();
+            goNext();
+            resetTimer();
+            return;
+        }
+
+        const dot = target.closest(".ts-dot") as HTMLElement | null;
+        if (dot && dot.dataset.slideIndex !== undefined) {
+            event.preventDefault();
+            slide = Number(dot.dataset.slideIndex);
+            render();
+            resetTimer();
+        }
+    };
+
+    const onResize = () => {
+        const newIPV = getIPV();
+        if (newIPV !== ipv) {
+            ipv = newIPV;
+            slide = 0;
+            buildDots();
+        }
+        render();
+    };
+
+    const onMouseEnter = () => stopTimer();
+    const onMouseLeave = () => startTimer();
+
+    root.addEventListener("click", onClick);
+    window.addEventListener("resize", onResize);
+
+    const { viewport } = getNodes();
+    if (viewport) {
+        viewport.addEventListener("mouseenter", onMouseEnter);
+        viewport.addEventListener("mouseleave", onMouseLeave);
     }
 
-    // Object (e.g. TipTap/ProseMirror JSON) — return empty; adapt if your CMS provides a serializer
-    if (typeof content === "object") {
-        // If your CMS uses a serializer like @tiptap/html, call it here:
-        // import { generateHTML } from '@tiptap/html';
-        // return generateHTML(content, [...extensions]);
+    rafId = window.requestAnimationFrame(boot);
 
-        // Fallback: return nothing rather than showing raw JSON to users
-        console.warn("[resolvePageContent] content is an object; provide a serializer for rich-text JSON.", content);
-        return "";
-    }
-
-    return "";
+    return () => {
+        window.cancelAnimationFrame(rafId);
+        stopTimer();
+        root.removeEventListener("click", onClick);
+        window.removeEventListener("resize", onResize);
+        const nodes = getNodes();
+        if (nodes.viewport) {
+            nodes.viewport.removeEventListener("mouseenter", onMouseEnter);
+            nodes.viewport.removeEventListener("mouseleave", onMouseLeave);
+        }
+    };
 }
 
-export default function Home({ pageData, news, products = [] }: LandingPageLayoutProps) {
+export default function Home({
+    pageData,
+    news,
+    products = [],
+    middleCmsHtml = "",
+    testimonialsHtml = "",
+    pageStyles = "",
+}: LandingPageLayoutProps) {
+    const testimonialsRef = useRef<HTMLDivElement>(null);
     const [clientProducts, setClientProducts] = useState<any[]>(products);
 
     // If SSR didn't supply any products, try fetching on the client
@@ -229,11 +412,24 @@ export default function Home({ pageData, news, products = [] }: LandingPageLayou
         return () => clearInterval(id);
     }, []);
 
-    // Resolve page content once — handles string HTML, JSON strings, objects, null
-    const pageHtmlContent = resolvePageContent(pageData?.content);
+    useLayoutEffect(() => {
+        if (!testimonialsHtml.trim() || !testimonialsRef.current) return;
+
+        const cleanup = initHomeTestimonialsCarousel(testimonialsRef.current);
+        return cleanup;
+    }, [testimonialsHtml]);
 
     return (
         <div>
+            {pageStyles ? (
+                <Head>
+                    <style
+                        id="home-page-cms-styles"
+                        dangerouslySetInnerHTML={{ __html: pageStyles }}
+                    />
+                </Head>
+            ) : null}
+
             <div className="w-100 base-content">
 
                 {/* ── Products Section ── */}
@@ -313,17 +509,10 @@ export default function Home({ pageData, news, products = [] }: LandingPageLayou
 
                 </div>
 
-                {/* ── CMS Page Content from Dashboard Editor ──
-                    Only rendered when content is a non-empty string.
-                    resolvePageContent() handles: raw HTML strings, JSON-encoded strings,
-                    and rich-text objects (add a serializer for the last case).
-                ── */}
-                {pageHtmlContent ? (
-                    <div
-                        className="w-100 page-content cms-content"
-                        dangerouslySetInnerHTML={{ __html: pageHtmlContent }}
-                    />
-                ) : null}
+                <CmsHtmlBlock
+                    html={middleCmsHtml}
+                    className="w-100 page-content cms-content"
+                />
 
                 {/* ── What's New Section ── */}
                 <div className="w-100 cutter-section">
@@ -368,12 +557,12 @@ export default function Home({ pageData, news, products = [] }: LandingPageLayou
 
                 </div>
 
-                {/* ── CTA Banner ── */}
+                {/* ── Product List CTA (before testimonials) ── */}
                 <div
-                    className="w-100 my-5 py-5 cutter-section"
+                    className="w-100 my-5 py-5 cutter-section home-product-cta"
                     style={{ background: "linear-gradient(90deg, #FF0000, #FF4500, #FFA500)" }}
                 >
-                    <h5 className="text-white text-center fs-2">
+                    <h5 className="text-white text-center fs-2 mb-0">
                         We offer the best PVC solutions in the market. See our{" "}
                         <b>
                             <a href="/public/products" className="text-white fw-bold fs-3">Product List</a>
@@ -381,10 +570,15 @@ export default function Home({ pageData, news, products = [] }: LandingPageLayou
                     </h5>
                 </div>
 
-                {/* ── Testimonials ── */}
-                <div className="w-100 testimonial-section cutter-section">
-                    <TestimonialSection />
-                </div>
+                {/* ── What Our Clients Say (GrapesJS CMS) ── */}
+                {testimonialsHtml ? (
+                    <div
+                        ref={testimonialsRef}
+                        className="w-100 cms-testimonials-root"
+                        suppressHydrationWarning
+                        dangerouslySetInnerHTML={{ __html: testimonialsHtml }}
+                    />
+                ) : null}
 
             </div>
 
@@ -401,6 +595,26 @@ export default function Home({ pageData, news, products = [] }: LandingPageLayou
                 .cms-content table { width: 100%; border-collapse: collapse; margin-bottom: 1rem; }
                 .cms-content table td,
                 .cms-content table th { border: 1px solid #dee2e6; padding: 0.5rem 0.75rem; }
+
+                .home-product-cta.cutter-section {
+                    margin-bottom: 0 !important;
+                }
+
+                .cms-testimonials-root .ts-section {
+                    margin-top: 0 !important;
+                }
+
+                .cms-testimonials-root .ts-arrow {
+                    position: relative;
+                    z-index: 2;
+                    pointer-events: auto;
+                    cursor: pointer;
+                }
+
+                .cms-testimonials-root .ts-wrap {
+                    position: relative;
+                    z-index: 1;
+                }
             `}</style>
         </div>
     );
