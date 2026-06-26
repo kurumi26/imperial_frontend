@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import TestimonialSection from '@/components/Layout/TestimonialSection';
 import { getPublicPageBySlug, PublicAlbum } from "@/services/publicPageService";
 import { getPublicArticles } from "@/services/articleService";
 import { getProducts } from "@/services/productService";
@@ -482,10 +481,6 @@ export default function Base({ pageData, news, products = [] }: LandingPageLayou
 
             <div className="w-100 my-5 py-5 cutter-section" style={{background: "linear-gradient(90deg, #FF0000, #FF4500, #FFA500);"}}>
                 <h5 className="text-white text-center fs-2">We offer the best PVC solutions in the market. See our <b><a href="/public/products" className="text-white fw-bold fs-3">Product List</a></b></h5>
-            </div>
-
-            <div className="w-100 testimonial-section cutter-section">
-                <TestimonialSection />
             </div>
 
         </div>
