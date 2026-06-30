@@ -13,14 +13,10 @@ const nextConfig: NextConfig = {
     return config;
   },
 
-  // ✅ ADD THESE TWO THINGS:
-
   async rewrites() {
     return [
-      {
-        source: '/public/:path*',
-        destination: '/:path*',  // /public/home → /home
-      },
+      { source: '/public/home', destination: '/' },        // home → root
+      { source: '/public/:path*', destination: '/:path*' }, // everything else
     ];
   },
 
