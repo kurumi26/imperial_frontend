@@ -1,9 +1,4 @@
 import { websiteService } from "@/services/websiteService";
-import {
-  resolveCompanyLogoUrl,
-  resolveFaviconUrl,
-  resolveManagedAssetUrl,
-} from "@/lib/mediaAssets";
 
 export {
   resolveCompanyLogoUrl,
@@ -17,7 +12,7 @@ export type WebsiteSettings = {
   company_logo?: string | null;
   website_name?: string | null;
   company_name?: string | null;
-  [key: string]: any;
+  [key: string]: string | null | undefined;
 };
 
 export const WEBSITE_SETTINGS_STORAGE_KEY = "cms4.websiteSettings.v1";
@@ -86,11 +81,11 @@ export function subscribeWebsiteSettingsUpdated(cb: () => void): () => void {
     if (e.key === WEBSITE_SETTINGS_STORAGE_KEY) cb();
   };
 
-  window.addEventListener(WEBSITE_SETTINGS_UPDATED_EVENT, onUpdated as any);
+  window.addEventListener(WEBSITE_SETTINGS_UPDATED_EVENT, onUpdated);
   window.addEventListener("storage", onStorage);
 
   return () => {
-    window.removeEventListener(WEBSITE_SETTINGS_UPDATED_EVENT, onUpdated as any);
+    window.removeEventListener(WEBSITE_SETTINGS_UPDATED_EVENT, onUpdated);
     window.removeEventListener("storage", onStorage);
   };
 }

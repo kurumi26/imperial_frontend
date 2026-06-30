@@ -76,7 +76,7 @@ export function openFileManagerPicker(
   const prefix = `${base}/laravel-filemanager`;
   window.open(`${prefix}?type=${type}`, "FileManager", "width=960,height=640");
 
-  (window as any).SetUrl = (url: string) => {
+  (window as Window & { SetUrl?: (url: string) => void }).SetUrl = (url: string) => {
     if (url) onSelect(url);
   };
 }

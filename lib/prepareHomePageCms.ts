@@ -39,7 +39,7 @@ function buildCarouselSectionHtml(
 function normalizeTestimonialsSection(
   cmsSections: ReturnType<typeof parseCmsTestimonialsHtml>
 ): string {
-  let sectionHtml = cmsSections.sectionHtml?.trim() ?? "";
+  const sectionHtml = cmsSections.sectionHtml?.trim() ?? "";
 
   if (!sectionHtml) return "";
 
