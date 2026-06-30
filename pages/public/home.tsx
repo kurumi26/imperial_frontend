@@ -6,12 +6,11 @@ import LandingPageLayout from "@/components/Layout/GuestLayout";
 import CmsHtmlBlock from "@/components/Layout/CmsHtmlBlock";
 import { prepareHomePageCms } from "@/lib/prepareHomePageCms";
 import type { PreparedHomeCms } from "@/lib/prepareHomePageCms";
+import { loadPublicPageBySlug, setPublicPageCacheHeaders, unwrapPublicPage } from "@/lib/publicPageServer";
 export const BANNER_TITLE = "Imperial PVC";
 
 export async function getServerSideProps(context: { res: { setHeader: (name: string, value: string) => void } }) {
-    context.res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate");
-    context.res.setHeader("Pragma", "no-cache");
-    context.res.setHeader("Expires", "0");
+    setPublicPageCacheHeaders(context.res);
 
     try {
         const [pageRes, articlesRes] = await Promise.all([
@@ -19,9 +18,8 @@ export async function getServerSideProps(context: { res: { setHeader: (name: str
             getPublicArticles({ per_page: 3 }),
         ]);
 
-        let products: any[] = [];
-
-        const pageData = pageRes.data ?? null;
+        const products: any[] = [];
+        const pageData = unwrapPublicPage(pageRes.data);
         const cms = prepareHomePageCms(pageData);
 
         return {
@@ -36,7 +34,18 @@ export async function getServerSideProps(context: { res: { setHeader: (name: str
         };
     } catch (error) {
         console.error("Error fetching page data:", error);
-        return { notFound: true };
+        const cms = prepareHomePageCms(null);
+
+        return {
+            props: {
+                pageData: null,
+                news: [],
+                products: [],
+                middleCmsHtml: cms.middleCmsHtml,
+                testimonialsHtml: cms.testimonialsHtml,
+                pageStyles: cms.pageStyles,
+            },
+        };
     }
 }
 
