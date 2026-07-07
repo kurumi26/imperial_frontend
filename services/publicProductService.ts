@@ -119,7 +119,12 @@ export function resolveProductImageUrl(src: any): string {
 		configuredBase.replace(/^https?:\/\//i, "")
 	);
 	const frontendUrl = (process.env.NEXT_PUBLIC_FRONTEND_URL ?? "").toLowerCase();
-	const isBetaFrontend = frontendUrl.includes("beta.imperialpvc.com");
+	const runtimeHost =
+		typeof window !== "undefined" ? window.location.hostname.toLowerCase() : "";
+	const isBetaFrontend =
+		frontendUrl.includes("beta.imperialpvc.com") ||
+		runtimeHost.includes("beta.imperialpvc.com") ||
+		runtimeHost.includes("imperial-frontend-six.vercel.app");
 	// Keep localhost API for local/dev. Only force beta host when frontend is beta but API env is mistakenly local.
 	const base = configuredBase
 		? (isLocalConfiguredBase && isBetaFrontend ? "https://beta.imperialpvc.com" : configuredBase)
