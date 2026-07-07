@@ -4,66 +4,48 @@ import { getPublicPageBySlug, PublicAlbum, PublicPage } from "@/services/publicP
 import { getPublicArticles } from "@/services/articleService";
 import LandingPageLayout from "@/components/Layout/GuestLayout";
 import CmsHtmlBlock from "@/components/Layout/CmsHtmlBlock";
-import { resolvePageContent, resolvePageStyles } from "@/lib/cmsPageContent";
-import {
-    parseCmsTestimonialsHtml,
-    sanitizeCmsHtml,
-    extractEmbeddedStyles,
-    extractEmbeddedScripts,
-} from "@/lib/parseCmsTestimonials";
+import { prepareHomePageCms } from "@/lib/prepareHomePageCms";
+import type { PreparedHomeCms } from "@/lib/prepareHomePageCms";
+import { loadPublicPageBySlug, setPublicPageCacheHeaders, unwrapPublicPage } from "@/lib/publicPageServer";
 export const BANNER_TITLE = "Imperial PVC";
 
-export async function getServerSideProps() {
+export async function getServerSideProps(context: { res: { setHeader: (name: string, value: string) => void } }) {
+    setPublicPageCacheHeaders(context.res);
+
     try {
-        // fetch page config and latest news concurrently
         const [pageRes, articlesRes] = await Promise.all([
             getPublicPageBySlug("home"),
             getPublicArticles({ per_page: 3 }),
         ]);
 
-        // fetch latest products (limit 4)
-        let products: any[] = [];
-        /*
-        try {
-            const prodRes = await getProducts({ per_page: 4 });
-            const data = prodRes?.data ?? prodRes;
-            if (Array.isArray(data)) {
-                products = data;
-            } else {
-                products = data?.data ?? data?.items ?? data?.rows ?? [];
-            }
-        } catch (e) {
-            // ignore; leave products empty for now
-        }
-        */
-
-        console.log("[SSR] landing page products count", products.length);
-        console.log("[SSR] pageData keys:", Object.keys(pageRes.data ?? {}));
-        console.log("[SSR] content preview:", String(pageRes.data?.content ?? "").slice(0, 200));
-
-        const pageData = pageRes.data ?? null;
-        const rawContent = resolvePageContent(pageData ?? { content: "", json: undefined });
-        const { htmlWithoutStyles, styles: embeddedStyles } = extractEmbeddedStyles(
-            sanitizeCmsHtml(rawContent)
-        );
-        const { htmlWithoutScripts } = extractEmbeddedScripts(htmlWithoutStyles);
-        const cmsSections = parseCmsTestimonialsHtml(htmlWithoutScripts);
-        const hasTestimonialsSection = Boolean(cmsSections.sectionHtml);
-        const basePageStyles = resolvePageStyles(pageData ?? { styles: undefined, json: undefined });
-        const pageStyles = [basePageStyles, embeddedStyles].filter(Boolean).join("\n");
+        const products: any[] = [];
+        const pageData = unwrapPublicPage(pageRes.data);
+        const cms = prepareHomePageCms(pageData);
 
         return {
             props: {
                 pageData,
                 news: articlesRes.data?.data ?? [],
                 products,
-                middleCmsHtml: hasTestimonialsSection ? cmsSections.beforeHtml : htmlWithoutScripts,
-                testimonialsHtml: cmsSections.sectionHtml,
-                pageStyles,
+                middleCmsHtml: cms.middleCmsHtml,
+                testimonialsHtml: cms.testimonialsHtml,
+                pageStyles: cms.pageStyles,
             },
-        };    } catch (error) {
+        };
+    } catch (error) {
         console.error("Error fetching page data:", error);
-        return { notFound: true };
+        const cms = prepareHomePageCms(null);
+
+        return {
+            props: {
+                pageData: null,
+                news: [],
+                products: [],
+                middleCmsHtml: cms.middleCmsHtml,
+                testimonialsHtml: cms.testimonialsHtml,
+                pageStyles: cms.pageStyles,
+            },
+        };
     }
 }
 
@@ -337,12 +319,37 @@ export default function Home({
     pageData,
     news,
     products = [],
-    middleCmsHtml = "",
-    testimonialsHtml = "",
-    pageStyles = "",
+    middleCmsHtml: initialMiddleCmsHtml = "",
+    testimonialsHtml: initialTestimonialsHtml = "",
+    pageStyles: initialPageStyles = "",
 }: LandingPageLayoutProps) {
     const testimonialsRef = useRef<HTMLDivElement>(null);
     const [clientProducts, setClientProducts] = useState<any[]>(products);
+    const [cmsContent, setCmsContent] = useState<PreparedHomeCms>({
+        middleCmsHtml: initialMiddleCmsHtml,
+        testimonialsHtml: initialTestimonialsHtml,
+        pageStyles: initialPageStyles,
+    });
+
+    const { middleCmsHtml, testimonialsHtml, pageStyles } = cmsContent;
+
+    // Always refresh CMS content from the API on the client so Vercel shows latest GrapesJS saves.
+    useEffect(() => {
+        let cancelled = false;
+
+        getPublicPageBySlug("home")
+            .then((res) => {
+                if (cancelled || !res.data) return;
+                setCmsContent(prepareHomePageCms(res.data));
+            })
+            .catch((err) => {
+                console.error("Failed to refresh home CMS content", err);
+            });
+
+        return () => {
+            cancelled = true;
+        };
+    }, []);
 
     // If SSR didn't supply any products, try fetching on the client
     useEffect(() => {
@@ -415,8 +422,24 @@ export default function Home({
     useLayoutEffect(() => {
         if (!testimonialsHtml.trim() || !testimonialsRef.current) return;
 
-        const cleanup = initHomeTestimonialsCarousel(testimonialsRef.current);
-        return cleanup;
+        let cleanup: (() => void) | undefined;
+        const timers: ReturnType<typeof setTimeout>[] = [];
+
+        const boot = () => {
+            cleanup?.();
+            if (!testimonialsRef.current) return;
+            cleanup = initHomeTestimonialsCarousel(testimonialsRef.current);
+        };
+
+        boot();
+        [150, 500, 1200].forEach((delay) => {
+            timers.push(setTimeout(boot, delay));
+        });
+
+        return () => {
+            timers.forEach(clearTimeout);
+            cleanup?.();
+        };
     }, [testimonialsHtml]);
 
     return (
@@ -614,6 +637,52 @@ export default function Home({
                 .cms-testimonials-root .ts-wrap {
                     position: relative;
                     z-index: 1;
+                }
+
+                .cms-testimonials-root #tsViewport {
+                    overflow: hidden;
+                    width: 100%;
+                }
+
+                .cms-testimonials-root #tsTrack {
+                    display: flex;
+                    flex-wrap: nowrap;
+                    gap: 24px;
+                    transition: transform 0.45s ease;
+                    will-change: transform;
+                }
+
+                .cms-testimonials-root .ts-slot {
+                    flex: 0 0 auto;
+                }
+
+                .cms-testimonials-root .ts-arrow {
+                    position: absolute;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    z-index: 2;
+                    background: transparent;
+                    border: none;
+                    font-size: 2.5rem;
+                    line-height: 1;
+                    color: #414141;
+                    cursor: pointer;
+                }
+
+                .cms-testimonials-root .ts-arrow-prev { left: 0; }
+                .cms-testimonials-root .ts-arrow-next { right: 0; }
+
+                .cms-testimonials-root .ts-dot {
+                    width: 12px;
+                    height: 12px;
+                    border-radius: 50%;
+                    border: none;
+                    background: #e6e6e6;
+                    cursor: pointer;
+                }
+
+                .cms-testimonials-root .ts-dot.active {
+                    background: #ff7b00;
                 }
             `}</style>
         </div>

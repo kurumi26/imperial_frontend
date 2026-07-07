@@ -66,11 +66,11 @@ export function subscribeCurrentUserUpdated(cb: () => void): () => void {
     if (e.key === CURRENT_USER_STORAGE_KEY) cb();
   };
 
-  window.addEventListener(CURRENT_USER_UPDATED_EVENT, onUserUpdated as any);
+  window.addEventListener(CURRENT_USER_UPDATED_EVENT, onUserUpdated);
   window.addEventListener("storage", onStorage);
 
   return () => {
-    window.removeEventListener(CURRENT_USER_UPDATED_EVENT, onUserUpdated as any);
+    window.removeEventListener(CURRENT_USER_UPDATED_EVENT, onUserUpdated);
     window.removeEventListener("storage", onStorage);
   };
 }
@@ -96,7 +96,7 @@ export function resolveAvatarUrl(avatar?: string | null): string | undefined {
 export function initialsForUser(user: Partial<User> | null | undefined): string {
   const fname = (user?.fname || "").trim();
   const lname = (user?.lname || "").trim();
-  const email = (user as any)?.email ? String((user as any).email) : "";
+  const email = (user?.email ?? "").trim();
 
   const initials = fname && lname ? `${fname[0]}${lname[0]}` : fname?.[0] || lname?.[0] || email?.[0] || "U";
   return initials.toUpperCase();

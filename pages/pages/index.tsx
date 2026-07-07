@@ -6,6 +6,7 @@ import { getPages, getPageById, restorePage, deletePage, postDeletePage, postMet
 import ConfirmModal from "@/components/UI/ConfirmModal";
 import { toast } from "@/lib/toast";
 import { useRouter } from "next/router";
+import { buildPublicPageUrl } from "@/lib/publicPageServer";
 
 interface PageRow {
   id: number;
@@ -21,7 +22,6 @@ interface PageRow {
 
 export default function ManagePages() {
   const router = useRouter();
-  const FRONTEND_URL = process.env.NEXT_PUBLIC_FRONTEND_URL!;
   const [pages, setPages] = useState<PageRow[]>([]);
   const [recentlyDeletedPages, setRecentlyDeletedPages] = useState<PageRow[]>([]);
   const [isLoading, setLoading] = useState(false);
@@ -477,7 +477,7 @@ export default function ManagePages() {
             </div>
           ) : (
             <a
-              href={`/public/${row.slug}`}
+              href={buildPublicPageUrl(row.slug)}
               target="_blank"
               rel="noreferrer"
               className="text-primary fw-bold"
@@ -487,7 +487,7 @@ export default function ManagePages() {
           )}
 
           <div style={{ fontSize: "0.8rem", color: "#6c757d" }}>
-            {FRONTEND_URL}/public/{row.slug}
+            {buildPublicPageUrl(row.slug)}
           </div>
         </div>
       ),

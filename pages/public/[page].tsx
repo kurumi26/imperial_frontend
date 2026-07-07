@@ -1,30 +1,34 @@
 import LandingPageLayout from "@/components/Layout/GuestLayout";
-import { getPublicPageBySlug, PublicPage } from "@/services/publicPageService";
+import { PublicPage } from "@/services/publicPageService";
 import { resolvePageContent, resolvePageStyles } from "@/lib/cmsPageContent";
+import { loadPublicPageBySlug, setPublicPageCacheHeaders } from "@/lib/publicPageServer";
 import Head from "next/head";
 
 interface PublicPageViewProps {
-  pageData: PublicPage;
+  pageData: PublicPage | null;
 }
 
 export default function PublicPageView({ pageData }: PublicPageViewProps) {
-  if (!pageData) return <div>Page not found</div>;
+  if (!pageData) {
+    return (
+      <div className="container py-5 text-center text-secondary">
+        <p>Page not found or temporarily unavailable.</p>
+      </div>
+    );
+  }
 
   const htmlContent = resolvePageContent(pageData);
-  const cssStyles  = resolvePageStyles(pageData);
+  const cssStyles = resolvePageStyles(pageData);
 
   return (
     <>
       <Head>
-        {/* Page-specific scoped styles from the CMS/GrapesJS editor */}
         {cssStyles && (
           <style
             id={`page-styles-${pageData.slug ?? pageData.id}`}
             dangerouslySetInnerHTML={{ __html: cssStyles }}
           />
         )}
-
-        {/* Optional: page-level SEO meta tags */}
         {pageData.meta?.title && <title>{pageData.meta.title}</title>}
         {pageData.meta?.description && (
           <meta name="description" content={pageData.meta.description} />
@@ -34,7 +38,6 @@ export default function PublicPageView({ pageData }: PublicPageViewProps) {
         )}
       </Head>
 
-      {/* Rendered CMS HTML content */}
       {htmlContent ? (
         <div
           className="public-page-content"
@@ -49,27 +52,25 @@ export default function PublicPageView({ pageData }: PublicPageViewProps) {
   );
 }
 
-export async function getServerSideProps(context: any) {
+export async function getServerSideProps(context: {
+  params: { page: string };
+  res: { setHeader: (name: string, value: string) => void };
+}) {
   const { page } = context.params;
+  setPublicPageCacheHeaders(context.res);
 
-  try {
-    const res = await getPublicPageBySlug(page);
-    const pageData = res.data ?? null;
+  const { pageData, notFound } = await loadPublicPageBySlug(page);
+  if (notFound) return { notFound: true };
 
-    if (!pageData) return { notFound: true };
-
-    return {
-      props: {
-        pageData,
-        layout: {
-          fullWidth: true,
-          hideFooter: page === "footer",
-        },
+  return {
+    props: {
+      pageData,
+      layout: {
+        fullWidth: true,
+        hideFooter: page === "footer",
       },
-    };
-  } catch {
-    return { notFound: true };
-  }
+    },
+  };
 }
 
 PublicPageView.Layout = LandingPageLayout;

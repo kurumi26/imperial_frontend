@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { PublicMenuItem } from "@/services/publicPageService";
+import { resolvePublicPageHref } from "@/lib/publicRoutes";
 
 export default function MenuItem({
   item,
@@ -15,7 +16,7 @@ export default function MenuItem({
 }) {
   const [open, setOpen] = useState(false);
 
-  const href = item.target;
+  const href = item.type === "page" ? resolvePublicPageHref(item.target) : item.target;
   const isInternal = item.type === "page";
   const hasChildren = item.children && item.children.length > 0;
 
