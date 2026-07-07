@@ -54,9 +54,22 @@ export default function PublicPageView({ pageData }: PublicPageViewProps) {
             }
 
             .public-page-content.page-about-us [style*="max-height"],
-            .public-page-content.page-about-us [style*="height: 600px"] {
+            .public-page-content.page-about-us [style*="height: 600px"],
+            .public-page-content.page-about-us [style*="height:600px"],
+            .public-page-content.page-about-us [style*="max-height: 600px"],
+            .public-page-content.page-about-us [style*="max-height:600px"] {
               max-height: none !important;
               height: auto !important;
+            }
+
+            .public-page-content.page-about-us .row,
+            .public-page-content.page-about-us [class*="d-flex"] {
+              align-items: stretch !important;
+              flex-wrap: wrap !important;
+            }
+
+            .public-page-content.page-about-us [class*="col-"] {
+              min-height: 0 !important;
             }
 
             .public-page-content.page-about-us img {
