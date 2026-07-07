@@ -64,13 +64,13 @@ export default function NewsDetailPage({ article, isPreview }: Props) {
         </div>
 
         {/* FEATURED IMAGE */}
-        {(article.thumbnail_url || article.image_url) && (
+        {(article.image_url || article.thumbnail_url) && (
           <div className="mb-5 text-center">
             <img
-              src={article.thumbnail_url || article.image_url}
+              src={article.image_url || article.thumbnail_url}
               alt={article.name}
               className="img-fluid rounded"
-              style={{ maxWidth: "500px" }}
+              style={{ width: "100%", maxWidth: "900px" }}
             />
           </div>
         )}

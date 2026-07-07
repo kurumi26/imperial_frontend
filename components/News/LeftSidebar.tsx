@@ -66,7 +66,7 @@ export default function LeftSidebar({ categories, archive }: Props) {
             {categories.map((cat) => (
               <li key={cat.id} className="bo5-b p-t-8 p-b-8">
                 <a
-                  className="txt27"
+                  className="txt27 link-reset"
                   style={{ cursor: "pointer" }}
                   onClick={() => pushQuery({ category: cat.slug })}
                 >
@@ -90,7 +90,7 @@ export default function LeftSidebar({ categories, archive }: Props) {
               months.map((m) => (
                 <li key={`${year}-${m.month}`} className="flex-sb-m p-t-8 p-b-8">
                   <a
-                    className="txt27"
+                    className="txt27 link-reset"
                     style={{ cursor: "pointer" }}
                     onClick={() =>
                       pushQuery({ year, month: m.month })

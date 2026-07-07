@@ -19,6 +19,11 @@ export default function NewsItem({ article }: any) {
             alt={article.name}
             loading="lazy"
             decoding="async"
+            style={{
+              width: "100%",
+              maxHeight: "520px",
+              objectFit: "cover",
+            }}
           />
         </Link>
 
@@ -33,7 +38,7 @@ export default function NewsItem({ article }: any) {
 
       <div className="text-blo4 p-t-33">
         <h4 className="p-b-16">
-          <Link href={`/public/news/${article.slug}`} className="tit9">
+          <Link href={`/public/news/${article.slug}`} className="tit9 link-reset">
             {article.name}
           </Link>
         </h4>
@@ -58,7 +63,7 @@ export default function NewsItem({ article }: any) {
 
         <Link
           href={`/public/news/${article.slug}`}
-          className="dis-block txt4 m-t-30"
+          className="dis-block txt4 m-t-30 link-reset"
         >
           Continue Reading
           <i className="fa-solid fa-arrow-right-long m-l-10" />

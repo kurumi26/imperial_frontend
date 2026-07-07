@@ -392,6 +392,22 @@ function getColumns(categoriesMap: Record<string, string>, router: any, handleDe
       `</svg>`
     );
 
+  const formatUpdated = (p: any) => {
+    const raw = p?.updated_at_formatted ?? p?.updated_at ?? p?.modified_at ?? p?.created_at;
+    if (!raw) return "-";
+
+    const d = new Date(raw);
+    if (Number.isNaN(d.getTime())) return String(raw);
+
+    return d.toLocaleString("en-US", {
+      month: "short",
+      day: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  };
+
   return [
     {
       key: "select",
@@ -455,6 +471,13 @@ function getColumns(categoriesMap: Record<string, string>, router: any, handleDe
     { key: "price", header: "Price", render: (p) => p.price ?? p.amount },
     { key: "category", header: "Category", render: (p) => ( (p.category && (p.category.name ?? p.category.title)) ?? p.category_name ?? (p.category_id && categoriesMap[String(p.category_id)]) ?? p.category_id ?? "-" ) },
     { key: "status", header: "Status", render: (p) => p.status ?? "-" },
+    {
+      key: "updated_at",
+      header: "Updated",
+      sortable: true,
+      sortField: "updated_at",
+      render: (p) => formatUpdated(p),
+    },
     {
       key: "options",
       header: "Options",

@@ -114,8 +114,36 @@ export function resolveProductImageUrl(src: any): string {
 	let s = String(src).trim().replace(/\\/g, "/");
 	if (!s) return "/images/logo.png";
 
+	const configuredBase = (process.env.NEXT_PUBLIC_API_URL ?? "").replace(/\/$/, "");
+	const isLocalConfiguredBase = /^(127\.0\.0\.1|localhost|::1)(:\d+)?$/i.test(
+		configuredBase.replace(/^https?:\/\//i, "")
+	);
+	const frontendUrl = (process.env.NEXT_PUBLIC_FRONTEND_URL ?? "").toLowerCase();
+	const isBetaFrontend = frontendUrl.includes("beta.imperialpvc.com");
+	// Keep localhost API for local/dev. Only force beta host when frontend is beta but API env is mistakenly local.
+	const base = configuredBase
+		? (isLocalConfiguredBase && isBetaFrontend ? "https://beta.imperialpvc.com" : configuredBase)
+		: (isBetaFrontend ? "https://beta.imperialpvc.com" : "");
+
 	// Absolute / data / blob URLs
-	if (/^(https?:)?\/\//i.test(s) || s.startsWith("data:") || s.startsWith("blob:")) return s;
+	if (/^(https?:)?\/\//i.test(s) || s.startsWith("data:") || s.startsWith("blob:")) {
+		// If DB contains localhost URLs, remap them to configured API host.
+		if (/^https?:\/\//i.test(s) && base) {
+			try {
+				const parsed = new URL(s);
+				const isLocalHost =
+					parsed.hostname === "127.0.0.1" ||
+					parsed.hostname === "localhost" ||
+					parsed.hostname === "::1";
+				if (isLocalHost) {
+					return `${base}${parsed.pathname}${parsed.search}`;
+				}
+			} catch {
+				// keep original absolute URL if parsing fails
+			}
+		}
+		return s;
+	}
 
 	// Leaked Windows absolute paths (e.g. C:/…/public/images/x.jpg)
 	if (/^[a-zA-Z]:\//.test(s)) {
@@ -130,8 +158,6 @@ export function resolveProductImageUrl(src: any): string {
 	// Common relative public paths
 	if (/^\.?\/?images\/|^\.?\/?img\/|^\.?\/?icons\//.test(s)) return `/${s.replace(/^\.\//, "")}`;
 	if (s.startsWith("/images/") || s.startsWith("/img/") || s.startsWith("/icons/") || s.startsWith("/_next/")) return s;
-
-	const base = (process.env.NEXT_PUBLIC_API_URL ?? "").replace(/\/$/, "");
 
 	if (s.startsWith("/storage/") || s.startsWith("/uploads/")) return base ? `${base}${s}` : s;
 	if (s.startsWith("storage/") || s.startsWith("uploads/")) return base ? `${base}/${s}` : `/${s}`;

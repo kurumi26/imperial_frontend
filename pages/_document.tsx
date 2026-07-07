@@ -4,21 +4,13 @@ export default function Document() {
   return (
     <Html lang="en">
       <Head>
-        {/* Template / public-site styles (avoid next/head warnings) */}
-        {/** CSS files for GuestLayout */}
-        {/* <link rel="stylesheet" href="/css/flatpickr.min.css" />
-        <link rel="stylesheet" href="/css/glightbox.min.css" />
-        <link rel="stylesheet" href="/css/swiper-bundle.min.css" />
-        <link rel="stylesheet" href="/css/main.css" />
-        <link rel="stylesheet" href="/css/util.css" /> */}
-
-        {/* MainBanner font */}
-        {/* <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap"
-          rel="stylesheet"
-        /> */}
+        {/* Public/front-end template styles */}
+        <link rel="stylesheet" href="/css/public-css.css" />
+        <link rel="stylesheet" href="/css/product.css" />
+        <link rel="stylesheet" href="/css/banner.css" />
+        <link rel="stylesheet" href="/css/navigation.css" />
+        <link rel="stylesheet" href="/css/public-overrides.css" />
+        <link rel="stylesheet" href="/css/custom.css" />
       </Head>
       <body>
         <Main />
