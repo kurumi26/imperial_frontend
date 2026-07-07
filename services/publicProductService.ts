@@ -132,15 +132,24 @@ export function resolveProductImageUrl(src: any): string {
 
 	// Absolute / data / blob URLs
 	if (/^(https?:)?\/\//i.test(s) || s.startsWith("data:") || s.startsWith("blob:")) {
-		// If DB contains localhost URLs, remap them to configured API host.
+		// If DB contains localhost URLs or insecure absolute URLs, remap them to API base.
 		if (/^https?:\/\//i.test(s) && base) {
 			try {
 				const parsed = new URL(s);
+				const runtimeProtocol =
+					typeof window !== "undefined" ? window.location.protocol : "";
 				const isLocalHost =
 					parsed.hostname === "127.0.0.1" ||
 					parsed.hostname === "localhost" ||
 					parsed.hostname === "::1";
-				if (isLocalHost) {
+				const isInsecureForCurrentPage =
+					runtimeProtocol === "https:" && parsed.protocol === "http:";
+				const shouldNormalizeToBase =
+					isLocalHost ||
+					isInsecureForCurrentPage ||
+					(isBetaFrontend && parsed.hostname !== "beta.imperialpvc.com");
+
+				if (shouldNormalizeToBase) {
 					return `${base}${parsed.pathname}${parsed.search}`;
 				}
 			} catch {
