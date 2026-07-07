@@ -1,14 +1,15 @@
 import Head from "next/head";
 import LandingPageLayout from "@/components/Layout/GuestLayout";
-import { getArticleBySlug } from "@/services/articleService";
+import { fetchPublicArticleBySlug } from "@/services/articleService";
 import { articleToAlbum } from "@/schemas/articleToAlbum";
 
 type Props = {
   pageData: any;
   article: any;
+  isPreview?: boolean;
 };
 
-export default function NewsDetailPage({ article }: Props) {
+export default function NewsDetailPage({ article, isPreview }: Props) {
   // Parse the grapesjs json to extract css and js if needed
   let gjsCSS = "";
   let gjsJS = "";
@@ -43,6 +44,11 @@ export default function NewsDetailPage({ article }: Props) {
       </Head>
 
       <div className="container">
+        {isPreview && (
+          <div className="alert alert-warning py-2 small mb-3" role="status">
+            Preview mode — this article is not published yet.
+          </div>
+        )}
         {/* TITLE */}
         <h1 className="fw-bold text-primary mb-2">
           {article.name}
@@ -87,17 +93,31 @@ export default function NewsDetailPage({ article }: Props) {
   );
 }
 
-export async function getServerSideProps({ params }: any) {
+export async function getServerSideProps({ params, query, res }: any) {
+  if (res) {
+    res.setHeader("Cache-Control", "no-store, must-revalidate");
+  }
+
   try {
-    const res = await getArticleBySlug(params.slug);
+    const previewQuery =
+      query?.preview === "1" && query?.expires && query?.signature
+        ? {
+            preview: String(query.preview),
+            expires: String(query.expires),
+            signature: String(query.signature),
+          }
+        : undefined;
+
+    const article = await fetchPublicArticleBySlug(params.slug, previewQuery);
 
     return {
       props: {
         pageData: {
-          title: res.data.name,
-          album: articleToAlbum(res.data),
+          title: article.name,
+          album: articleToAlbum(article),
         },
-        article: res.data,
+        article,
+        isPreview: Boolean(article?.is_preview),
       },
     };
   } catch (error) {

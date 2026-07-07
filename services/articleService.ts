@@ -293,5 +293,49 @@ export const getCategories = () =>
 export const getArchive = () =>
   axiosInstance.get("/public-articles-archive");
 
-export const getArticleBySlug = (slug: string) =>
-  axiosInstance.get(`/public-articles/${slug}`);
+export type ArticlePreviewQuery = {
+  preview?: string;
+  expires?: string;
+  signature?: string;
+};
+
+export const getArticleBySlug = (
+  slug: string,
+  preview?: ArticlePreviewQuery
+) =>
+  axiosInstance.get(`/public-articles/${slug}`, {
+    params: preview?.preview === "1" ? preview : undefined,
+    headers: { "X-No-Loading": "true" },
+  });
+
+export const fetchPublicArticleBySlug = async (
+  slug: string,
+  preview?: ArticlePreviewQuery
+) => {
+  const base = (process.env.NEXT_PUBLIC_API_URL || "").replace(/\/$/, "");
+  const url = new URL(
+    `${base}/api/public-articles/${encodeURIComponent(slug)}`
+  );
+
+  if (preview?.preview === "1" && preview.expires && preview.signature) {
+    url.searchParams.set("preview", "1");
+    url.searchParams.set("expires", preview.expires);
+    url.searchParams.set("signature", preview.signature);
+  }
+
+  const res = await fetch(url.toString(), {
+    headers: { Accept: "application/json" },
+    cache: "no-store",
+  });
+
+  if (!res.ok) {
+    throw new Error(`Article fetch failed: ${res.status}`);
+  }
+
+  return res.json();
+};
+
+export const getArticlePreviewUrl = async (slug: string): Promise<string> => {
+  const res = await axiosInstance.get(`/public-articles/${slug}/preview-link`);
+  return res.data.url;
+};

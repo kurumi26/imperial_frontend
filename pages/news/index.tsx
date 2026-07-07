@@ -11,6 +11,7 @@ import {
   postMethodDeleteArticle,
   restoreArticle,
   updateArticleStatus,
+  getArticlePreviewUrl,
   ArticleRow,
 } from "@/services/articleService";
 import { useRouter } from "next/router";
@@ -407,12 +408,28 @@ function ManageNews() {
                 className="btn btn-link p-0 me-2 text-secondary"
                 title="View"
                 type="button"
-                onClick={() => {
+                onClick={async () => {
                   if (!row.slug) {
                     toast.error("No slug available to view");
                     return;
                   }
-                  window.open(`/public/news/${row.slug}`, "_blank", "noopener,noreferrer");
+                  const base =
+                    process.env.NEXT_PUBLIC_FRONTEND_URL || window.location.origin;
+                  const status = normalizeStatus(row);
+
+                  try {
+                    const url =
+                      status === "published"
+                        ? `${base}/public/news/${row.slug}`
+                        : await getArticlePreviewUrl(row.slug);
+                    window.open(url, "_blank", "noopener,noreferrer");
+                  } catch {
+                    toast.error(
+                      status === "published"
+                        ? "Could not open this article"
+                        : "Could not create a preview link. Sign in and try again."
+                    );
+                  }
                 }}
               >
                 <i className="fas fa-eye" />
