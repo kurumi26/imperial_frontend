@@ -132,6 +132,13 @@ export function resolveProductImageUrl(src: any): string {
 
 	// Absolute / data / blob URLs
 	if (/^(https?:)?\/\//i.test(s) || s.startsWith("data:") || s.startsWith("blob:")) {
+		// Fix malformed API values like:
+		// https://beta.../storage/https://beta.../storage/products/abc.jpg
+		const nestedHttpIdx = s.indexOf("http://", 8) >= 0 ? s.indexOf("http://", 8) : s.indexOf("https://", 8);
+		if (nestedHttpIdx > 0) {
+			s = s.slice(nestedHttpIdx);
+		}
+
 		// If DB contains localhost URLs or insecure absolute URLs, remap them to API base.
 		if (/^https?:\/\//i.test(s) && base) {
 			try {
