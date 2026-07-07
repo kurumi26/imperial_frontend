@@ -19,7 +19,6 @@ export default function PublicPageView({ pageData }: PublicPageViewProps) {
 
   const htmlContent = resolvePageContent(pageData);
   const cssStyles = resolvePageStyles(pageData);
-  const slugClass = (pageData.slug || "page").toLowerCase().replace(/[^a-z0-9-]/g, "-");
 
   return (
     <>
@@ -40,44 +39,10 @@ export default function PublicPageView({ pageData }: PublicPageViewProps) {
       </Head>
 
       {htmlContent ? (
-        <>
-          <div
-            className={`public-page-content page-${slugClass}`}
-            dangerouslySetInnerHTML={{ __html: htmlContent }}
-          />
-          <style jsx global>{`
-            /* Prevent clipped content on zoom for CMS About Us layout */
-            .public-page-content.page-about-us [style*="overflow: hidden"],
-            .public-page-content.page-about-us [style*="overflow-y: hidden"],
-            .public-page-content.page-about-us [style*="overflow-x: hidden"] {
-              overflow: visible !important;
-            }
-
-            .public-page-content.page-about-us [style*="max-height"],
-            .public-page-content.page-about-us [style*="height: 600px"],
-            .public-page-content.page-about-us [style*="height:600px"],
-            .public-page-content.page-about-us [style*="max-height: 600px"],
-            .public-page-content.page-about-us [style*="max-height:600px"] {
-              max-height: none !important;
-              height: auto !important;
-            }
-
-            .public-page-content.page-about-us .row,
-            .public-page-content.page-about-us [class*="d-flex"] {
-              align-items: stretch !important;
-              flex-wrap: wrap !important;
-            }
-
-            .public-page-content.page-about-us [class*="col-"] {
-              min-height: 0 !important;
-            }
-
-            .public-page-content.page-about-us img {
-              max-width: 100%;
-              height: auto !important;
-            }
-          `}</style>
-        </>
+        <div
+          className="public-page-content"
+          dangerouslySetInnerHTML={{ __html: htmlContent }}
+        />
       ) : (
         <div className="container py-5 text-center text-secondary">
           <p>No content available for this page.</p>
