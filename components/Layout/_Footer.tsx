@@ -43,9 +43,13 @@ export default function CmsFooter() {
           dangerouslySetInnerHTML={{
             __html: `
               .cms-footer-content .footer{
-                background-image: url("${bgUrl}") !important;
+                background-image:
+                  linear-gradient(135deg, rgba(139, 0, 0, 0.9) 0%, rgba(204, 51, 0, 0.88) 50%, rgba(255, 107, 53, 0.86) 100%),
+                  url("${bgUrl}") !important;
                 background-repeat: repeat !important;
                 background-position: center center !important;
+                background-attachment: scroll !important;
+                background-size: auto !important;
               }
             `,
           }}
