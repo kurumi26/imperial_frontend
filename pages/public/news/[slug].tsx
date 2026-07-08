@@ -117,7 +117,10 @@ export async function getServerSideProps({ params, query, res }: any) {
           album: articleToAlbum(article),
         },
         article,
-        isPreview: Boolean(article?.is_preview),
+        isPreview: Boolean(
+          article?.is_preview ||
+            String(article?.status ?? "").toLowerCase() === "private"
+        ),
       },
     };
   } catch (error) {
