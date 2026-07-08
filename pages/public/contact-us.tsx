@@ -1,4 +1,5 @@
 import LandingPageLayout from "@/components/Layout/GuestLayout";
+import AlertModal from "@/components/UI/AlertModal";
 import { getPublicPageBySlug, PublicPage } from "@/services/publicPageService";
 import { sendContactMessage } from "@/services/publicPageService";
 import { useState } from "react";
@@ -6,6 +7,13 @@ import { useState } from "react";
 interface PublicPageViewProps {
   pageData: PublicPage;
 }
+
+type ResultModalState = {
+  show: boolean;
+  variant: "success" | "danger";
+  title: string;
+  message: string;
+};
 
 export default function ContactUsPage({ pageData }: PublicPageViewProps) {
   const [form, setForm] = useState({
@@ -18,8 +26,16 @@ export default function ContactUsPage({ pageData }: PublicPageViewProps) {
   });
 
   const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState("");
-  const [error, setError] = useState("");
+  const [resultModal, setResultModal] = useState<ResultModalState>({
+    show: false,
+    variant: "success",
+    title: "",
+    message: "",
+  });
+
+  const closeResultModal = () => {
+    setResultModal((prev) => ({ ...prev, show: false }));
+  };
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -30,12 +46,9 @@ export default function ContactUsPage({ pageData }: PublicPageViewProps) {
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setSuccess("");
-    setError("");
 
     try {
       await sendContactMessage(form);
-      setSuccess("Thank you! Your message has been sent successfully.");
       setForm({
         inquiry_type: "",
         first_name: "",
@@ -44,18 +57,37 @@ export default function ContactUsPage({ pageData }: PublicPageViewProps) {
         contact_number: "",
         message: "",
       });
+      setResultModal({
+        show: true,
+        variant: "success",
+        title: "Message Sent",
+        message: "Thank you! Your message has been sent successfully. We will get back to you soon.",
+      });
     } catch (err: any) {
-      setError(
-        err?.response?.data?.message ||
-          "Something went wrong. Please try again later."
-      );
+      setResultModal({
+        show: true,
+        variant: "danger",
+        title: "Message Failed",
+        message:
+          err?.response?.data?.message ||
+          "Something went wrong. Please try again later.",
+      });
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="container">
+    <>
+      <AlertModal
+        show={resultModal.show}
+        title={resultModal.title}
+        message={resultModal.message}
+        variant={resultModal.variant}
+        onClose={closeResultModal}
+      />
+
+      <div className="container">
       <div className="p-t-80 p-b-80">
 
         <div className="row">
@@ -82,9 +114,6 @@ export default function ContactUsPage({ pageData }: PublicPageViewProps) {
             {/* FORM */}
             <div className="blo4 p-30">
               <h4 className="p-b-20">Send Us a Message</h4>
-
-              {success && <p className="txt14 text-success p-b-10">{success}</p>}
-              {error && <p className="txt14 text-danger p-b-10">{error}</p>}
 
               <form onSubmit={submit}>
                 {/* INQUIRY TYPE */}
@@ -196,7 +225,8 @@ export default function ContactUsPage({ pageData }: PublicPageViewProps) {
           </div>
         </div>
       </div>
-    </div>
+      </div>
+    </>
   );
 }
 
