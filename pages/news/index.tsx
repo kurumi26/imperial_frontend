@@ -414,7 +414,7 @@ function ManageNews() {
                   }
                   const base =
                     process.env.NEXT_PUBLIC_FRONTEND_URL || window.location.origin;
-                  const url = `${base}/public/news/${row.slug}`;
+                  const url = `${base.replace(/\/$/, "")}/news/${row.slug}`;
                   try {
                     window.open(url, "_blank", "noopener,noreferrer");
                   } catch {

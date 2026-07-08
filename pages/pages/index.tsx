@@ -520,7 +520,7 @@ export default function ManagePages() {
               {/* View */}
               <button
                 className="btn btn-link p-0 me-2 text-secondary"
-                onClick={() => window.open(`/public/${row.slug}`, "_blank")}
+                onClick={() => window.open(buildPublicPageUrl(row.slug ?? ""), "_blank")}
                 title="View"
               >
                 <i className="fas fa-eye"></i>

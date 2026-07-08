@@ -56,6 +56,7 @@ export function getPublicFrontendBaseUrl(): string {
 
 export function buildPublicPageUrl(slug: string): string {
   const base = getPublicFrontendBaseUrl();
-  const path = `/public/${slug.replace(/^\/+/, "")}`;
+  const normalized = slug.replace(/^\/+/, "");
+  const path = !normalized || normalized === "home" ? "/" : `/${normalized}`;
   return base ? `${base}${path}` : path;
 }

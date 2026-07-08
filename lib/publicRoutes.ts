@@ -4,7 +4,7 @@
  */
 export function resolvePublicPageHref(target: string): string {
   const raw = (target ?? "").trim();
-  if (!raw) return "/public/home";
+  if (!raw) return "/";
 
   if (raw.startsWith("mailto:") || raw.startsWith("tel:")) return raw;
 
@@ -18,12 +18,15 @@ export function resolvePublicPageHref(target: string): string {
   }
 
   path = path.split(/[?#]/)[0].replace(/\/+$/, "") || "/";
-  if (path === "/") return "/public/home";
+  if (path === "/" || path === "/home") return "/";
 
   const normalized = path.startsWith("/") ? path : `/${path}`;
-  if (normalized.startsWith("/public/") || normalized === "/public") {
-    return normalized;
+  if (normalized.startsWith("/public/")) {
+    return normalized.slice("/public".length) || "/";
+  }
+  if (normalized === "/public") {
+    return "/";
   }
 
-  return `/public${normalized}`;
+  return normalized;
 }
