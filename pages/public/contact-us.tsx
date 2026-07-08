@@ -1,7 +1,9 @@
 import LandingPageLayout from "@/components/Layout/GuestLayout";
 import AlertModal from "@/components/UI/AlertModal";
+import { resolvePageContent, resolvePageStyles } from "@/lib/cmsPageContent";
 import { getPublicPageBySlug, PublicPage } from "@/services/publicPageService";
 import { sendContactMessage } from "@/services/publicPageService";
+import Head from "next/head";
 import { useState } from "react";
 
 interface PublicPageViewProps {
@@ -16,6 +18,9 @@ type ResultModalState = {
 };
 
 export default function ContactUsPage({ pageData }: PublicPageViewProps) {
+  const htmlContent = resolvePageContent(pageData);
+  const cssStyles = resolvePageStyles(pageData);
+
   const [form, setForm] = useState({
     inquiry_type: "",
     first_name: "",
@@ -79,6 +84,15 @@ export default function ContactUsPage({ pageData }: PublicPageViewProps) {
 
   return (
     <>
+      <Head>
+        {cssStyles && (
+          <style
+            id="page-styles-contact-us"
+            dangerouslySetInnerHTML={{ __html: cssStyles }}
+          />
+        )}
+      </Head>
+
       <AlertModal
         show={resultModal.show}
         title={resultModal.title}
@@ -94,8 +108,8 @@ export default function ContactUsPage({ pageData }: PublicPageViewProps) {
 
           {/* LEFT – CONTACT INFO */}
           <div
-            className="col-md-4 col-lg-3 contact-us-page-container"
-            dangerouslySetInnerHTML={{ __html: pageData.content }}
+            className="col-md-4 col-lg-3 contact-us-page-container public-page-content"
+            dangerouslySetInnerHTML={{ __html: htmlContent }}
           />
 
           {/* RIGHT – FORM + MAP */}
