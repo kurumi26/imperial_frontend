@@ -3,7 +3,6 @@ import AlertModal from "@/components/UI/AlertModal";
 import { resolvePageContent, resolvePageStyles } from "@/lib/cmsPageContent";
 import { getPublicPageBySlug, PublicPage } from "@/services/publicPageService";
 import { sendContactMessage } from "@/services/publicPageService";
-import Head from "next/head";
 import { useState } from "react";
 
 interface PublicPageViewProps {
@@ -84,15 +83,6 @@ export default function ContactUsPage({ pageData }: PublicPageViewProps) {
 
   return (
     <>
-      <Head>
-        {cssStyles && (
-          <style
-            id="page-styles-contact-us"
-            dangerouslySetInnerHTML={{ __html: cssStyles }}
-          />
-        )}
-      </Head>
-
       <AlertModal
         show={resultModal.show}
         title={resultModal.title}
@@ -103,6 +93,12 @@ export default function ContactUsPage({ pageData }: PublicPageViewProps) {
 
       <div className="container">
       <div className="p-t-80 p-b-80">
+        {cssStyles && (
+          <style
+            id="page-styles-contact-us"
+            dangerouslySetInnerHTML={{ __html: cssStyles }}
+          />
+        )}
 
         <div className="row">
 

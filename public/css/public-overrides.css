@@ -3,6 +3,25 @@
    by restoring Bootstrap-like borders where we use .form-control/.form-select.
 */
 
+/* Contact Us left column CMS text: black only (fonts unchanged) */
+.contact-us-page-container.public-page-content,
+.contact-us-page-container.public-page-content p,
+.contact-us-page-container.public-page-content span,
+.contact-us-page-container.public-page-content div,
+.contact-us-page-container.public-page-content li,
+.contact-us-page-container.public-page-content a,
+.contact-us-page-container.public-page-content h1,
+.contact-us-page-container.public-page-content h2,
+.contact-us-page-container.public-page-content h3,
+.contact-us-page-container.public-page-content h4,
+.contact-us-page-container.public-page-content .txt8,
+.contact-us-page-container.public-page-content .txt10,
+.contact-us-page-container.public-page-content .txt12,
+.contact-us-page-container.public-page-content .txt14,
+.contact-us-page-container.public-page-content .txt16 {
+  color: #000000;
+}
+
 /* Contact Us page form controls */
 .public-contact .form-control,
 .public-contact .form-select {
